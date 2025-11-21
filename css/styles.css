@@ -1,0 +1,807 @@
+/**
+ * css/estilos.css
+ * Estilos para el Gestor de Tareas Web
+ * 
+ * @package GestorTareas
+ */
+
+/* --- Variables y Estilos Globales --- */
+:root {
+    --color-primario: #007bff;
+    --color-primario-oscuro: #0056b3;
+    --color-primario-claro: #cce5ff;
+    --color-secundario: #6c757d;
+    --color-secundario-oscuro: #5a6268;
+    --color-secundario-claro: #e2e6ea;
+    --color-exito: #28a745;
+    --color-exito-oscuro: #1e7e34;
+    --color-exito-claro: #d4edda;
+    --color-error: #dc3545;
+    --color-error-oscuro: #c82333;
+    --color-error-claro: #f8d7da;
+    --color-advertencia: #ffc107;
+    --color-advertencia-oscuro: #e0a800;
+    --color-advertencia-claro: #fff3cd;
+    --color-fondo: #f4f7f6;
+    --color-fondo-oscuro: #e0e5e3;
+    --color-texto: #333;
+    --color-texto-claro: #6c757d;
+    --color-blanco: #fff;
+    --color-gris: #ddd;
+    --color-gris-oscuro: #bbb;
+    --fuente-principal: 'Roboto', sans-serif;
+    --sombra-caja: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --sombra-caja-hover: 0 6px 12px rgba(0, 0, 0, 0.15);
+    --borde-redondeado: 8px;
+    --borde-redondeado-pequeno: 4px;
+    --transicion-rapida: 0.2s ease-in-out;
+    --transicion-normal: 0.3s ease-in-out;
+    --transicion-lenta: 0.5s ease-in-out;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--fuente-principal);
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.6;
+}
+
+/* --- Contenedor Principal --- */
+/**
+ * Contenedor base para toda la aplicación
+ * Centrado con ancho máximo para diseño responsive
+ */
+.contenedor-principal {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: var(--color-blanco);
+    border-radius: var(--borde-redondeado);
+    box-shadow: var(--sombra-caja);
+    transition: all var(--transicion-normal);
+}
+
+.contenedor-principal:hover {
+    box-shadow: var(--sombra-caja-hover);
+}
+
+/* --- Header y Footer --- */
+/**
+ * Estilos para el encabezado de la aplicación
+ * Incluye el título principal
+ */
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--color-gris);
+    padding-bottom: 1rem;
+    transition: border-color var(--transicion-rapida);
+}
+
+header:hover {
+    border-color: var(--color-primario);
+}
+
+header h1 {
+    color: var(--color-primario);
+    font-weight: 700;
+    transition: color var(--transicion-rapida);
+}
+
+header h1:hover {
+    color: var(--color-primario-oscuro);
+}
+
+/* Estilos para el icono de tareas */
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.tasks-icon {
+    width: 40px;
+    height: 40px;
+}
+
+/* --- Secciones del Formulario y Lista --- */
+/**
+ * Secciones principales de la aplicación
+ * Incluye formulario y lista de tareas con diseño flexible
+ */
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.formulario-seccion, .lista-tareas-seccion {
+    background-color: var(--color-blanco);
+    padding: 1.5rem;
+    border-radius: var(--borde-redondeado);
+    box-shadow: var(--sombra-caja);
+    transition: box-shadow var(--transicion-rapida);
+}
+
+.formulario-seccion:hover, .lista-tareas-seccion:hover {
+    box-shadow: var(--sombra-caja-hover);
+}
+
+/**
+ * Estilos para los encabezados de sección
+ * Incluye subrayado y color de énfasis
+ */
+section h2 {
+    margin-bottom: 1rem;
+    color: var(--color-primario-oscuro);
+    border-bottom: 2px solid var(--color-primario);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    transition: color var(--transicion-rapida), border-color var(--transicion-rapida);
+}
+
+section h2:hover {
+    color: var(--color-primario);
+    border-color: var(--color-primario-oscuro);
+}
+
+/* --- Formulario --- */
+/**
+ * Estilos base para el formulario de tareas
+ * Incluye diseño de grupos de campos y botones
+ */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--color-texto);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--color-gris);
+    border-radius: var(--borde-redondeado-pequeno);
+    font-size: 1rem;
+    transition: border-color var(--transicion-rapida), box-shadow var(--transicion-rapida);
+    background-color: var(--color-blanco);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    outline: none;
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled {
+    background-color: var(--color-fondo);
+    cursor: not-allowed;
+}
+
+/* Contenedor de botones del formulario */
+.form-botones {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+
+/* --- Botones --- */
+/**
+ * Estilos base para todos los botones
+ * Incluye transiciones y efectos hover
+ */
+button, .btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--borde-redondeado-pequeno);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all var(--transicion-rapida);
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-secundario);
+    color: var(--color-blanco);
+}
+
+button:hover, .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--sombra-caja-hover);
+}
+
+button:active, .btn:active {
+    transform: translateY(-1px);
+}
+
+/**
+ * Botón primario para acciones principales
+ * Como guardar o actualizar tareas
+ */
+.btn-primary {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primario-oscuro);
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4);
+}
+
+/**
+ * Botón secundario para acciones auxiliares
+ * Como cancelar o acciones secundarias
+ */
+.btn-secondary {
+    background-color: var(--color-secundario);
+    color: var(--color-blanco);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-secundario-oscuro);
+    box-shadow: 0 6px 12px rgba(108, 117, 125, 0.4);
+}
+
+/**
+ * Botón para editar tareas
+ * Usa color amarillo para indicar acción de edición
+ */
+.btn-editar {
+    background-color: var(--color-advertencia);
+    color: #212529;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--borde-redondeado-pequeno);
+    transition: all var(--transicion-rapida);
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+}
+
+.btn-editar:hover {
+    background-color: var(--color-advertencia-oscuro);
+    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+    transform: translateY(-2px);
+}
+
+/**
+ * Botón para eliminar tareas
+ * Usa color rojo para indicar acción destructiva
+ */
+.btn-eliminar {
+    background-color: var(--color-error);
+    color: var(--color-blanco);
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: var(--borde-redondeado-pequeno);
+    cursor: pointer;
+    transition: all var(--transicion-rapida);
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+}
+
+.btn-eliminar:hover {
+    background-color: var(--color-error-oscuro);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Estilos para los iconos SVG */
+.btn-editar svg,
+.btn-eliminar svg,
+.btn-primary svg,
+.btn-secondary svg {
+    width: 20px;
+    height: 20px;
+    transition: transform var(--transicion-rapida);
+}
+
+.btn-editar:hover svg,
+.btn-eliminar:hover svg,
+.btn-primary:hover svg,
+.btn-secondary:hover svg {
+    transform: scale(1.1);
+}
+
+/* --- Mensajes --- */
+/**
+ * Estilos base para mensajes de notificación
+ * Incluye diseño flexible para contenido y botón de cierre
+ */
+.mensaje {
+    padding: 1rem;
+    border-radius: var(--borde-redondeado-pequeno);
+    margin-bottom: 1rem;
+    font-weight: bold;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all var(--transicion-normal);
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.mensaje.mostrar {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.mensaje.ocultar {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+/**
+ * Mensaje de éxito
+ * Usa colores verdes para indicar operaciones exitosas
+ */
+.mensaje.exito {
+    background-color: var(--color-exito-claro);
+    color: var(--color-exito-oscuro);
+    border: 1px solid var(--color-exito);
+}
+
+/**
+ * Mensaje de error
+ * Usa colores rojos para indicar errores o problemas
+ */
+.mensaje.error {
+    background-color: var(--color-error-claro);
+    color: var(--color-error-oscuro);
+    border: 1px solid var(--color-error);
+}
+
+/**
+ * Botón para cerrar mensajes
+ * Diseño minimalista que se integra con el mensaje
+ */
+.cerrar-mensaje {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.7;
+    transition: opacity var(--transicion-rapida), transform var(--transicion-rapida);
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.cerrar-mensaje:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* --- Floating Messages --- */
+.floating-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    min-width: 300px;
+    max-width: 400px;
+    padding: 1rem 1.5rem;
+    border-radius: var(--borde-redondeado);
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.floating-message.mostrar {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.floating-message.ocultar {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.floating-message.exito {
+    background-color: var(--color-exito-claro);
+    color: var(--color-exito-oscuro);
+    border: 1px solid var(--color-exito);
+}
+
+.floating-message.error {
+    background-color: var(--color-error-claro);
+    color: var(--color-error-oscuro);
+    border: 1px solid var(--color-error);
+}
+
+.floating-message .cerrar-mensaje {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.7;
+    transition: opacity var(--transicion-rapida), transform var(--transicion-rapida);
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.floating-message .cerrar-mensaje:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* --- Tabla de Tareas --- */
+/**
+ * Contenedor para la tabla de tareas
+ * Permite desplazamiento horizontal en pantallas pequeñas
+ */
+.tabla-contenedor {
+    overflow-x: auto;
+    border-radius: var(--borde-redondeado);
+    box-shadow: var(--sombra-caja);
+    transition: box-shadow var(--transicion-rapida);
+    background-color: var(--color-blanco);
+    padding: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.tabla-contenedor:hover {
+    box-shadow: var(--sombra-caja-hover);
+}
+
+/**
+ * Estilos base para la tabla de tareas
+ * Incluye diseño limpio con bordes y espaciado
+ */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: var(--color-blanco);
+    border-radius: var(--borde-redondeado-pequeno);
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/**
+ * Estilos para el encabezado de la tabla
+ * Usa colores del tema principal
+ */
+thead {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+th {
+    padding: 1.25rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    transition: background-color var(--transicion-rapida);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+th:hover {
+    background-color: var(--color-primario-oscuro);
+}
+
+td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--color-gris-claro);
+}
+
+tbody tr {
+    transition: background-color var(--transicion-rapida);
+    border-left: 4px solid transparent;
+}
+
+tbody tr:hover {
+    background-color: var(--color-fondo);
+    border-left: 4px solid var(--color-primario);
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+td small {
+    color: var(--color-texto-claro);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/**
+ * Contenedor para botones de acción en la tabla
+ * Organiza botones de editar y eliminar
+ */
+.acciones {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.acciones form {
+    margin: 0;
+}
+
+/* Estilos para celdas específicas */
+.titulo-tarea {
+    font-weight: 600;
+    color: var(--color-texto);
+}
+
+.fecha-tarea {
+    font-weight: 500;
+    color: var(--color-primario);
+    white-space: nowrap;
+}
+
+/* --- Enlaces --- */
+a {
+    color: var(--color-primario);
+    text-decoration: none;
+    transition: color var(--transicion-rapida);
+}
+
+a:hover {
+    color: var(--color-primario-oscuro);
+    text-decoration: underline;
+}
+
+/* --- Focus States para Accesibilidad --- */
+button:focus, .btn:focus, input:focus, textarea:focus, a:focus {
+    outline: 2px solid var(--color-primario);
+    outline-offset: 2px;
+}
+
+/* --- Modal Styles --- */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transicion-normal), visibility var(--transicion-normal);
+}
+
+.modal.mostrar {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-contenido {
+    background-color: var(--color-blanco);
+    border-radius: var(--borde-redondeado);
+    box-shadow: var(--sombra-caja-hover);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(-20px);
+    transition: transform var(--transicion-normal);
+}
+
+.modal.mostrar .modal-contenido {
+    transform: translateY(0);
+}
+
+.modal-encabezado {
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--color-gris);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-encabezado h3 {
+    margin: 0;
+    color: var(--color-primario-oscuro);
+}
+
+.btn-cerrar-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--color-texto-claro);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color var(--transicion-rapida), color var(--transicion-rapida);
+    padding: 0.5rem;
+    min-width: 36px;
+    min-height: 36px;
+}
+
+.btn-cerrar-modal:hover {
+    background-color: var(--color-gris);
+    color: var(--color-texto);
+}
+
+.modal-cuerpo {
+    padding: 1rem 1.5rem;
+}
+
+.modal-cuerpo p {
+    margin: 0;
+    color: var(--color-texto);
+    line-height: 1.6;
+}
+
+.modal-pie {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--color-gris);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+/* Botones en el modal */
+.modal-pie .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+}
+
+.modal-pie .btn-secondary {
+    background-color: var(--color-secundario);
+    color: var(--color-blanco);
+    border: none;
+    border-radius: var(--borde-redondeado-pequeno);
+    cursor: pointer;
+    transition: all var(--transicion-rapida);
+}
+
+.modal-pie .btn-secondary:hover {
+    background-color: var(--color-secundario-oscuro);
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+    transform: translateY(-2px);
+}
+
+.modal-pie .btn-eliminar {
+    background-color: var(--color-error);
+    color: var(--color-blanco);
+    border: none;
+    border-radius: var(--borde-redondeado-pequeno);
+    cursor: pointer;
+    transition: all var(--transicion-rapida);
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    padding: 0.5rem;
+}
+
+.modal-pie .btn-eliminar:hover {
+    background-color: var(--color-error-oscuro);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Estilos para los iconos SVG en el modal */
+.modal-pie .btn svg {
+    width: 16px;
+    height: 16px;
+    transition: transform var(--transicion-rapida);
+}
+
+.modal-pie .btn:hover svg {
+    transform: scale(1.1);
+}
+
+/* --- Media Queries para Responsividad (Desktop First to Mobile First) --- */
+/* Estilos base para móviles ya están definidos arriba */
+
+/* Tablets */
+@media (min-width: 768px) {
+    main {
+        flex-direction: row;
+    }
+    
+    .formulario-seccion, .lista-tareas-seccion {
+        flex: 1;
+    }
+    
+    .contenedor-principal {
+        padding: 2rem;
+    }
+    
+    .modal-contenido {
+        width: 80%;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .contenedor-principal {
+        margin: 3rem auto;
+        padding: 2.5rem;
+    }
+    
+    section h2 {
+        font-size: 1.5rem;
+    }
+    
+    .modal-contenido {
+        width: 60%;
+    }
+}
+
+/* Large Desktop */
+@media (min-width: 1200px) {
+    .contenedor-principal {
+        max-width: 1600px;
+        padding: 3rem;
+    }
+}
