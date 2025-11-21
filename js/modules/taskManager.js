@@ -47,7 +47,7 @@ export function eliminarTarea() {
         // Crear un formulario dinámicamente y enviarlo
         const form = document.createElement('form');
         form.method = 'POST';
-        form.action = '../api/index.php';
+        form.action = '';
         
         const accionInput = document.createElement('input');
         accionInput.type = 'hidden';
