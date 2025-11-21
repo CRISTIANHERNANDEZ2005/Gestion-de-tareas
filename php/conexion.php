@@ -7,7 +7,7 @@
  */
 
 // Cargar variables de entorno
-require_once 'utils/dotenv.php';
+require_once __DIR__ . '/utils/dotenv.php';
 loadEnv(__DIR__ . '/../.env');
 
 /**

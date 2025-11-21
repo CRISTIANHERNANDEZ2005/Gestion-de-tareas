@@ -6,8 +6,8 @@
  * @package GestorTareas
  */
 
-require_once 'conexion.php';
-require_once 'utils/validator.php';
+require_once __DIR__ . '/conexion.php';
+require_once __DIR__ . '/utils/validator.php';
 
 /**
  * Agrega una nueva tarea a la base de datos

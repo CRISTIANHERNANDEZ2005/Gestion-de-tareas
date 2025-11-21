@@ -6,9 +6,9 @@
  * @package GestorTareas
  */
 
-require_once '../php/funciones_tareas.php';
-require_once '../php/utils/response_handler.php';
-require_once '../php/utils/validator.php';
+require_once __DIR__ . '/../php/funciones_tareas.php';
+require_once __DIR__ . '/../php/utils/response_handler.php';
+require_once __DIR__ . '/../php/utils/validator.php';
 
 // Variables para mensajes y datos
 $mensaje = "";
