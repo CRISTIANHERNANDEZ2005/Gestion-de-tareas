@@ -1,7 +1,7 @@
 <?php
 /**
  * php/conexion.php
- * Archivo para gestionar la conexión a la base de datos MySQL usando PDO.
+ * Archivo para gestionar la conexión a la base de datos SQLite usando PDO.
  * 
  * @package GestorTareas
  */
@@ -11,62 +11,79 @@ require_once 'utils/dotenv.php';
 loadEnv(__DIR__ . '/../.env');
 
 /**
- * Clase para manejar la conexión a la base de datos
+ * Clase para manejar la conexión a la base de datos SQLite
  */
 class Conexion {
-    /** @var string Host de la base de datos */
-    private $host;
-    
-    /** @var string Nombre de la base de datos */
-    private $nombre_db;
-    
-    /** @var string Usuario de la base de datos */
-    private $usuario;
-    
-    /** @var string Contraseña de la base de datos */
-    private $contrasena;
+    /** @var string Ruta al archivo de base de datos SQLite */
+    private $db_path;
     
     /**
-     * Constructor para inicializar las variables de conexión
+     * Constructor para inicializar la ruta de la base de datos
+     * Usa /tmp para compatibilidad con Vercel
      */
     public function __construct() {
-        $this->host = $_ENV['DB_HOST'] ?? 'localhost';
-        $this->nombre_db = $_ENV['DB_NAME'] ?? 'gestor_tareas_db';
-        $this->usuario = $_ENV['DB_USER'] ?? 'root';
-        $this->contrasena = $_ENV['DB_PASS'] ?? '';
+        // Para Vercel, usar el directorio /tmp que es escribible
+        $tmpDir = '/tmp';
+        if (defined('VERCEL') && VERCEL) {
+            $this->db_path = $tmpDir . '/gestor_tareas.sqlite';
+        } else {
+            // Para entornos locales
+            $this->db_path = __DIR__ . '/../gestor_tareas.sqlite';
+        }
     }
 
     /** @var PDO|null Conexión a la base de datos */
     public $conexion;
 
     /**
-     * Método para conectar a la base de datos
+     * Método para conectar a la base de datos SQLite
      * 
      * @return bool True si la conexión fue exitosa, False en caso contrario
      */
     public function conectar() {
         try {
+            // Crear directorio para la base de datos si no existe
+            $dbDir = dirname($this->db_path);
+            if (!is_dir($dbDir)) {
+                mkdir($dbDir, 0755, true);
+            }
             
-            // Crear una nueva instancia de PDO
-            $this->conexion = new PDO(
-                "mysql:host=" . $this->host . ";dbname=" . $this->nombre_db,
-                $this->usuario,
-                $this->contrasena
-            );
+            // Crear una nueva instancia de PDO para SQLite
+            $this->conexion = new PDO("sqlite:" . $this->db_path);
             
             // Establecer el modo de error de PDO a excepción
             $this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
-            // Establecer el juego de caracteres a UTF-8
-            $this->conexion->exec("SET CHARACTER SET utf8mb4");
-
+            // Establecer el modo de recuperación a asociativo por defecto
+            $this->conexion->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+            
+            // Crear la tabla si no existe
+            $this->crearTablaSiNoExiste();
+            
         } catch (PDOException $e) {
             // Registrar el error en un log
-            error_log("Error de conexión a la base de datos: " . $e->getMessage());
+            error_log("Error de conexión a la base de datos SQLite: " . $e->getMessage());
             // Devolver false para indicar fallo en la conexión
             return false;
         }
         return true;
+    }
+    
+    /**
+     * Método para crear la tabla tareas si no existe
+     * 
+     * @return void
+     */
+    private function crearTablaSiNoExiste() {
+        $sql = "CREATE TABLE IF NOT EXISTS tareas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            titulo TEXT UNIQUE NOT NULL,
+            descripcion TEXT,
+            fecha_limite DATE,
+            creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )";
+        
+        $this->conexion->exec($sql);
     }
 
     /**
