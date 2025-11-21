@@ -32,9 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 // Verificar si el error es por título duplicado
                 if (existeTituloTarea($titulo)) {
-                    redirectWithMessage("Error: El título '$titulo' ya está en uso. Por favor, elige otro título.", "index.html");
+                    redirectWithMessage("Error: El título '$titulo' ya está en uso. Por favor, elige otro título.", "/api/index.php");
                 } else {
-                    redirectWithMessage("Error al agregar la tarea. Por favor, inténtelo de nuevo.", "index.html");
+                    redirectWithMessage("Error al agregar la tarea. Por favor, inténtelo de nuevo.", "/api/index.php");
                 }
             }
         } elseif ($_POST['accion'] === 'editar') {
@@ -42,16 +42,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
             $idValidation = validateInteger($id, 'ID de tarea');
             if (!$idValidation['valid']) {
-                redirectWithMessage($idValidation['message'], "index.html");
+                redirectWithMessage($idValidation['message'], "/api/index.php");
             } else {
                 if (actualizarTarea($id, $titulo, $descripcion, $fecha_limite)) {
                     redirectWithMessage("¡Tarea actualizada exitosamente!");
                 } else {
                     // Verificar si el error es por título duplicado
                     if (existeTituloTareaExcluyendoId($titulo, $id)) {
-                        redirectWithMessage("Error: El título '$titulo' ya está en uso. Por favor, elige otro título.", "index.html");
+                        redirectWithMessage("Error: El título '$titulo' ya está en uso. Por favor, elige otro título.", "/api/index.php");
                     } else {
-                        redirectWithMessage("Error al actualizar la tarea. Por favor, inténtelo de nuevo.", "index.html");
+                        redirectWithMessage("Error al actualizar la tarea. Por favor, inténtelo de nuevo.", "/api/index.php");
                     }
                 }
             }
@@ -63,12 +63,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
         $idValidation = validateInteger($id, 'ID de tarea');
         if (!$idValidation['valid']) {
-            redirectWithMessage($idValidation['message'], "index.html");
+            redirectWithMessage($idValidation['message'], "/api/index.php");
         } else {
             if (eliminarTarea($id)) {
                 redirectWithMessage("¡Tarea eliminada exitosamente!");
             } else {
-                redirectWithMessage("Error al eliminar la tarea. Por favor, inténtelo de nuevo.", "index.html");
+                redirectWithMessage("Error al eliminar la tarea. Por favor, inténtelo de nuevo.", "/api/index.php");
             }
         }
     }
@@ -84,11 +84,11 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'editar' && isset($_GET['id'])
     $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
     $idValidation = validateInteger($id, 'ID de tarea');
     if (!$idValidation['valid']) {
-        redirectWithMessage($idValidation['message'], "index.html");
+        redirectWithMessage($idValidation['message'], "/api/index.php");
     } else {
         $tarea_a_editar = obtenerTareaPorId($id);
         if (!$tarea_a_editar) {
-            redirectWithMessage("No se encontró la tarea.", "index.html");
+            redirectWithMessage("No se encontró la tarea.", "/api/index.php");
         }
     }
 }
@@ -164,7 +164,7 @@ if ($lista_tareas === false) {
                             <span><?php echo $tarea_a_editar ? 'Actualizar' : 'Guardar'; ?></span>
                         </button>
                         <?php if ($tarea_a_editar): ?>
-                            <a href="index.html" class="btn btn-secondary" title="Cancelar">
+                            <a href="/api/index.php" class="btn btn-secondary" title="Cancelar">
                                 <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                                 </svg>
