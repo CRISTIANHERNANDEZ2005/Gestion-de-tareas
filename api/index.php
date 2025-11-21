@@ -131,7 +131,7 @@ if ($lista_tareas === false) {
                     <!-- El mensaje se muestra como un mensaje flotante mediante JavaScript -->
                 <?php endif; ?>
 
-                <form id="formulario-tareas" action="" method="POST">
+                <form id="formulario-tareas" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
                     <input type="hidden" name="accion" value="<?php echo $tarea_a_editar ? 'editar' : 'agregar'; ?>">
                     <?php if ($tarea_a_editar): ?>
                         <input type="hidden" name="id" value="<?php echo $tarea_a_editar['id']; ?>">
