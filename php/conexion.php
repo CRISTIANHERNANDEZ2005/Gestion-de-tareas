@@ -1,6 +1,13 @@
 <?php
 // Configuración para SQLite
-$dbPath = __DIR__ . '/../gestor_tareas.sqlite';
+// Detectar si estamos en Vercel o en entorno local
+if (isset($_ENV['VERCEL']) && $_ENV['VERCEL'] === '1') {
+    // En Vercel, usar el directorio temporal para la base de datos
+    $dbPath = '/tmp/gestor_tareas.sqlite';
+} else {
+    // En entorno local, usar la ruta relativa
+    $dbPath = __DIR__ . '/../gestor_tareas.sqlite';
+}
 
 // Verificar si el archivo de base de datos existe, si no, crearlo
 $crearTabla = !file_exists($dbPath);

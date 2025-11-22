@@ -825,3 +825,42 @@ button:focus, .btn:focus, input:focus, textarea:focus, a:focus {
         padding: 3rem;
     }
 }
+
+/* --- Mensaje Sin Tareas --- */
+.mensaje-sin-tareas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    padding: 2rem;
+    text-align: center;
+    background-color: var(--color-blanco);
+    border-radius: var(--borde-redondeado);
+    box-shadow: var(--sombra-caja);
+    transition: box-shadow var(--transicion-rapida);
+}
+
+.mensaje-sin-tareas:hover {
+    box-shadow: var(--sombra-caja-hover);
+}
+
+.mensaje-contenido {
+    max-width: 500px;
+}
+
+.mensaje-contenido h3 {
+    margin: 1.5rem 0 1rem;
+    color: var(--color-primario-oscuro);
+    font-size: 1.5rem;
+}
+
+.mensaje-contenido p {
+    margin-bottom: 2rem;
+    color: var(--color-texto-claro);
+    line-height: 1.6;
+}
+
+.mensaje-icono {
+    color: var(--color-primario);
+    opacity: 0.7;
+}
