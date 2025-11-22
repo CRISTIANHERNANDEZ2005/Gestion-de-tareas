@@ -44,9 +44,23 @@ class Conexion {
         try {
             // Crear directorio para la base de datos si no existe
             $dbDir = dirname($this->db_path);
+            error_log("Conexion: Database directory path: " . $dbDir);
+            
             if (!is_dir($dbDir)) {
-                mkdir($dbDir, 0755, true);
+                error_log("Conexion: Creating database directory");
+                if (!mkdir($dbDir, 0755, true)) {
+                    error_log("Conexion: Failed to create database directory");
+                    return false;
+                }
             }
+            
+            // Verificar permisos del directorio
+            if (!is_writable($dbDir)) {
+                error_log("Conexion: Database directory is not writable");
+                return false;
+            }
+            
+            error_log("Conexion: Database path: " . $this->db_path);
             
             // Crear una nueva instancia de PDO para SQLite
             $this->conexion = new PDO("sqlite:" . $this->db_path);
@@ -75,15 +89,21 @@ class Conexion {
      * @return void
      */
     private function crearTablaSiNoExiste() {
-        $sql = "CREATE TABLE IF NOT EXISTS tareas (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            titulo TEXT UNIQUE NOT NULL,
-            descripcion TEXT,
-            fecha_limite DATE,
-            creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )";
-        
-        $this->conexion->exec($sql);
+        try {
+            $sql = "CREATE TABLE IF NOT EXISTS tareas (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                titulo TEXT UNIQUE NOT NULL,
+                descripcion TEXT,
+                fecha_limite DATE,
+                creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )";
+            
+            error_log("Conexion: Creating table if not exists");
+            $result = $this->conexion->exec($sql);
+            error_log("Conexion: Table creation result: " . ($result !== false ? "SUCCESS" : "FAILED"));
+        } catch (PDOException $e) {
+            error_log("Error creating table: " . $e->getMessage());
+        }
     }
 
     /**
@@ -126,7 +146,7 @@ class Conexion {
             return false;
         }
     }
-    
+
     /**
      * Verificar si la base de datos está disponible
      * 
