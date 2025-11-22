@@ -5,8 +5,10 @@
  * @package GestorTareas
  */
 
+import { removeElementSafely, animateOutAndRemove } from './utils.js';
+
 /**
- * Funcionalidad para cerrar mensajes de notificación
+ * Cierra el mensaje de notificación visible
  * @returns {void}
  */
 export function cerrarMensaje() {
@@ -25,7 +27,7 @@ export function cerrarMensaje() {
 }
 
 /**
- * Función para eliminar el parámetro de mensaje de la URL
+ * Elimina el parámetro de mensaje de la URL
  * @returns {void}
  */
 export function limpiarParametroMensaje() {
@@ -43,7 +45,7 @@ export function limpiarParametroMensaje() {
 }
 
 /**
- * Función para ocultar automáticamente los mensajes de éxito después de 5 segundos
+ * Oculta automáticamente los mensajes de éxito después de 5 segundos
  * @returns {void}
  */
 export function ocultarMensajeAutomaticamente() {
@@ -79,7 +81,7 @@ export function ocultarMensajeAutomaticamente() {
 }
 
 /**
- * Limpiar sessionStorage de auto-hide cuando no hay mensaje visible
+ * Limpia sessionStorage de auto-hide cuando no hay mensaje visible
  * @returns {void}
  */
 export function limpiarSessionStorage() {
@@ -92,7 +94,7 @@ export function limpiarSessionStorage() {
 }
 
 /**
- * Mostrar un mensaje flotante en la esquina superior derecha
+ * Muestra un mensaje flotante en la esquina superior derecha
  * @param {string} mensaje - El texto del mensaje a mostrar
  * @param {string} tipo - Tipo de mensaje ('exito' o 'error')
  * @returns {void}
@@ -101,7 +103,7 @@ export function mostrarMensajeFlotante(mensaje, tipo = 'exito') {
     // Eliminar cualquier mensaje flotante existente
     const mensajeExistente = document.querySelector('.floating-message');
     if (mensajeExistente) {
-        mensajeExistente.remove();
+        removeElementSafely(mensajeExistente, 300);
     }
     
     // Crear el elemento del mensaje flotante
@@ -129,9 +131,7 @@ export function mostrarMensajeFlotante(mensaje, tipo = 'exito') {
         cerrarBtn.addEventListener('click', function() {
             mensajeFlotante.classList.remove('mostrar');
             mensajeFlotante.classList.add('ocultar');
-            setTimeout(() => {
-                mensajeFlotante.remove();
-            }, 300);
+            removeElementSafely(mensajeFlotante, 300);
         });
     }
     
@@ -141,9 +141,7 @@ export function mostrarMensajeFlotante(mensaje, tipo = 'exito') {
             if (mensajeFlotante && mensajeFlotante.parentNode) {
                 mensajeFlotante.classList.remove('mostrar');
                 mensajeFlotante.classList.add('ocultar');
-                setTimeout(() => {
-                    mensajeFlotante.remove();
-                }, 300);
+                removeElementSafely(mensajeFlotante, 300);
             }
         }, 5000);
     }

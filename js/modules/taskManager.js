@@ -5,6 +5,9 @@
  * @package GestorTareas
  */
 
+import { removeElementSafely } from './utils.js';
+import { mostrarMensajeFlotante } from './messageHandler.js';
+
 /**
  * Variable global para almacenar el ID de la tarea a eliminar
  * Se utiliza en la funcionalidad de eliminación de tareas
@@ -13,7 +16,7 @@
 let idTareaAEliminar = null;
 
 /**
- * Función para mostrar el modal de confirmación de eliminación
+ * Muestra el modal de confirmación de eliminación
  * @param {number} id - ID de la tarea a eliminar
  * @returns {void}
  */
@@ -26,7 +29,7 @@ export function mostrarModalEliminacion(id) {
 }
 
 /**
- * Función para ocultar el modal de confirmación de eliminación
+ * Oculta el modal de confirmación de eliminación
  * @returns {void}
  */
 export function ocultarModalEliminacion() {
@@ -38,36 +41,44 @@ export function ocultarModalEliminacion() {
 }
 
 /**
- * Función para eliminar una tarea
- * Crea un formulario dinámicamente y lo envía para eliminar la tarea
+ * Elimina una tarea mediante una llamada AJAX
+ * En lugar de redirigir a index.php, ahora hace una llamada AJAX
  * @returns {void}
  */
 export function eliminarTarea() {
-    if (idTareaAEliminar !== null) {
-        // Crear un formulario dinámicamente y enviarlo
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = 'index.php';
+    if (getIdTareaAEliminar() !== null) {
+        // Crear FormData para enviar la solicitud de eliminación
+        const formData = new FormData();
+        formData.append('id', getIdTareaAEliminar());
         
-        const accionInput = document.createElement('input');
-        accionInput.type = 'hidden';
-        accionInput.name = 'accion';
-        accionInput.value = 'eliminar';
-        form.appendChild(accionInput);
-        
-        const idInput = document.createElement('input');
-        idInput.type = 'hidden';
-        idInput.name = 'id';
-        idInput.value = idTareaAEliminar;
-        form.appendChild(idInput);
-        
-        document.body.appendChild(form);
-        form.submit();
+        // Enviar solicitud de eliminación mediante fetch
+        fetch('php/eliminar_tarea.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.exito) {
+                // En lugar de recargar la página, actualizar la lista de tareas
+                // Dispatch a custom event to refresh the task list
+                window.dispatchEvent(new CustomEvent('taskDeleted'));
+                // Mostrar mensaje de éxito
+                mostrarMensajeFlotante('Tarea eliminada correctamente.', 'exito');
+            } else {
+                // Mostrar mensaje de error
+                console.error('Error al eliminar la tarea:', data.mensaje);
+                mostrarMensajeFlotante('Error al eliminar la tarea: ' + data.mensaje, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error al eliminar la tarea:', error);
+            mostrarMensajeFlotante('Error al eliminar la tarea: ' + error.message, 'error');
+        });
     }
 }
 
 /**
- * Getter para obtener el ID de la tarea a eliminar
+ * Obtiene el ID de la tarea a eliminar
  * @returns {number|null} El ID de la tarea a eliminar
  */
 export function getIdTareaAEliminar() {
@@ -75,7 +86,7 @@ export function getIdTareaAEliminar() {
 }
 
 /**
- * Setter para establecer el ID de la tarea a eliminar
+ * Establece el ID de la tarea a eliminar
  * @param {number|null} id - El ID de la tarea a eliminar
  */
 export function setIdTareaAEliminar(id) {

@@ -6,7 +6,7 @@
  */
 
 /**
- * Función para mostrar un error en un campo específico
+ * Muestra un mensaje de error debajo de un campo de formulario
  * @param {HTMLElement} input - Elemento de input donde mostrar el error
  * @param {string} mensaje - Mensaje de error a mostrar
  * @returns {void}
@@ -16,19 +16,37 @@ export function mostrarError(input, mensaje) {
     const small = formGroup.querySelector('small') || document.createElement('small');
     small.style.color = 'var(--color-error)';
     small.textContent = mensaje;
-    small.style.transition = 'opacity 0.3s ease-in-out';
+    small.style.transition = 'all 0.3s ease-in-out';
     small.style.opacity = '0';
+    small.style.transform = 'translateY(-10px)';
     
     if (!formGroup.querySelector('small')) {
+        // Configurar posición absoluta para el mensaje de error
+        small.style.position = 'absolute';
+        small.style.top = '100%';
+        small.style.left = '0';
+        small.style.marginTop = '5px';
+        formGroup.style.position = 'relative';
         formGroup.appendChild(small);
+        
         // Animar la aparición del mensaje de error
         setTimeout(() => {
             small.style.opacity = '1';
+            small.style.transform = 'translateY(0)';
         }, 10);
     } else {
+        // Actualizar el mensaje existente
         small.textContent = mensaje;
+        // Reanimar si el mensaje cambia
+        small.style.opacity = '0';
+        small.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+            small.style.opacity = '1';
+            small.style.transform = 'translateY(0)';
+        }, 10);
     }
     
+    // Resaltar el campo con error
     input.style.borderColor = 'var(--color-error)';
     
     // Almacenar referencia al mensaje de error en el input para poder ocultarlo después
@@ -36,7 +54,7 @@ export function mostrarError(input, mensaje) {
 }
 
 /**
- * Función para limpiar los errores de un campo
+ * Limpia el mensaje de error de un campo específico
  * @param {HTMLElement} input - Elemento de input del cual limpiar los errores
  * @returns {void}
  */
@@ -44,11 +62,16 @@ export function limpiarError(input) {
     const formGroup = input.parentElement;
     const small = formGroup.querySelector('small');
     if (small) {
-        // Animar la desaparición del mensaje de error
+        // Animar la desaparición del mensaje de error con una transición más suave
+        small.style.transition = 'all 0.3s ease-in-out';
         small.style.opacity = '0';
+        small.style.transform = 'translateY(-10px)';
         setTimeout(() => {
-            small.remove();
-        }, 300); // Debe coincidir con la duración de la transición en CSS
+            // Verificar que el elemento aún exista antes de eliminarlo
+            if (small.parentNode) {
+                small.remove();
+            }
+        }, 300);
     }
     input.style.borderColor = '#ccc';
     
@@ -59,28 +82,34 @@ export function limpiarError(input) {
 }
 
 /**
- * Función para ocultar todos los mensajes de error de los campos
+ * Oculta todos los mensajes de error visibles en el formulario
  * @returns {void}
  */
 export function ocultarMensajesErrorCampos() {
-    // Ocultar todos los mensajes de error visibles
+    // Ocultar todos los mensajes de error visibles con una animación profesional
     const errorMessages = document.querySelectorAll('.form-group small');
     errorMessages.forEach(function(small) {
+        small.style.transition = 'all 0.3s ease-in-out';
         small.style.opacity = '0';
+        small.style.transform = 'translateY(-10px)';
         setTimeout(() => {
-            small.remove();
+            // Verificar que el elemento aún exista antes de eliminarlo
+            if (small.parentNode) {
+                small.remove();
+            }
         }, 300);
     });
     
-    // Restaurar bordes normales a todos los inputs
+    // Restaurar bordes normales a todos los inputs con transición suave
     const inputs = document.querySelectorAll('input, textarea');
     inputs.forEach(function(input) {
+        input.style.transition = 'border-color 0.3s ease-in-out';
         input.style.borderColor = '#ccc';
     });
 }
 
 /**
- * Función para validar un campo de texto
+ * Valida un campo de texto según las opciones especificadas
  * @param {HTMLElement} input - Elemento de input a validar
  * @param {Object} opciones - Opciones de validación
  * @param {boolean} opciones.requerido - Si el campo es requerido
@@ -101,6 +130,12 @@ export function validarCampoTexto(input, opciones) {
         mensajeMin = `Este campo debe tener al menos ${longitudMin} caracteres.`,
         mensajeMax = `Este campo no puede exceder ${longitudMax} caracteres.`
     } = opciones;
+    
+    // Si el campo no es requerido y está vacío, pasar la validación
+    if (!requerido && valor === '') {
+        limpiarError(input);
+        return true;
+    }
     
     // Validar si es requerido
     if (requerido && valor === '') {
@@ -126,7 +161,39 @@ export function validarCampoTexto(input, opciones) {
 }
 
 /**
- * Función para validar una fecha
+ * Verifica si un título ya existe en la base de datos
+ * @param {string} titulo - El título a verificar
+ * @param {string} tareaId - El ID de la tarea actual (para edición)
+ * @returns {Promise<boolean>} True si el título es único, False si ya existe
+ */
+export async function verificarTituloUnico(titulo, tareaId = null) {
+    try {
+        const formData = new FormData();
+        formData.append('titulo', titulo);
+        if (tareaId) {
+            formData.append('tarea_id', tareaId);
+        }
+        
+        const response = await fetch('php/verificar_titulo.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.exito && data.duplicado) {
+            return false; // El título ya existe
+        }
+        
+        return true; // El título es único
+    } catch (error) {
+        console.error('Error al verificar título único:', error);
+        return true; // En caso de error, asumimos que es único para no bloquear al usuario
+    }
+}
+
+/**
+ * Valida un campo de fecha
  * @param {HTMLElement} input - Elemento de input de fecha a validar
  * @param {Object} opciones - Opciones de validación
  * @param {boolean} opciones.requerido - Si el campo es requerido
@@ -141,6 +208,12 @@ export function validarFecha(input, opciones) {
         mensajeRequerido = 'La fecha es obligatoria.',
         mensajePasado = 'La fecha no puede ser en el pasado.'
     } = opciones;
+    
+    // Si el campo no es requerido y está vacío, pasar la validación
+    if (!requerido && valor === '') {
+        limpiarError(input);
+        return true;
+    }
     
     // Validar si es requerido
     if (requerido && valor === '') {
