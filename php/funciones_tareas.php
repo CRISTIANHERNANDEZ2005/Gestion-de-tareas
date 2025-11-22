@@ -56,10 +56,13 @@ function agregarTarea($titulo, $descripcion, $fecha_limite) {
     
     $stmt = $conexion_db->ejecutarConsulta($sql, $params);
     if ($stmt === false) {
+        error_log("Error en agregarTarea: Failed to execute query");
         return false;
     }
     
-    return $stmt->rowCount() > 0;
+    $rowCount = $stmt->rowCount();
+    error_log("agregarTarea: Inserted $rowCount rows");
+    return $rowCount > 0;
 }
 
 /**
@@ -164,10 +167,13 @@ function actualizarTarea($id, $titulo, $descripcion, $fecha_limite) {
     
     $stmt = $conexion_db->ejecutarConsulta($sql, $params);
     if ($stmt === false) {
+        error_log("Error en actualizarTarea: Failed to execute query");
         return false;
     }
     
-    return $stmt->rowCount() > 0;
+    $rowCount = $stmt->rowCount();
+    error_log("actualizarTarea: Updated $rowCount rows");
+    return $rowCount > 0;
 }
 
 /**
@@ -192,10 +198,13 @@ function eliminarTarea($id) {
     
     $stmt = $conexion_db->ejecutarConsulta($sql, $params);
     if ($stmt === false) {
+        error_log("Error en eliminarTarea: Failed to execute query");
         return false;
     }
     
-    return $stmt->rowCount() > 0;
+    $rowCount = $stmt->rowCount();
+    error_log("eliminarTarea: Deleted $rowCount rows");
+    return $rowCount > 0;
 }
 
 /**

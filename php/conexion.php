@@ -116,7 +116,8 @@ class Conexion {
                 $stmt->bindValue($key, $value['value'], $value['type']);
             }
             
-            $stmt->execute();
+            $result = $stmt->execute();
+            error_log("ejecutarConsulta: Executed query - " . $sql);
             $this->desconectar();
             return $stmt;
         } catch (PDOException $e) {
