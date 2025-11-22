@@ -9,7 +9,10 @@ try {
     
     // Format the date for each task to ensure consistency
     foreach ($tareas as &$tarea) {
-        $tarea['fecha_limite'] = date('Y-m-d', strtotime($tarea['fecha_limite']));
+        // Handle date formatting for both SQLite and PostgreSQL
+        if ($tarea['fecha_limite']) {
+            $tarea['fecha_limite'] = date('Y-m-d', strtotime($tarea['fecha_limite']));
+        }
     }
     
     echo json_encode($tareas);

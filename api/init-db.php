@@ -19,11 +19,14 @@ try {
     $stmt = ejecutarConsulta($conexion, $sql);
     $result = $stmt->fetch();
     
+    // Determine which database type we're using
+    $dbType = (isset($_ENV['VERCEL']) && $_ENV['VERCEL'] === '1') ? 'PostgreSQL' : 'SQLite';
+    
     echo json_encode([
         'success' => true,
         'message' => 'Base de datos inicializada correctamente',
         'taskCount' => $result['count'],
-        'dbPath' => $dbPath
+        'databaseType' => $dbType
     ]);
 } catch (Exception $e) {
     echo json_encode([

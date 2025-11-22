@@ -1,13 +1,14 @@
 # Gestor de Tareas Web
 
-Un gestor de tareas web desarrollado con HTML, CSS, JavaScript y PHP con base de datos SQLite.
+Un gestor de tareas web desarrollado con HTML, CSS, JavaScript y PHP con base de datos SQLite para desarrollo local y PostgreSQL para producción en Vercel.
 
 ## Características
 
 - Crear, leer, actualizar y eliminar tareas
 - Validación de formularios
 - Interfaz responsive
-- Base de datos SQLite
+- Base de datos SQLite para desarrollo local
+- Base de datos PostgreSQL para producción en Vercel
 
 ## Despliegue en Vercel
 
@@ -16,14 +17,25 @@ Este proyecto está configurado para ser desplegado fácilmente en Vercel:
 1. Conecta tu repositorio de GitHub con Vercel
 2. Selecciona este directorio como raíz del proyecto
 3. Vercel automáticamente detectará la configuración en `vercel.json`
-4. El proyecto se desplegará con soporte para PHP y SQLite
+4. Configura la variable de entorno `DATABASE_URL` con tu cadena de conexión de Neon.tech
 
 ### Configuración de la Base de Datos
 
-El proyecto utiliza SQLite y está configurado para funcionar tanto en entornos locales como en Vercel:
+El proyecto utiliza diferentes bases de datos según el entorno:
 
-- **Local**: La base de datos se almacena en `gestor_tareas.sqlite` en la raíz del proyecto
-- **Vercel**: La base de datos se almacena en `/tmp/gestor_tareas.sqlite` (directorio temporal)
+- **Local**: La base de datos SQLite se almacena en `gestor_tareas.sqlite` en la raíz del proyecto
+- **Vercel**: La base de datos PostgreSQL se configura mediante la variable de entorno `DATABASE_URL`
+
+### Configuración de Variables de Entorno en Vercel
+
+Para que la aplicación funcione correctamente en Vercel, debes configurar la variable de entorno `DATABASE_URL`:
+
+1. Ve a la configuración de tu proyecto en Vercel
+2. Navega a la sección "Environment Variables"
+3. Agrega una nueva variable:
+   - Name: `DATABASE_URL`
+   - Value: `postgresql://neondb_owner:npg_52KChukOwzpY@ep-winter-cake-a86i83s2-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&channel_binding=require`
+4. Guarda los cambios y vuelve a desplegar tu aplicación
 
 ## Estructura del Proyecto
 
@@ -61,4 +73,5 @@ Para ejecutar este proyecto localmente, necesitas un servidor web con PHP (como 
 - CSS3
 - JavaScript (ES6 Modules)
 - PHP 7+
-- SQLite
+- SQLite (desarrollo local)
+- PostgreSQL (producción en Vercel)
