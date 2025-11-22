@@ -4,6 +4,20 @@
 if (isset($_ENV['VERCEL']) && $_ENV['VERCEL'] === '1') {
     // En Vercel, usar el directorio temporal para la base de datos
     $dbPath = '/tmp/gestor_tareas.sqlite';
+    
+    // Asegurarse de que el directorio existe en Vercel
+    $dir = dirname($dbPath);
+    if (!is_dir($dir)) {
+        mkdir($dir, 0777, true);
+    }
+    
+    // Si el archivo de base de datos no existe, copiarlo desde el directorio del proyecto si existe
+    if (!file_exists($dbPath)) {
+        $sourceDb = __DIR__ . '/../gestor_tareas.sqlite';
+        if (file_exists($sourceDb)) {
+            copy($sourceDb, $dbPath);
+        }
+    }
 } else {
     // En entorno local, usar la ruta relativa
     $dbPath = __DIR__ . '/../gestor_tareas.sqlite';
