@@ -6,8 +6,8 @@
  * @package GestorTareas
  */
 
-require_once __DIR__ . '/conexion.php';
-require_once __DIR__ . '/utils/validator.php';
+require_once 'conexion.php'; // Usando conexión SQLite
+require_once 'utils/validator.php';
 
 /**
  * Agrega una nueva tarea a la base de datos
@@ -18,8 +18,6 @@ require_once __DIR__ . '/utils/validator.php';
  * @return bool True si la tarea se agregó correctamente, False en caso contrario
  */
 function agregarTarea($titulo, $descripcion, $fecha_limite) {
-    error_log("agregarTarea: Starting task creation with title: " . $titulo);
-    
     // Validación básica de seguridad
     $requiredValidation = validateRequiredFields([
         'titulo' => $titulo,
@@ -56,16 +54,12 @@ function agregarTarea($titulo, $descripcion, $fecha_limite) {
         ':fecha_limite' => ['value' => $fecha_limite, 'type' => PDO::PARAM_STR]
     ];
     
-    error_log("agregarTarea: Executing query: " . $sql);
     $stmt = $conexion_db->ejecutarConsulta($sql, $params);
     if ($stmt === false) {
-        error_log("Error en agregarTarea: Failed to execute query");
         return false;
     }
     
-    $rowCount = $stmt->rowCount();
-    error_log("agregarTarea: Inserted $rowCount rows");
-    return $rowCount > 0;
+    return $stmt->rowCount() > 0;
 }
 
 /**
@@ -123,8 +117,6 @@ function obtenerTareaPorId($id) {
  * @return bool True si la tarea se actualizó correctamente, False en caso contrario
  */
 function actualizarTarea($id, $titulo, $descripcion, $fecha_limite) {
-    error_log("actualizarTarea: Starting task update for ID: " . $id . " with title: " . $titulo);
-    
     // Validar que los parámetros requeridos no estén vacíos
     $requiredValidation = validateRequiredFields([
         'id' => $id,
@@ -170,16 +162,12 @@ function actualizarTarea($id, $titulo, $descripcion, $fecha_limite) {
         ':fecha_limite' => ['value' => $fecha_limite, 'type' => PDO::PARAM_STR]
     ];
     
-    error_log("actualizarTarea: Executing query: " . $sql);
     $stmt = $conexion_db->ejecutarConsulta($sql, $params);
     if ($stmt === false) {
-        error_log("Error en actualizarTarea: Failed to execute query");
         return false;
     }
     
-    $rowCount = $stmt->rowCount();
-    error_log("actualizarTarea: Updated $rowCount rows");
-    return $rowCount > 0;
+    return $stmt->rowCount() > 0;
 }
 
 /**
@@ -189,8 +177,6 @@ function actualizarTarea($id, $titulo, $descripcion, $fecha_limite) {
  * @return bool True si la tarea se eliminó correctamente, False en caso contrario
  */
 function eliminarTarea($id) {
-    error_log("eliminarTarea: Starting task deletion for ID: " . $id);
-    
     // Validar que el ID sea un número entero válido
     $idValidation = validateInteger($id, 'ID de tarea');
     if (!$idValidation['valid']) {
@@ -204,16 +190,12 @@ function eliminarTarea($id) {
         ':id' => ['value' => $id, 'type' => PDO::PARAM_INT]
     ];
     
-    error_log("eliminarTarea: Executing query: " . $sql);
     $stmt = $conexion_db->ejecutarConsulta($sql, $params);
     if ($stmt === false) {
-        error_log("Error en eliminarTarea: Failed to execute query");
         return false;
     }
     
-    $rowCount = $stmt->rowCount();
-    error_log("eliminarTarea: Deleted $rowCount rows");
-    return $rowCount > 0;
+    return $stmt->rowCount() > 0;
 }
 
 /**
@@ -261,4 +243,5 @@ function existeTituloTareaExcluyendoId($titulo, $id_excluido) {
     $count = $stmt->fetchColumn();
     return $count > 0;
 }
+
 ?>

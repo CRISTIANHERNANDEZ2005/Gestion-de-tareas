@@ -1,0 +1,39 @@
+CAMBIOS REALIZADOS PARA MIGRAR DE MYSQL A SQLITE
+==============================================
+
+1. ARCHIVOS MODIFICADOS:
+----------------------
+- php/conexion.php: Reemplazado el código de conexión MySQL con conexión SQLite
+- php/funciones_tareas.php: Actualizado para usar la nueva clase de conexión SQLite
+- sql/database.sql: Actualizado el esquema para SQLite (sin sentencias CREATE DATABASE/USE)
+- .env: Creado archivo de configuración para la ruta de la base de datos SQLite
+
+2. CAMBIOS EN LA CONEXIÓN:
+--------------------------
+- Cambiada la cadena de conexión de "mysql:host=..." a "sqlite:/ruta/al/archivo.db"
+- Eliminada la configuración de codificación de caracteres (no necesaria en SQLite)
+- Añadida la creación automática de tablas si no existen
+- Modificada la forma de vincular parámetros para mejor compatibilidad con SQLite
+
+3. CAMBIOS EN EL ESQUEMA:
+-------------------------
+- Cambiado el tipo de dato INT a INTEGER para claves primarias
+- Cambiado AUTO_INCREMENT a AUTOINCREMENT
+- Cambiado VARCHAR a TEXT
+- Cambiado TIMESTAMP a DATETIME
+- Eliminadas las sentencias CREATE DATABASE y USE DATABASE
+
+4. VENTAJAS DE LA MIGRACIÓN A SQLITE:
+------------------------------------
+- No requiere servidor de base de datos independiente
+- Archivo de base de datos portable
+- Menos configuración requerida
+- Perfecto para aplicaciones pequeñas y medianas
+- Mejor rendimiento para este tipo de aplicación
+
+5. CONFIGURACIÓN:
+-----------------
+El archivo .env contiene:
+SQLITE_DB_PATH=./db/gestor_tareas.db
+
+La base de datos se creará automáticamente en la primera ejecución.

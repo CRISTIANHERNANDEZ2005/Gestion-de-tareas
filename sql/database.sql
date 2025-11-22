@@ -1,14 +1,10 @@
--- Creación de la base de datos y tabla para el gestor de tareas
-CREATE DATABASE gestor_tareas_db;
-
--- Uso de la base de datos gestor_tareas_db
-USE gestor_tareas_db;
+-- Esquema de base de datos SQLite para el gestor de tareas
 
 -- Creación de la tabla tareas
-CREATE TABLE tareas (
- id INT AUTO_INCREMENT PRIMARY KEY,
- titulo VARCHAR(100) UNIQUE NOT NULL,
- descripcion TEXT,
- fecha_limite DATE,
- creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS tareas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    titulo TEXT UNIQUE NOT NULL,
+    descripcion TEXT,
+    fecha_limite DATE,
+    creado_en DATETIME DEFAULT CURRENT_TIMESTAMP
 );

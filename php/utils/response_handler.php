@@ -10,10 +10,10 @@
  * Redirigir con un mensaje
  * 
  * @param string $message Mensaje a mostrar
- * @param string $redirectUrl URL de redirección (por defecto /api/index.php)
+ * @param string $redirectUrl URL de redirección (por defecto index.php)
  * @return void
  */
-function redirectWithMessage($message, $redirectUrl = '/api/index.php') {
+function redirectWithMessage($message, $redirectUrl = 'index.php') {
     header("Location: $redirectUrl?mensaje=" . urlencode($message));
     exit();
 }

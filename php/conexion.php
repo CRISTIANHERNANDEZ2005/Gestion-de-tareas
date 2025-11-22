@@ -7,11 +7,11 @@
  */
 
 // Cargar variables de entorno
-require_once __DIR__ . '/utils/dotenv.php';
+require_once 'utils/dotenv.php';
 loadEnv(__DIR__ . '/../.env');
 
 /**
- * Clase para manejar la conexión a la base de datos SQLite
+ * Clase para manejar la conexión a la base de datos
  */
 class Conexion {
     /** @var string Ruta al archivo de base de datos SQLite */
@@ -19,16 +19,14 @@ class Conexion {
     
     /**
      * Constructor para inicializar la ruta de la base de datos
-     * Usa /tmp para compatibilidad con Vercel
      */
     public function __construct() {
-        // Para Vercel, usar el directorio /tmp que es escribible
-        $tmpDir = '/tmp';
-        if (defined('VERCEL') && VERCEL) {
-            $this->db_path = $tmpDir . '/gestor_tareas.sqlite';
-        } else {
-            // Para entornos locales
-            $this->db_path = __DIR__ . '/../gestor_tareas.sqlite';
+        $this->db_path = $_ENV['SQLITE_DB_PATH'] ?? __DIR__ . '/../db/gestor_tareas.db';
+        
+        // Crear directorio de base de datos si no existe
+        $db_dir = dirname($this->db_path);
+        if (!is_dir($db_dir)) {
+            mkdir($db_dir, 0755, true);
         }
     }
 
@@ -36,43 +34,23 @@ class Conexion {
     public $conexion;
 
     /**
-     * Método para conectar a la base de datos SQLite
+     * Método para conectar a la base de datos
      * 
      * @return bool True si la conexión fue exitosa, False en caso contrario
      */
     public function conectar() {
         try {
-            // Crear directorio para la base de datos si no existe
-            $dbDir = dirname($this->db_path);
-            error_log("Conexion: Database directory path: " . $dbDir);
-            
-            if (!is_dir($dbDir)) {
-                error_log("Conexion: Creating database directory");
-                if (!mkdir($dbDir, 0755, true)) {
-                    error_log("Conexion: Failed to create database directory");
-                    return false;
-                }
-            }
-            
-            // Verificar permisos del directorio
-            if (!is_writable($dbDir)) {
-                error_log("Conexion: Database directory is not writable");
-                return false;
-            }
-            
-            error_log("Conexion: Database path: " . $this->db_path);
-            
             // Crear una nueva instancia de PDO para SQLite
             $this->conexion = new PDO("sqlite:" . $this->db_path);
             
             // Establecer el modo de error de PDO a excepción
             $this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
-            // Establecer el modo de recuperación a asociativo por defecto
+            // Establecer opciones para SQLite
             $this->conexion->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             
-            // Crear la tabla si no existe
-            $this->crearTablaSiNoExiste();
+            // Crear tablas si no existen
+            $this->crearTablasSiNoExisten();
             
         } catch (PDOException $e) {
             // Registrar el error en un log
@@ -84,26 +62,22 @@ class Conexion {
     }
     
     /**
-     * Método para crear la tabla tareas si no existe
+     * Crear las tablas necesarias si no existen
      * 
      * @return void
      */
-    private function crearTablaSiNoExiste() {
-        try {
-            $sql = "CREATE TABLE IF NOT EXISTS tareas (
+    private function crearTablasSiNoExisten() {
+        $sql = "
+            CREATE TABLE IF NOT EXISTS tareas (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 titulo TEXT UNIQUE NOT NULL,
                 descripcion TEXT,
                 fecha_limite DATE,
-                creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )";
-            
-            error_log("Conexion: Creating table if not exists");
-            $result = $this->conexion->exec($sql);
-            error_log("Conexion: Table creation result: " . ($result !== false ? "SUCCESS" : "FAILED"));
-        } catch (PDOException $e) {
-            error_log("Error creating table: " . $e->getMessage());
-        }
+                creado_en DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ";
+        
+        $this->conexion->exec($sql);
     }
 
     /**
@@ -133,11 +107,12 @@ class Conexion {
             
             // Vincular parámetros si se proporcionan
             foreach ($params as $key => $value) {
-                $stmt->bindValue($key, $value['value'], $value['type']);
+                // Para SQLite, necesitamos ajustar algunos tipos
+                $type = $value['type'] ?? PDO::PARAM_STR;
+                $stmt->bindValue($key, $value['value'], $type);
             }
             
-            $result = $stmt->execute();
-            error_log("ejecutarConsulta: Executed query - " . $sql);
+            $stmt->execute();
             $this->desconectar();
             return $stmt;
         } catch (PDOException $e) {
@@ -146,7 +121,7 @@ class Conexion {
             return false;
         }
     }
-
+    
     /**
      * Verificar si la base de datos está disponible
      * 
