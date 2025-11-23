@@ -74,6 +74,14 @@ export function eliminarTarea() {
             if (data.exito) {
                 // En lugar de recargar la página, actualizar la lista de tareas
                 window.dispatchEvent(new CustomEvent('taskDeleted'));
+                
+                // Verificar si estamos editando la tarea que se está eliminando
+                const inputIdTarea = document.getElementById('tarea-id');
+                if (inputIdTarea && inputIdTarea.value == getIdTareaAEliminar()) {
+                    // Si estamos editando la tarea eliminada, cancelar la edición
+                    window.dispatchEvent(new CustomEvent('cancelEdit'));
+                }
+                
                 // Mostrar mensaje de éxito
                 mostrarMensajeFlotante('Tarea eliminada correctamente.', 'exito');
             } else {

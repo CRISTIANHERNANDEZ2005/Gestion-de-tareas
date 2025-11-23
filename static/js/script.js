@@ -82,6 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('taskUpdated', () => {
         cargarYMostrarTareas();
     });
+    
+    window.addEventListener('cancelEdit', () => {
+        cancelarEdicion();
+    });
 
     // --- Funciones Principales ---
     /**
@@ -295,6 +299,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 botonCancelarEdicion.style.display = 'flex';
 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                // Si la tarea no existe, mostrar mensaje de error y cancelar edición
+                mostrarMensajeFlotante('La tarea seleccionada ya no existe.', 'error');
+                cancelarEdicion();
             }
         } catch (error) {
             console.error('Error al cargar la tarea para edición:', error);
@@ -328,6 +336,27 @@ document.addEventListener('DOMContentLoaded', () => {
         ocultarMensajesErrorCampos();
         
         let esValido = true;
+        
+        // Verificar si estamos en modo edición y el ID de tarea existe
+        const tareaId = inputIdTarea.value;
+        if (accionInput.value === 'editar' && tareaId) {
+            // Verificar que la tarea aún exista
+            try {
+                const respuesta = await fetch('/api/tareas');
+                const tareas = await respuesta.json();
+                const tareaExiste = tareas.some(t => t.id == tareaId);
+                
+                if (!tareaExiste) {
+                    mostrarMensajeFlotante('La tarea ya no existe. Por favor, actualice la lista de tareas.', 'error');
+                    cancelarEdicion();
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error al verificar existencia de la tarea:', error);
+                mostrarMensajeFlotante('Error al verificar la tarea: ' + error.message, 'error');
+                return false;
+            }
+        }
 
         // Validar Título (entre 5 y 100 caracteres)
         if (!validarCampoTexto(tituloInput, {
@@ -341,7 +370,6 @@ document.addEventListener('DOMContentLoaded', () => {
             esValido = false;
         } else {
             // Verificar si el título ya existe (solo para tareas nuevas o cuando el título ha cambiado)
-            const tareaId = inputIdTarea.value;
             const titulo = tituloInput.value.trim();
             
             // Solo verificar unicidad si el campo es válido
