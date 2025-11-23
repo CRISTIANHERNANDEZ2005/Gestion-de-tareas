@@ -13,11 +13,10 @@ import {
 } from './modules/messageHandler.js';
 
 import { 
-    mostrarModalEliminacion, 
     ocultarModalEliminacion, 
     eliminarTarea,
-    getIdTareaAEliminar,
-    setIdTareaAEliminar
+    setIdTareaAEliminar,
+    actualizarTarea
 } from './modules/taskManager.js';
 
 /**
@@ -80,6 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
         cargarYMostrarTareas();
     });
 
+    window.addEventListener('taskUpdated', () => {
+        cargarYMostrarTareas();
+    });
+
     // --- Funciones Principales ---
     /**
      * Maneja el envío del formulario para agregar o actualizar una tarea.
@@ -95,14 +98,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(formulario);
         const tareaId = formData.get('tarea_id');
         const accion = formData.get('accion');
-        const url = accion === 'editar' ? 'php/actualizar_tarea.php' : 'php/agregar_tarea.php';
 
         try {
-            const respuesta = await fetch(url, {
-                method: 'POST',
-                body: formData
-            });
-            const resultado = await respuesta.json();
+            let resultado;
+            if (accion === 'editar' && tareaId) {
+                // Update existing task
+                resultado = await actualizarTarea(parseInt(tareaId), formData);
+            } else {
+                // Create new task
+                const response = await fetch('/api/tareas', {
+                    method: 'POST',
+                    body: formData
+                });
+                resultado = await response.json();
+            }
 
             if (resultado.exito) {
                 mostrarMensajeFlotante(tareaId ? '¡Tarea actualizada exitosamente!' : '¡Tarea agregada exitosamente!', 'exito');
@@ -123,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     async function cargarYMostrarTareas() {
         try {
-            const respuesta = await fetch('php/obtener_tareas.php');
+            const respuesta = await fetch('/api/tareas');
             const tareas = await respuesta.json();
             
             listaTareasContenedor.innerHTML = ''; // Limpiar lista actual
@@ -150,16 +159,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 listaTareasContenedor.appendChild(mensajeContenedor);
                 
-                // Add event listener to the button
+                // Agregar event listener al botón
                 const btnAgregarPrimeraTarea = document.getElementById('btn-agregar-primera-tarea');
                 if (btnAgregarPrimeraTarea) {
                     btnAgregarPrimeraTarea.addEventListener('click', () => {
-                        // Scroll to the form
+                        
                         document.querySelector('.formulario-seccion').scrollIntoView({ 
                             behavior: 'smooth' 
                         });
                         
-                        // Focus on the title field
                         document.getElementById('titulo').focus();
                     });
                 }
@@ -167,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Create table structure
+            // crear tabla
             const tablaContenedor = document.createElement('div');
             tablaContenedor.className = 'tabla-contenedor';
             
@@ -230,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (boton.classList.contains('btn-editar')) {
             prepararEdicion(taskId);
         } else if (boton.classList.contains('btn-eliminar')) {
-            // Set the task ID for deletion and show the modal
+            // Mostrar el modal de eliminación
             setIdTareaAEliminar(taskId);
             const modal = document.getElementById('modal-eliminacion');
             if (modal) {
@@ -245,14 +253,37 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     async function prepararEdicion(tareaId) {
         try {
-            const respuesta = await fetch('php/obtener_tareas.php');
+            const respuesta = await fetch('/api/tareas');
             const tareas = await respuesta.json();
             const tarea = tareas.find(t => t.id == tareaId);
             
             if (tarea) {
                 document.getElementById('titulo').value = tarea.titulo;
                 document.getElementById('descripcion').value = tarea.descripcion || '';
-                document.getElementById('fecha_limite').value = tarea.fecha_limite;
+                
+                // Handle date format for editing
+                let fechaValue = tarea.fecha_limite;
+                if (fechaValue) {
+                    // If it's in GMT format like "Fri, 28 Nov 2025 00:00:00 GMT"
+                    if (fechaValue.includes('GMT')) {
+                        const date = new Date(fechaValue);
+                        // Format as YYYY-MM-DD for input type="date"
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        fechaValue = `${year}-${month}-${day}`;
+                    } 
+                    // If it's already in DD/MM/YYYY format, convert to YYYY-MM-DD
+                    else if (fechaValue.includes('/') && fechaValue.split('/').length === 3) {
+                        const parts = fechaValue.split('/');
+                        const day = parts[0];
+                        const month = parts[1];
+                        const year = parts[2];
+                        fechaValue = `${year}-${month}-${day}`;
+                    }
+                }
+                
+                document.getElementById('fecha_limite').value = fechaValue;
                 inputIdTarea.value = tarea.id;
                 accionInput.value = 'editar';
 
@@ -314,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (titulo.length >= 5 && titulo.length <= 100) {
                 const esUnico = await verificarTituloUnico(titulo, tareaId || null);
                 if (!esUnico) {
-                    mostrarError(tituloInput, 'Ya existe una tarea con ese título. Por favor, elige un título diferente.');
+                    mostrarError(tituloInput, 'Título duplicado. Elige otro.');
                     esValido = false;
                 } else {
                     limpiarError(tituloInput);
@@ -350,10 +381,43 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {string} - Formatted date string
      */
     function formatDate(dateString) {
-        const date = new Date(dateString);
+        // Handle different date formats
+        if (!dateString) return '';
+        
+        let date;
+        
+        // If it's already in DD/MM/YYYY format, return as is
+        if (dateString.includes('/') && dateString.split('/').length === 3) {
+            return dateString;
+        }
+        
+        // If it's in GMT format like "Fri, 28 Nov 2025 00:00:00 GMT"
+        if (dateString.includes('GMT')) {
+            date = new Date(dateString);
+        } 
+        // If it's in ISO format like "2025-11-28"
+        else if (dateString.includes('-') && dateString.split('-').length === 3) {
+            const parts = dateString.split('-');
+            const year = parts[0];
+            const month = parts[1];
+            const day = parts[2];
+            return `${day}/${month}/${year}`;
+        }
+        // If it's already a Date object or can be parsed as one
+        else {
+            date = new Date(dateString);
+        }
+        
+        // Check if date is valid
+        if (isNaN(date.getTime())) {
+            return dateString; // Return original if we can't parse it
+        }
+        
+        // Format as DD/MM/YYYY
         const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
         const year = date.getFullYear();
+        
         return `${day}/${month}/${year}`;
     }
 

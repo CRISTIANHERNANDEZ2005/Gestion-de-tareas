@@ -5,7 +5,6 @@
  * @package GestorTareas
  */
 
-import { removeElementSafely } from './utils.js';
 import { mostrarMensajeFlotante } from './messageHandler.js';
 
 /**
@@ -16,15 +15,34 @@ import { mostrarMensajeFlotante } from './messageHandler.js';
 let idTareaAEliminar = null;
 
 /**
- * Muestra el modal de confirmación de eliminación
- * @param {number} id - ID de la tarea a eliminar
- * @returns {void}
+ * Actualiza una tarea mediante una llamada AJAX
+ * @param {number} taskId - El ID de la tarea a actualizar
+ * @param {FormData} formData - Los datos de la tarea a actualizar
+ * @returns {Promise<Object>} La respuesta del servidor
  */
-export function mostrarModalEliminacion(id) {
-    idTareaAEliminar = id;
-    const modal = document.getElementById('modal-eliminacion');
-    if (modal) {
-        modal.classList.add('mostrar');
+export async function actualizarTarea(taskId, formData) {
+    try {
+        const response = await fetch(`/api/tareas/${taskId}`, {
+            method: 'PUT',
+            body: formData
+        });
+        const data = await response.json();
+        
+        if (data.exito) {
+            // Dispatch event to refresh task list
+            window.dispatchEvent(new CustomEvent('taskUpdated'));
+            // Show success message
+            mostrarMensajeFlotante('Tarea actualizada correctamente.', 'exito');
+        } else {
+            // Show error message
+            mostrarMensajeFlotante('Error al actualizar la tarea: ' + data.mensaje, 'error');
+        }
+        
+        return data;
+    } catch (error) {
+        console.error('Error al actualizar la tarea:', error);
+        mostrarMensajeFlotante('Error al actualizar la tarea: ' + error.message, 'error');
+        throw error;
     }
 }
 
@@ -47,20 +65,14 @@ export function ocultarModalEliminacion() {
  */
 export function eliminarTarea() {
     if (getIdTareaAEliminar() !== null) {
-        // Crear FormData para enviar la solicitud de eliminación
-        const formData = new FormData();
-        formData.append('id', getIdTareaAEliminar());
-        
         // Enviar solicitud de eliminación mediante fetch
-        fetch('php/eliminar_tarea.php', {
-            method: 'POST',
-            body: formData
+        fetch('/api/tareas/' + getIdTareaAEliminar(), {
+            method: 'POST'
         })
         .then(response => response.json())
         .then(data => {
             if (data.exito) {
                 // En lugar de recargar la página, actualizar la lista de tareas
-                // Dispatch a custom event to refresh the task list
                 window.dispatchEvent(new CustomEvent('taskDeleted'));
                 // Mostrar mensaje de éxito
                 mostrarMensajeFlotante('Tarea eliminada correctamente.', 'exito');

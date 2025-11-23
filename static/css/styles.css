@@ -53,10 +53,6 @@ body {
 }
 
 /* --- Contenedor Principal --- */
-/**
- * Contenedor base para toda la aplicación
- * Centrado con ancho máximo para diseño responsive
- */
 .contenedor-principal {
     max-width: 1400px;
     margin: 2rem auto;
@@ -72,10 +68,6 @@ body {
 }
 
 /* --- Header y Footer --- */
-/**
- * Estilos para el encabezado de la aplicación
- * Incluye el título principal
- */
 header {
     text-align: center;
     margin-bottom: 2rem;
@@ -98,7 +90,6 @@ header h1:hover {
     color: var(--color-primario-oscuro);
 }
 
-/* Estilos para el icono de tareas */
 .header-content {
     display: flex;
     align-items: center;
@@ -112,10 +103,6 @@ header h1:hover {
 }
 
 /* --- Secciones del Formulario y Lista --- */
-/**
- * Secciones principales de la aplicación
- * Incluye formulario y lista de tareas con diseño flexible
- */
 main {
     display: flex;
     flex-direction: column;
@@ -135,10 +122,6 @@ main {
     box-shadow: var(--sombra-caja-hover);
 }
 
-/**
- * Estilos para los encabezados de sección
- * Incluye subrayado y color de énfasis
- */
 section h2 {
     margin-bottom: 1rem;
     color: var(--color-primario-oscuro);
@@ -154,10 +137,6 @@ section h2:hover {
 }
 
 /* --- Formulario --- */
-/**
- * Estilos base para el formulario de tareas
- * Incluye diseño de grupos de campos y botones
- */
 .form-group {
     margin-bottom: 1.5rem;
     position: relative;
@@ -194,7 +173,6 @@ section h2:hover {
     cursor: not-allowed;
 }
 
-/* Estilos para mensajes de error */
 .form-group small {
     display: block;
     color: var(--color-error);
@@ -213,7 +191,6 @@ section h2:hover {
     border-color: initial;
 }
 
-/* Contenedor de botones del formulario */
 .form-botones {
     display: flex;
     gap: 1rem;
@@ -223,10 +200,6 @@ section h2:hover {
 }
 
 /* --- Botones --- */
-/**
- * Estilos base para todos los botones
- * Incluye transiciones y efectos hover
- */
 button, .btn {
     padding: 0.75rem 1.5rem;
     border: none;
@@ -256,10 +229,6 @@ button:active, .btn:active {
     transform: translateY(-1px);
 }
 
-/**
- * Botón primario para acciones principales
- * Como guardar o actualizar tareas
- */
 .btn-primary {
     background-color: var(--color-primario);
     color: var(--color-blanco);
@@ -270,10 +239,6 @@ button:active, .btn:active {
     box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4);
 }
 
-/**
- * Botón secundario para acciones auxiliares
- * Como cancelar o acciones secundarias
- */
 .btn-secondary {
     background-color: var(--color-secundario);
     color: var(--color-blanco);
@@ -284,10 +249,6 @@ button:active, .btn:active {
     box-shadow: 0 6px 12px rgba(108, 117, 125, 0.4);
 }
 
-/**
- * Botón para editar tareas
- * Usa color amarillo para indicar acción de edición
- */
 .btn-editar {
     background-color: var(--color-advertencia);
     color: #212529;
@@ -310,10 +271,6 @@ button:active, .btn:active {
     transform: translateY(-2px);
 }
 
-/**
- * Botón para eliminar tareas
- * Usa color rojo para indicar acción destructiva
- */
 .btn-eliminar {
     background-color: var(--color-error);
     color: var(--color-blanco);
@@ -338,7 +295,6 @@ button:active, .btn:active {
     transform: translateY(-2px);
 }
 
-/* Estilos para los iconos SVG */
 .btn-editar svg,
 .btn-eliminar svg,
 .btn-primary svg,
@@ -356,10 +312,6 @@ button:active, .btn:active {
 }
 
 /* --- Mensajes --- */
-/**
- * Estilos base para mensajes de notificación
- * Incluye diseño flexible para contenido y botón de cierre
- */
 .mensaje {
     padding: 1rem;
     border-radius: var(--borde-redondeado-pequeno);
@@ -384,30 +336,18 @@ button:active, .btn:active {
     opacity: 0;
 }
 
-/**
- * Mensaje de éxito
- * Usa colores verdes para indicar operaciones exitosas
- */
 .mensaje.exito {
     background-color: var(--color-exito-claro);
     color: var(--color-exito-oscuro);
     border: 1px solid var(--color-exito);
 }
 
-/**
- * Mensaje de error
- * Usa colores rojos para indicar errores o problemas
- */
 .mensaje.error {
     background-color: var(--color-error-claro);
     color: var(--color-error-oscuro);
     border: 1px solid var(--color-error);
 }
 
-/**
- * Botón para cerrar mensajes
- * Diseño minimalista que se integra con el mensaje
- */
 .cerrar-mensaje {
     background: none;
     border: none;
@@ -499,10 +439,6 @@ button:active, .btn:active {
 }
 
 /* --- Tabla de Tareas --- */
-/**
- * Contenedor para la tabla de tareas
- * Permite desplazamiento horizontal en pantallas pequeñas
- */
 .tabla-contenedor {
     overflow-x: auto;
     border-radius: var(--borde-redondeado);
@@ -518,10 +454,6 @@ button:active, .btn:active {
     box-shadow: var(--sombra-caja-hover);
 }
 
-/**
- * Estilos base para la tabla de tareas
- * Incluye diseño limpio con bordes y espaciado
- */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -532,10 +464,6 @@ table {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/**
- * Estilos para el encabezado de la tabla
- * Usa colores del tema principal
- */
 thead {
     background-color: var(--color-primario);
     color: var(--color-blanco);
@@ -584,10 +512,6 @@ td small {
     line-height: 1.4;
 }
 
-/**
- * Contenedor para botones de acción en la tabla
- * Organiza botones de editar y eliminar
- */
 .acciones {
     display: flex;
     gap: 0.75rem;
@@ -599,7 +523,6 @@ td small {
     margin: 0;
 }
 
-/* Estilos para celdas específicas */
 .titulo-tarea {
     font-weight: 600;
     color: var(--color-texto);
@@ -722,7 +645,6 @@ button:focus, .btn:focus, input:focus, textarea:focus, a:focus {
     gap: 0.5rem;
 }
 
-/* Botones en el modal */
 .modal-pie .btn {
     display: inline-flex;
     align-items: center;
@@ -769,7 +691,6 @@ button:focus, .btn:focus, input:focus, textarea:focus, a:focus {
     transform: translateY(-2px);
 }
 
-/* Estilos para los iconos SVG en el modal */
 .modal-pie .btn svg {
     width: 16px;
     height: 16px;
@@ -780,10 +701,28 @@ button:focus, .btn:focus, input:focus, textarea:focus, a:focus {
     transform: scale(1.1);
 }
 
-/* --- Media Queries para Responsividad (Desktop First to Mobile First) --- */
-/* Estilos base para móviles ya están definidos arriba */
+/* --- Media Queries para Responsividad --- */
+@media (max-width: 767px) {
+    .form-group small {
+        font-size: 0.8rem;
+        line-height: 1.4;
+        margin-top: 0.25rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .formulario-seccion {
+        padding: 1rem;
+    }
+    
+    section h2 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+}
 
-/* Tablets */
 @media (min-width: 768px) {
     main {
         flex-direction: row;
@@ -802,7 +741,6 @@ button:focus, .btn:focus, input:focus, textarea:focus, a:focus {
     }
 }
 
-/* Desktop */
 @media (min-width: 1024px) {
     .contenedor-principal {
         margin: 3rem auto;
@@ -818,7 +756,6 @@ button:focus, .btn:focus, input:focus, textarea:focus, a:focus {
     }
 }
 
-/* Large Desktop */
 @media (min-width: 1200px) {
     .contenedor-principal {
         max-width: 1600px;

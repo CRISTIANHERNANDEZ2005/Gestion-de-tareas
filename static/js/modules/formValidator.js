@@ -174,7 +174,7 @@ export async function verificarTituloUnico(titulo, tareaId = null) {
             formData.append('tarea_id', tareaId);
         }
         
-        const response = await fetch('php/verificar_titulo.php', {
+        const response = await fetch('/api/verificar-titulo', {
             method: 'POST',
             body: formData
         });
