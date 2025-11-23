@@ -89,15 +89,23 @@ export function ocultarMensajesErrorCampos() {
     // Ocultar todos los mensajes de error visibles con una animación profesional
     const errorMessages = document.querySelectorAll('.form-group small');
     errorMessages.forEach(function(small) {
-        small.style.transition = 'all 0.3s ease-in-out';
-        small.style.opacity = '0';
-        small.style.transform = 'translateY(-10px)';
-        setTimeout(() => {
-            // Verificar que el elemento aún exista antes de eliminarlo
+        // Solo animar si el mensaje es visible
+        if (small.style.opacity !== '0') {
+            small.style.transition = 'all 0.3s ease-in-out';
+            small.style.opacity = '0';
+            small.style.transform = 'translateY(-10px)';
+            setTimeout(() => {
+                // Verificar que el elemento aún exista antes de eliminarlo
+                if (small.parentNode) {
+                    small.remove();
+                }
+            }, 300);
+        } else {
+            // Si ya está oculto, simplemente eliminarlo
             if (small.parentNode) {
                 small.remove();
             }
-        }, 300);
+        }
     });
     
     // Restaurar bordes normales a todos los inputs con transición suave
@@ -105,6 +113,11 @@ export function ocultarMensajesErrorCampos() {
     inputs.forEach(function(input) {
         input.style.transition = 'border-color 0.3s ease-in-out';
         input.style.borderColor = '#ccc';
+        
+        // Eliminar referencia al mensaje de error
+        if (input.errorElement) {
+            delete input.errorElement;
+        }
     });
 }
 

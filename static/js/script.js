@@ -252,6 +252,9 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {string} tareaId - El ID de la tarea a editar.
      */
     async function prepararEdicion(tareaId) {
+        // Limpiar errores antes de cargar nuevos datos
+        ocultarMensajesErrorCampos();
+        
         try {
             const respuesta = await fetch('/api/tareas');
             const tareas = await respuesta.json();
