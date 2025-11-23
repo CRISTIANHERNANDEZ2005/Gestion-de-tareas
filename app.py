@@ -40,6 +40,17 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/documentation')
+def documentation():
+    """
+    Render the documentation page.
+    
+    Returns:
+        str: Rendered HTML template
+    """
+    return render_template('documentation.html')
+
+
 @app.route('/api/tareas', methods=['GET'])
 def obtener_tareas():
     """
