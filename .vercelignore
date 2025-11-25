@@ -1,19 +1,6 @@
-.git/
-.gitignore
-.env
-.env.example
-README.md
-*.log
-__pycache__/
+# .vercelignore
+
 *.pyc
-.pytest_cache/
-.coverage
-htmlcov/
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
-*.sqlite
-*.db
-documentacion/
-DEPLOYMENT.md
+__pycache__/
+logs/
+.env

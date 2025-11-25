@@ -1,5 +1,8 @@
-flask-cors==4.0.0
-email_validator==2.0.0
+flask-cors
+flask-sqlalchemy
+werkzeug
+email_validator
+
 alembic==1.16.4 # Herramienta para migraciones de bases de datos con SQLAlchemy. Usado por Flask-Migrate.
 bcrypt==4.3.0 # Librería para hashear contraseñas de forma segura. Usado por Flask-Bcrypt.
 blinker==1.9.0 # Sistema de señales (signals) para Flask. Permite comunicación desacoplada entre componentes.
