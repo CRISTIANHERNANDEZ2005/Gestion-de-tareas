@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "gestor-tareas-web"
+version = "1.0.0"
+description = "Gestor de Tareas Web - Task Manager Application"
+authors = ["Your Name <your.email@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+flask = "*"
+psycopg2-binary = "*"
+python-dotenv = "*"
+flask-jwt-extended = "*"
+flask-cors = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+werkzeug = "*"
+email_validator = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

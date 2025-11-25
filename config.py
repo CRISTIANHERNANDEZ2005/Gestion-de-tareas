@@ -29,7 +29,14 @@ class Config:
     # URL de conexión a la base de datos
     # En Vercel, usar la variable de entorno DATABASE_URL
     # En local, usar sqlite por defecto si no hay DATABASE_URL
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'gestor_tareas.sqlite')
+    database_url = os.environ.get('DATABASE_URL')
+    if database_url:
+        # Para Vercel PostgreSQL, asegurarse de que el esquema sea correcto
+        if database_url.startswith('postgres://'):
+            database_url = database_url.replace('postgres://', 'postgresql://', 1)
+        SQLALCHEMY_DATABASE_URI = database_url
+    else:
+        SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'gestor_tareas.sqlite')
     
     # Desactivar el seguimiento de modificaciones de SQLAlchemy para mejorar el rendimiento
     SQLALCHEMY_TRACK_MODIFICATIONS = False
