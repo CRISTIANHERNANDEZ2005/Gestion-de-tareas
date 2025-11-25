@@ -1,55 +1,19 @@
-# Python cache files
+.git/
+.gitignore
+.env
+.env.example
+README.md
+*.log
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
-.Python
-*.so
+.pytest_cache/
 .coverage
-.coveragerc
-.tox/
-.coverage.*
-.cache/
-
-# Virtual environments
-venv/
-.env/
-.venv/
-env/
-ENV/
-
-# IDE files
+htmlcov/
+.DS_Store
+Thumbs.db
 .vscode/
 .idea/
-*.swp
-*.swo
-.DS_Store
-
-# Git files
-.git/
-
-# Logs
-*.log
-
-# Testing
-.pytest_cache/
-pytest.ini
-tests/
-
-# Documentation
-documentacion/
-
-# Database files (except migrations)
-*.db
 *.sqlite
-*.sqlite3
-
-# Migration backup files
-migrations/versions/*.py.*
-
-# Temporary files
-tmp/
-temp/
-
-# OS generated files
-Thumbs.db
+*.db
+documentacion/
+DEPLOYMENT.md

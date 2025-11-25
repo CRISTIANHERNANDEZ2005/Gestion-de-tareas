@@ -4,10 +4,14 @@ This file initializes the Flask application for use with Vercel.
 """
 
 import os
+import sys
 import traceback
 from app import crear_app
 
 try:
+    # Add the current directory to Python path
+    sys.path.insert(0, os.path.dirname(__file__))
+    
     # Create the Flask app instance
     app = crear_app()
     

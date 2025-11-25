@@ -11,9 +11,6 @@ from datetime import timedelta
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
 
-# Mostrar la URL de la base de datos cargada (para propósitos de depuración)
-print(f"DB URL Loaded: {os.environ.get('DATABASE_URL')}")
-
 class Config:
     """
     Clase de configuración principal que contiene todas las configuraciones
@@ -45,8 +42,9 @@ class Config:
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_pre_ping": True,           # Verificar conexiones antes de usarlas
         "pool_recycle": 300,             # Reciclar conexiones cada 5 minutos
-        "pool_size": 10,                 # Tamaño del pool de conexiones
-        "max_overflow": 20,              # Conexiones adicionales máximas
+        "pool_size": 5,                  # Tamaño del pool de conexiones (reducido para Vercel)
+        "max_overflow": 10,              # Conexiones adicionales máximas
+        "pool_timeout": 30,              # Tiempo máximo de espera para obtener conexión
     }
 
     # Configuración JWT - Tiempo de expiración del token de acceso (1 hora)
@@ -55,3 +53,7 @@ class Config:
     # Configuración específica para Vercel
     # En Vercel, deshabilitar el modo de depuración
     DEBUG = os.environ.get('VERCEL_ENV') != 'production'
+    
+    # Configuración adicional para Vercel
+    # Establecer el entorno de Vercel correctamente
+    VERCEL_ENV = os.environ.get('VERCEL_ENV', 'development')
