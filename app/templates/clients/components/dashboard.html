@@ -1,0 +1,39 @@
+{% extends "clients/base.html" %}
+<!-- colocar el titulo con el nombre del usuario -->
+{% block title %}Dashboard - {{ usuario.nombre }}{% endblock %}
+{% block content %}
+<div class="dashboard-header">
+    <div class="header-content">
+        <div>
+            <h1 class="dashboard-title">Mis Tareas</h1>
+            <p class="dashboard-subtitle">Organiza tu trabajo y aumenta tu productividad</p>
+        </div>
+        <div class="header-actions">
+            <button onclick="window.uiModule.abrirModalPerfil()" class="btn btn-profile-edit" title="Editar perfil">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                <span class="btn-text">Editar Perfil</span>
+            </button>
+            <button onclick="window.tasksModule.abrirModal()" class="btn btn-light btn-lg">
+                <span class="btn-icon">+</span>
+                Nueva Tarea
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Active Filters Display -->
+<div id="active-filters" class="active-filters" style="display: none;">
+    <!-- Filter chips will be dynamically added here -->
+</div>
+
+<!-- Include the filter panel component -->
+{% include 'clients/components/filter_panel.html' %}
+
+<div id="lista-tareas" class="task-grid">
+    <!-- Las tareas se cargarán aquí dinámicamente -->
+</div>
+
+{% endblock %}

@@ -35,10 +35,13 @@ def crear_app(config_class=Config):
     jwt.init_app(app)
     CORS(app)
 
-    # Registrar Blueprints de diferentes módulos
-    from app.blueprint.auth.rutas import auth_bp
-    from app.blueprint.tareas.rutas import tareas_bp
+    # Registrar Blueprints de diferentes módulos 
+
+    # Blueprints clientes
+    from app.blueprint.clients.auth.rutas import auth_bp
+    from app.blueprint.clients.tareas.rutas import tareas_bp
     
+    # registro de blueprints de clientes
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(tareas_bp, url_prefix='/tareas')
 
@@ -74,7 +77,7 @@ def crear_app(config_class=Config):
         }), 401
 
     # Ruta raíz para servir el frontend
-    from app.vistas import vistas_bp
+    from app.blueprint.clients.vistas import vistas_bp
     app.register_blueprint(vistas_bp)
 
     return app

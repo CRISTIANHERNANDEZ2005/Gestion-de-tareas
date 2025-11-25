@@ -1,0 +1,53 @@
+<!-- Modal Registro -->
+<div id="modal-registro" class="modal">
+    <div class="modal-content auth-modal">
+        <div class="modal-header">
+            <div class="icon-circle">✨</div>
+            <h2>Crear Cuenta</h2>
+            <p class="subtitle">Únete y empieza a organizar tu vida</p>
+        </div>
+        <form id="registro-form" novalidate>
+            <div class="form-group">
+                <label for="reg-identificacion">Identificación</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🆔</span>
+                    <input type="text" id="reg-identificacion" name="identificacion" placeholder="Elige un ID único"
+                        required minlength="8" pattern="\d{8,}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <label for="reg-nombre">Nombre</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">👤</span>
+                        <input type="text" id="reg-nombre" name="nombre" placeholder="Tu nombre" required>
+                    </div>
+                </div>
+                <div class="form-group col">
+                    <label for="reg-apellido">Apellido</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📝</span>
+                        <input type="text" id="reg-apellido" name="apellido" placeholder="Tu apellido" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="reg-contrasena">Contraseña</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="reg-contrasena" name="contrasena" placeholder="Mínimo 6 caracteres"
+                        required minlength="6">
+                    <button type="button" class="toggle-password" data-target="reg-contrasena">
+                        <span class="eye-icon">👁️</span>
+                    </button>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
+            <div class="auth-footer">
+                <p>¿Ya tienes cuenta? <a href="#" onclick="window.uiModule.switchModal('modal-login'); return false;">Inicia Sesión</a>
+                </p>
+                <button type="button" class="btn-cancelar" onclick="window.uiModule.cerrarModalAuth('modal-registro')">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1329,7 +1329,7 @@ CREATE TRIGGER trigger_actualizar_tareas
                                         <td class="py-3 px-4 text-gray-700">Usabilidad</td>
                                         <td class="py-3 px-4 text-gray-700">El sistema debe proporcionar retroalimentación visual inmediata para todas las acciones del usuario.</td>
                                     </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
                                         <td class="py-3 px-4 font-medium text-gray-800">RNF-013</td>
                                         <td class="py-3 px-4 text-gray-700">Usabilidad</td>
                                         <td class="py-3 px-4 text-gray-700">El sistema debe presentar mensajes de error comprensibles en español.</td>
@@ -2222,7 +2222,7 @@ FLASK_ENV=development</pre>
                     </div>
                 </div>
             </section>
-
+            
             <!-- Scroll to Top Button -->
             <button id="scrollToTop" class="scroll-to-top hidden fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 z-50">
                 <i class="fas fa-arrow-up"></i>
@@ -2276,9 +2276,9 @@ FLASK_ENV=development</pre>
                 // Add click event listeners to all navigation links
                 document.querySelectorAll('.nav-link, .header-nav-link, .mobile-nav-link').forEach(link => {
                     link.addEventListener('click', function(e) {
-                        e.preventDefault();
                         const sectionId = this.getAttribute('data-section');
                         if (sectionId) {
+                            e.preventDefault();
                             showSection(sectionId);
                             closeMobileSidebar();
                         }

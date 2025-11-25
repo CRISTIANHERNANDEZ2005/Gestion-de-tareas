@@ -1,0 +1,28 @@
+/* ==========================================================================
+   Variables CSS
+   ========================================================================== */
+
+:root {
+    /* Colores principales */
+    --primary-color: #6366f1;           /* Color primario (índigo) */
+    --primary-hover: #4f46e5;           /* Color primario hover */
+    --secondary-color: #ec4899;         /* Color secundario (rosa) */
+    
+    /* Colores de fondo y texto */
+    --bg-color: #f8fafc;                /* Color de fondo principal */
+    --text-color: #1e293b;              /* Color de texto principal */
+    --text-light: #64748b;              /* Color de texto secundario */
+    --card-bg: #ffffff;                 /* Color de fondo de tarjetas */
+    
+    /* Colores de estado */
+    --error-color: #ef4444;             /* Color para errores */
+    --success-color: #10b981;           /* Color para éxitos */
+    
+    /* Gradientes */
+    --gradient-primary: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+    
+    /* Sombras */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
