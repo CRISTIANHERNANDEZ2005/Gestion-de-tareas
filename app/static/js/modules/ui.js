@@ -36,10 +36,22 @@ class UIModule {
         // Crear un nuevo handler con el contexto adecuado
         this.escapeKeyListener = (e) => {
             if (e.key === 'Escape') {
-                // Cerrar cualquier modal abierto
+                // Cerrar cualquier modal abierto y limpiar errores
                 const activeModals = document.querySelectorAll('.modal.active');
                 activeModals.forEach(modal => {
                     modal.classList.remove('active');
+                    
+                    // Limpiar todos los mensajes de error en el formulario del modal
+                    const form = modal.querySelector('form');
+                    if (form) {
+                        form.querySelectorAll('.form-group').forEach(formGroup => {
+                            formGroup.classList.remove('error');
+                            const errorMsg = formGroup.querySelector('.error-msg');
+                            if (errorMsg) {
+                                errorMsg.remove();
+                            }
+                        });
+                    }
                 });
             }
         };
@@ -121,7 +133,20 @@ class UIModule {
                 document.getElementById('perfil-nueva-contrasena').value = '';
                 document.getElementById('perfil-confirmar-contrasena').value = '';
             }
+            
             modal.classList.add('active');
+            
+            // Limpiar todos los mensajes de error en el formulario del modal
+            const form = modal.querySelector('form');
+            if (form) {
+                form.querySelectorAll('.form-group').forEach(formGroup => {
+                    formGroup.classList.remove('error');
+                    const errorMsg = formGroup.querySelector('.error-msg');
+                    if (errorMsg) {
+                        errorMsg.remove();
+                    }
+                });
+            }
         }
     }
 
@@ -132,6 +157,18 @@ class UIModule {
         const modal = document.getElementById('modal-perfil');
         if (modal) {
             modal.classList.remove('active');
+            
+            // Limpiar todos los mensajes de error en el formulario del modal al cerrar
+            const form = modal.querySelector('form');
+            if (form) {
+                form.querySelectorAll('.form-group').forEach(formGroup => {
+                    formGroup.classList.remove('error');
+                    const errorMsg = formGroup.querySelector('.error-msg');
+                    if (errorMsg) {
+                        errorMsg.remove();
+                    }
+                });
+            }
         }
     }
 
@@ -473,7 +510,25 @@ class UIModule {
      */
     abrirModalAuth(id) {
         const modal = document.getElementById(id);
-        if (modal) modal.classList.add('active');
+        if (modal) {
+            modal.classList.add('active');
+            
+            // Limpiar todos los mensajes de error en el formulario del modal
+            // y resetear los campos
+            const form = modal.querySelector('form');
+            if (form) {
+                form.querySelectorAll('.form-group').forEach(formGroup => {
+                    formGroup.classList.remove('error');
+                    const errorMsg = formGroup.querySelector('.error-msg');
+                    if (errorMsg) {
+                        errorMsg.remove();
+                    }
+                });
+                
+                // Resetear campos del formulario
+                form.reset();
+            }
+        }
     }
 
     /**
@@ -482,7 +537,21 @@ class UIModule {
      */
     cerrarModalAuth(id) {
         const modal = document.getElementById(id);
-        if (modal) modal.classList.remove('active');
+        if (modal) {
+            modal.classList.remove('active');
+            
+            // Limpiar todos los mensajes de error en el formulario del modal al cerrar
+            const form = modal.querySelector('form');
+            if (form) {
+                form.querySelectorAll('.form-group').forEach(formGroup => {
+                    formGroup.classList.remove('error');
+                    const errorMsg = formGroup.querySelector('.error-msg');
+                    if (errorMsg) {
+                        errorMsg.remove();
+                    }
+                });
+            }
+        }
     }
 
     /**
@@ -490,7 +559,24 @@ class UIModule {
      * @param {string} targetId - ID del modal a abrir
      */
     switchModal(targetId) {
-        document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+        // Limpiar errores y campos en todos los modales antes de cambiar
+        document.querySelectorAll('.modal').forEach(m => {
+            m.classList.remove('active');
+            const form = m.querySelector('form');
+            if (form) {
+                // Limpiar errores
+                form.querySelectorAll('.form-group').forEach(formGroup => {
+                    formGroup.classList.remove('error');
+                    const errorMsg = formGroup.querySelector('.error-msg');
+                    if (errorMsg) {
+                        errorMsg.remove();
+                    }
+                });
+                
+                // Resetear campos del formulario
+                form.reset();
+            }
+        });
         this.abrirModalAuth(targetId);
     }
 
@@ -524,8 +610,7 @@ class UIModule {
      */
     mostrarNavegacionInvitado(navLinks) {
         navLinks.innerHTML = `
-            <li><a href="#" onclick="window.uiModule.abrirModalAuth('modal-login'); return false;">Iniciar Sesión</a></li>
-            <li><a href="#" onclick="window.uiModule.abrirModalAuth('modal-registro'); return false;" class="btn btn-primary">Registrarse</a></li>
+            <li><a href="#" onclick="window.uiModule.abrirModalAuth('modal-login'); return false;" class="btn btn-primary nav-login-btn">Iniciar Sesión</a></li>
         `;
     }
 

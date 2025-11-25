@@ -313,7 +313,21 @@ class AuthModule {
      */
     cerrarModalAuth(id) {
         const modal = document.getElementById(id);
-        if (modal) modal.classList.remove('active');
+        if (modal) {
+            modal.classList.remove('active');
+            
+            // Limpiar todos los mensajes de error en el formulario del modal al cerrar
+            const form = modal.querySelector('form');
+            if (form) {
+                form.querySelectorAll('.form-group').forEach(formGroup => {
+                    formGroup.classList.remove('error');
+                    const errorMsg = formGroup.querySelector('.error-msg');
+                    if (errorMsg) {
+                        errorMsg.remove();
+                    }
+                });
+            }
+        }
     }
 
     /**
@@ -321,7 +335,24 @@ class AuthModule {
      * @param {string} targetId - ID del modal a abrir
      */
     switchModal(targetId) {
-        document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+        // Limpiar errores y campos en todos los modales antes de cambiar
+        document.querySelectorAll('.modal').forEach(m => {
+            m.classList.remove('active');
+            const form = m.querySelector('form');
+            if (form) {
+                // Limpiar errores
+                form.querySelectorAll('.form-group').forEach(formGroup => {
+                    formGroup.classList.remove('error');
+                    const errorMsg = formGroup.querySelector('.error-msg');
+                    if (errorMsg) {
+                        errorMsg.remove();
+                    }
+                });
+                
+                // Resetear campos del formulario
+                form.reset();
+            }
+        });
         this.abrirModalAuth(targetId);
     }
 
@@ -331,7 +362,25 @@ class AuthModule {
      */
     abrirModalAuth(id) {
         const modal = document.getElementById(id);
-        if (modal) modal.classList.add('active');
+        if (modal) {
+            modal.classList.add('active');
+            
+            // Limpiar todos los mensajes de error en el formulario del modal
+            // y resetear los campos
+            const form = modal.querySelector('form');
+            if (form) {
+                form.querySelectorAll('.form-group').forEach(formGroup => {
+                    formGroup.classList.remove('error');
+                    const errorMsg = formGroup.querySelector('.error-msg');
+                    if (errorMsg) {
+                        errorMsg.remove();
+                    }
+                });
+                
+                // Resetear campos del formulario
+                form.reset();
+            }
+        }
     }
 }
 

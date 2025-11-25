@@ -25,11 +25,16 @@ nav .brand {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+nav .brand:hover {
+    transform: scale(1.05);
 }
 
 nav ul {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
     list-style: none;
     align-items: center;
 }
@@ -38,11 +43,41 @@ nav a {
     text-decoration: none;
     color: var(--text-color);
     font-weight: 600;
-    transition: color 0.2s;
+    transition: all 0.3s ease;
+    position: relative;
 }
 
 nav a:hover {
     color: var(--primary-color);
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* Special styling for login button in navbar */
+.nav-login-btn {
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3);
+}
+
+.nav-login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px -1px rgba(99, 102, 241, 0.4);
 }
 
 /* ==========================================================================
@@ -148,6 +183,12 @@ nav a:hover {
         width: 36px;
         height: 36px;
         font-size: 0.75rem;
+    }
+    
+    /* Ensure login button is properly sized on mobile */
+    .nav-login-btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
     }
 }
 

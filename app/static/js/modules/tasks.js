@@ -184,18 +184,8 @@ class TasksModule {
 
         modal.classList.add('active');
 
-        if (tarea) {
-            titulo.textContent = 'Editar Tarea';
-            document.getElementById('tarea-id').value = tarea.id;
-            document.getElementById('titulo').value = tarea.titulo;
-            document.getElementById('descripcion').value = tarea.descripcion || '';
-            document.getElementById('fecha_limite').value = tarea.fecha_limite || '';
-        } else {
-            titulo.textContent = 'Nueva Tarea';
-            form.reset();
-            document.getElementById('tarea-id').value = '';
-            
-            // Limpiar todos los mensajes de error
+        // Limpiar todos los mensajes de error cada vez que se abre el modal
+        if (form) {
             form.querySelectorAll('.form-group').forEach(formGroup => {
                 formGroup.classList.remove('error');
                 const errorMsg = formGroup.querySelector('.error-msg');
@@ -204,6 +194,20 @@ class TasksModule {
                 }
             });
         }
+
+        if (tarea) {
+            titulo.textContent = 'Editar Tarea';
+            document.getElementById('tarea-id').value = tarea.id;
+            document.getElementById('titulo').value = tarea.titulo;
+            document.getElementById('descripcion').value = tarea.descripcion || '';
+            document.getElementById('fecha_limite').value = tarea.fecha_limite || '';
+        } else {
+            titulo.textContent = 'Nueva Tarea';
+            if (form) {
+                form.reset();
+            }
+            document.getElementById('tarea-id').value = '';
+        }
     }
 
     /**
@@ -211,7 +215,21 @@ class TasksModule {
      */
     cerrarModal() {
         const modal = document.getElementById('modal-tarea');
-        if (modal) modal.classList.remove('active');
+        if (modal) {
+            modal.classList.remove('active');
+            
+            // Limpiar todos los mensajes de error en el formulario del modal al cerrar
+            const form = modal.querySelector('form');
+            if (form) {
+                form.querySelectorAll('.form-group').forEach(formGroup => {
+                    formGroup.classList.remove('error');
+                    const errorMsg = formGroup.querySelector('.error-msg');
+                    if (errorMsg) {
+                        errorMsg.remove();
+                    }
+                });
+            }
+        }
     }
 
     /**
