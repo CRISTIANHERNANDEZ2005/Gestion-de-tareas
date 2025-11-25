@@ -36,12 +36,13 @@ class UIModule {
         // Crear un nuevo handler con el contexto adecuado
         this.escapeKeyListener = (e) => {
             if (e.key === 'Escape') {
-                // Cerrar cualquier modal abierto y limpiar errores
+                // Cerrar cualquier modal abierto, limpiar errores y resetear campos
                 const activeModals = document.querySelectorAll('.modal.active');
                 activeModals.forEach(modal => {
                     modal.classList.remove('active');
                     
                     // Limpiar todos los mensajes de error en el formulario del modal
+                    // y resetear los campos
                     const form = modal.querySelector('form');
                     if (form) {
                         form.querySelectorAll('.form-group').forEach(formGroup => {
@@ -51,6 +52,9 @@ class UIModule {
                                 errorMsg.remove();
                             }
                         });
+                        
+                        // Resetear campos del formulario
+                        form.reset();
                     }
                 });
             }
