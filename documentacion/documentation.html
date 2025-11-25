@@ -1,0 +1,2329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación - Gestor de Tareas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif']
+                    },
+                    colors: {
+                        primary: '#007bff',
+                        secondary: '#6c757d',
+                        success: '#28a745',
+                        danger: '#dc3545',
+                        warning: '#ffc107',
+                        info: '#17a2b8'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', 'sans-serif';
+        }
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: #007bff;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        .nav-link:hover {
+            background: linear-gradient(to right, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.05));
+            color: #007bff;
+            transform: translateX(5px);
+        }
+        .nav-link:hover::before {
+            transform: scaleY(1);
+        }
+        .nav-link.active {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+            transform: translateX(5px);
+        }
+        .nav-link.active::before {
+            transform: scaleY(1);
+            background: white;
+        }
+        .nav-link i {
+            width: 18px;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+        .code-block {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+        }
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .scroll-to-top {
+            transition: all 0.3s ease;
+        }
+        .scroll-to-top:hover {
+            transform: translateY(-3px);
+        }
+        .section-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+        .section-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .header-nav-link {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .header-nav-link:hover {
+            color: #007bff;
+        }
+        .header-nav-link.active {
+            color: #007bff;
+            font-weight: 600;
+            border-bottom: 2px solid #007bff;
+        }
+        
+        /* Professional Table Styling */
+        .min-w-full {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+        
+        table thead tr {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        }
+        
+        table th {
+            color: white;
+            font-weight: 600;
+            padding: 12px 16px;
+            text-align: left;
+        }
+        
+        table tbody tr {
+            transition: all 0.2s ease;
+        }
+        
+        table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        table tbody tr:hover {
+            background-color: #e9f7fe;
+            transform: scale(1.01);
+        }
+        
+        table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Mobile Sidebar Styles */
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.15);
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .mobile-sidebar.active {
+            left: 0;
+        }
+        
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+            backdrop-filter: blur(2px);
+        }
+        
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            margin: 4px 12px;
+            color: #4b5563;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mobile-nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: #007bff;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .mobile-nav-link:hover {
+            background: linear-gradient(to right, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.05));
+            color: #007bff;
+            transform: translateX(8px);
+        }
+        
+        .mobile-nav-link:hover::before {
+            transform: scaleY(1);
+        }
+        
+        .mobile-nav-link.active {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+            transform: translateX(8px);
+        }
+        
+        .mobile-nav-link.active::before {
+            transform: scaleY(1);
+            background: white;
+        }
+        
+        .mobile-nav-link i {
+            width: 20px;
+            margin-right: 12px;
+        }
+        
+        .sidebar-header {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+        }
+        
+        .sidebar-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .sidebar-subtitle {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        .section-divider {
+            border-top: 2px solid #e5e7eb;
+            margin: 16px 0;
+            position: relative;
+        }
+        
+        .section-divider::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: #007bff;
+        }
+        
+        @media (max-width: 1023px) {
+            .desktop-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50" style="padding-top: 70px;">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50" style="height: 70px;">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-tasks text-blue-600 text-2xl"></i>
+                <h1 class="text-2xl font-bold text-gray-800">Gestor de Tareas</h1>
+            </div>
+            <nav class="hidden md:flex space-x-6">
+                <a href="/dashboard" class="text-gray-600 hover:text-blue-600 font-medium">App</a>
+                <span class="header-nav-link text-gray-600 font-medium active" data-section="overview">Overview</span>
+                <span class="header-nav-link text-gray-600 font-medium" data-section="architecture">Arquitectura</span>
+                <span class="header-nav-link text-gray-600 font-medium" data-section="features">Funcionalidades</span>
+                <span class="header-nav-link text-gray-600 font-medium" data-section="database">Base de Datos</span>
+                <span class="header-nav-link text-gray-600 font-medium" data-section="diagrams">Diagramas</span>
+            </nav>
+            <button id="menu-toggle" class="md:hidden text-gray-600">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+    
+    <!-- Mobile Sidebar -->
+    <div id="mobile-sidebar" class="mobile-sidebar">
+        <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-6 border-b border-blue-800">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-white bg-opacity-20 p-2 rounded-lg">
+                        <i class="fas fa-book-open text-white text-xl"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-white">Documentación</h2>
+                </div>
+                <button id="close-sidebar" class="text-white hover:bg-white hover:bg-opacity-20 p-2 rounded-lg transition-all duration-300">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <p class="text-sm text-blue-100 ml-12">Gestor de Tareas</p>
+        </div>
+        
+        <nav class="py-4">
+            <div class="px-4 mb-3">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center">
+                    <i class="fas fa-compass mr-2 text-blue-500"></i>
+                    Navegación
+                </p>
+            </div>
+            <a href="/dashboard" class="mobile-nav-link">
+                <i class="fas fa-home"></i>
+                <span>Aplicación</span>
+            </a>
+            
+            <div class="px-4 mt-6 mb-3">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center">
+                    <i class="fas fa-list mr-2 text-blue-500"></i>
+                    Secciones
+                </p>
+            </div>
+            <span class="mobile-nav-link active" data-section="overview">
+                <i class="fas fa-info-circle"></i>
+                <span>Visión General</span>
+            </span>
+            <span class="mobile-nav-link" data-section="architecture">
+                <i class="fas fa-project-diagram"></i>
+                <span>Arquitectura</span>
+            </span>
+            <span class="mobile-nav-link" data-section="features">
+                <i class="fas fa-star"></i>
+                <span>Funcionalidades</span>
+            </span>
+            <span class="mobile-nav-link" data-section="tech-stack">
+                <i class="fas fa-code"></i>
+                <span>Tecnologías</span>
+            </span>
+            <span class="mobile-nav-link" data-section="file-structure">
+                <i class="fas fa-folder-tree"></i>
+                <span>Estructura de Archivos</span>
+            </span>
+            <span class="mobile-nav-link" data-section="database">
+                <i class="fas fa-database"></i>
+                <span>Base de Datos</span>
+            </span>
+            <span class="mobile-nav-link" data-section="api-endpoints">
+                <i class="fas fa-plug"></i>
+                <span>API Endpoints</span>
+            </span>
+            <span class="mobile-nav-link" data-section="modules">
+                <i class="fas fa-cube"></i>
+                <span>Módulos JS</span>
+            </span>
+            <span class="mobile-nav-link" data-section="installation">
+                <i class="fas fa-download"></i>
+                <span>Instalación</span>
+            </span>
+
+            <span class="mobile-nav-link" data-section="diagrams">
+                <i class="fas fa-chart-line"></i>
+                <span>Diagramas</span>
+            </span>
+            <span class="mobile-nav-link" data-section="functional-requirements">
+                <i class="fas fa-tasks"></i>
+                <span>Requerimientos</span>
+            </span>
+        </nav>
+    </div>
+
+    <div class="container mx-auto px-4 py-8 flex flex-col lg:flex-row">
+        <!-- Desktop Sidebar -->
+        <aside class="desktop-sidebar lg:w-1/4 pr-8 mb-8 lg:mb-0">
+            <div class="bg-white rounded-lg shadow-lg p-6 sidebar sticky top-8" style="border: 1px solid #e5e7eb;">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">
+                        <i class="fas fa-book-open mr-3"></i>
+                        Índice
+                    </div>
+                    <div class="sidebar-subtitle">
+                        Documentación Técnica
+                    </div>
+                </div>
+                
+                <div class="space-y-1">
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700 active" data-section="overview">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Visión General</span>
+                    </span>
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="architecture">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Arquitectura</span>
+                    </span>
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="features">
+                        <i class="fas fa-star"></i>
+                        <span>Funcionalidades</span>
+                    </span>
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="tech-stack">
+                        <i class="fas fa-code"></i>
+                        <span>Tecnologías</span>
+                    </span>
+                    
+                    <div class="section-divider"></div>
+                    
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="file-structure">
+                        <i class="fas fa-folder-tree"></i>
+                        <span>Estructura de Archivos</span>
+                    </span>
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="database">
+                        <i class="fas fa-database"></i>
+                        <span>Base de Datos</span>
+                    </span>
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="api-endpoints">
+                        <i class="fas fa-plug"></i>
+                        <span>API Endpoints</span>
+                    </span>
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="modules">
+                        <i class="fas fa-cube"></i>
+                        <span>Módulos JS</span>
+                    </span>
+                    
+                    <div class="section-divider"></div>
+                    
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="installation">
+                        <i class="fas fa-download"></i>
+                        <span>Instalación</span>
+                    </span>
+
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="diagrams">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Diagramas</span>
+                    </span>
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="functional-requirements">
+                        <i class="fas fa-tasks"></i>
+                        <span>Requerimientos</span>
+                    </span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:w-3/4">
+            <!-- Overview Section -->
+            <section id="overview" class="section-content active bg-white rounded-lg shadow-md p-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">Documentación Técnica del Proyecto</h1>
+                <p class="text-gray-600 mb-6">¡Hola! Si estás leyendo esta documentación, probablemente eres un desarrollador que quiere entender cómo construí este Gestor de Tareas. Te explicaré cómo desarrollé cada parte del proyecto, desde la arquitectura hasta los detalles de implementación, para que puedas mantenerlo o extenderlo fácilmente.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="feature-card bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200">
+                        <div class="text-blue-600 text-2xl mb-3">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-800 mb-2">Backend Robusto</h3>
+                        <p class="text-gray-600 text-sm">Desarrollé una API RESTful con Python Flask y PostgreSQL (Neon) para gestionar eficientemente los datos de usuarios y tareas.</p>
+                    </div>
+                    
+                    <div class="feature-card bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-200">
+                        <div class="text-green-600 text-2xl mb-3">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-800 mb-2">Autenticación Segura</h3>
+                        <p class="text-gray-600 text-sm">Implementé autenticación JWT para proteger las rutas y mantener sesiones seguras.</p>
+                    </div>
+                    
+                    <div class="feature-card bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200">
+                        <div class="text-purple-600 text-2xl mb-3">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-800 mb-2">Base de Datos Moderna</h3>
+                        <p class="text-gray-600 text-sm">Utilicé Neon como servicio de base de datos PostgreSQL serverless para escalabilidad y rendimiento.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 code-block">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                        <h3 class="font-bold text-gray-800">Mi Enfoque de Desarrollo</h3>
+                    </div>
+                    <p class="text-gray-700">Cuando desarrollé este proyecto, me aseguré de seguir buenas prácticas de programación, manteniendo un código limpio, bien documentado y fácil de entender. Mi objetivo fue crear una aplicación funcional pero también escalable para futuras mejoras.</p>
+                </div>
+            </section>
+
+            <!-- Architecture Section -->
+            <section id="architecture" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Arquitectura del Sistema</h2>
+                <p class="text-gray-600 mb-6">Para este proyecto, elegí una arquitectura cliente-servidor tradicional con una clara separación entre frontend y backend. Esta decisión me permitió mantener el código organizado y facilitar el mantenimiento futuro.</p>
+                
+                <div class="flex flex-col md:flex-row gap-8 mb-6">
+                    <div class="md:w-1/2">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Frontend (Cliente)</h3>
+                        <p class="text-gray-600 mb-3">En el frontend, decidí utilizar tecnologías web estándar pero con un enfoque moderno:</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-chevron-right text-blue-500 mt-1 mr-2"></i>
+                                <span><strong>HTML5:</strong> Estructuré la interfaz con etiquetas semánticas para mejorar la accesibilidad y SEO.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-chevron-right text-blue-500 mt-1 mr-2"></i>
+                                <span><strong>CSS/:</strong> Creé estilos personalizados con un enfoque en la experiencia de usuario y el diseño responsivo.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-chevron-right text-blue-500 mt-1 mr-2"></i>
+                                <span><strong>JavaScript (ES6+):</strong> Implementé interactividad y comunicación con el backend usando las últimas características de JavaScript.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-chevron-right text-blue-500 mt-1 mr-2"></i>
+                                <span><strong>Módulos ES6:</strong> Organicé el código en módulos reutilizables para mantener una estructura limpia y evitar el código espagueti.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="md:w-1/2">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Backend (Servidor)</h3>
+                        <p class="text-gray-600 mb-3">Para el backend, opté por tecnologías robustas y bien establecidas:</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-chevron-right text-blue-500 mt-1 mr-2"></i>
+                                <span><strong>Python Flask:</strong> Desarrollé la lógica del servidor y la API RESTful aprovechando la simplicidad y potencia de Flask.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-chevron-right text-blue-500 mt-1 mr-2"></i>
+                                <span><strong>PostgreSQL (Neon):</strong> Elegí Neon como servicio de base de datos PostgreSQL serverless por su confiabilidad y escalabilidad.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-chevron-right text-blue-500 mt-1 mr-2"></i>
+                                <span><strong>SQLAlchemy ORM:</strong> Utilicé SQLAlchemy para acceder a la base de datos de forma segura y prevenir inyecciones SQL.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-chevron-right text-blue-500 mt-1 mr-2"></i>
+                                <span><strong>JWT:</strong> Implementé JSON Web Tokens para autenticación segura entre frontend y backend.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                    <h3 class="font-bold text-gray-800 mb-2 flex items-center">
+                        <i class="fas fa-project-diagram text-gray-600 mr-2"></i>
+                        Cómo Fluye la Información
+                    </h3>
+                    <p class="text-gray-700 mb-3">Permíteme explicarte cómo diseñé el flujo de datos en esta aplicación:</p>
+                    <div class="overflow-x-auto">
+                        <div class="min-w-full">
+                            <div class="flex flex-col md:flex-row justify-between items-center py-4">
+                                <div class="mb-4 md:mb-0 text-center">
+                                    <div class="bg-blue-100 text-blue-800 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2">
+                                        <i class="fas fa-desktop text-2xl"></i>
+                                    </div>
+                                    <p class="font-medium">Frontend</p>
+                                    <p class="text-sm text-gray-600">Tu Interfaz</p>
+                                </div>
+                                
+                                <div class="flex flex-col items-center mx-4">
+                                    <i class="fas fa-exchange-alt text-gray-400 text-xl mb-2"></i>
+                                    <p class="text-sm text-gray-600">AJAX/Fetch</p>
+                                </div>
+                                
+                                <div class="mb-4 md:mb-0 text-center">
+                                    <div class="bg-green-100 text-green-800 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2">
+                                        <i class="fas fa-server text-2xl"></i>
+                                    </div>
+                                    <p class="font-medium">Backend</p>
+                                    <p class="text-sm text-gray-600">API Flask</p>
+                                </div>
+                                
+                                <div class="flex flex-col items-center mx-4">
+                                    <i class="fas fa-exchange-alt text-gray-400 text-xl mb-2"></i>
+                                    <p class="text-sm text-gray-600">SQLAlchemy</p>
+                                </div>
+                                
+                                <div class="text-center">
+                                    <div class="bg-purple-100 text-purple-800 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2">
+                                        <i class="fas fa-database text-2xl"></i>
+                                    </div>
+                                    <p class="font-medium">Base de Datos</p>
+                                    <p class="text-sm text-gray-600">Neon (PostgreSQL)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section id="features" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Funcionalidades que Implementé</h2>
+                <p class="text-gray-600 mb-6">Cuando desarrollé este Gestor de Tareas, me aseguré de incluir todas las funcionalidades esenciales que un usuario necesita:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 text-blue-600 rounded-lg p-3 mr-4">
+                                <i class="fas fa-user-plus text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 mb-1">Registro e Inicio de Sesión</h3>
+                                <p class="text-gray-600 text-sm">Los usuarios pueden registrarse con identificación única y contraseña, y luego iniciar sesión para acceder a sus tareas.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                        <div class="flex items-start">
+                            <div class="bg-green-100 text-green-600 rounded-lg p-3 mr-4">
+                                <i class="fas fa-tasks text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 mb-1">Gestión de Tareas</h3>
+                                <p class="text-gray-600 text-sm">Crear, leer, actualizar y eliminar tareas con títulos únicos, descripciones y fechas límite.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                        <div class="flex items-start">
+                            <div class="bg-purple-100 text-purple-600 rounded-lg p-3 mr-4">
+                                <i class="fas fa-user-edit text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 mb-1">Perfil de Usuario</h3>
+                                <p class="text-gray-600 text-sm">Los usuarios pueden actualizar su información personal y cambiar su contraseña.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                        <div class="flex items-start">
+                            <div class="bg-red-100 text-red-600 rounded-lg p-3 mr-4">
+                                <i class="fas fa-sign-out-alt text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 mb-1">Cierre de Sesión Seguro</h3>
+                                <p class="text-gray-600 text-sm">Funcionalidad para cerrar sesión de forma segura y proteger la cuenta del usuario.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h3 class="font-bold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-lock text-green-500 mr-2"></i>
+                            Seguridad
+                        </h3>
+                        <ul class="text-gray-700 space-y-1">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Contraseñas hasheadas con Werkzeug</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Autenticación JWT para proteger rutas</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Validación de entrada en frontend y backend</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h3 class="font-bold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-sync-alt text-purple-500 mr-2"></i>
+                            Actualizaciones
+                        </h3>
+                        <ul class="text-gray-700 space-y-1">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                <span>AJAX sin recargar la página</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                <span>Refresco automático de datos</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                <span>Estado consistente entre cliente y servidor</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tech Stack Section -->
+            <section id="tech-stack" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Tecnologías que Utilicé</h2>
+                <p class="text-gray-600 mb-6">Para desarrollar este proyecto, elegí un stack tecnológico moderno y bien establecido que me permitiera crear una aplicación robusta y mantenible:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Frontend</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                <div class="bg-orange-100 text-orange-600 rounded-lg w-12 h-12 flex items-center justify-center mr-4">
+                                    <i class="fab fa-html5 text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">HTML5</h4>
+                                    <p class="text-gray-600 text-sm">Estructuré la interfaz con etiquetas semánticas para mejorar la accesibilidad y el SEO.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                <div class="bg-blue-100 text-blue-600 rounded-lg w-12 h-12 flex items-center justify-center mr-4">
+                                    <i class="fab fa-css3-alt text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">TailwindCSS</h4>
+                                    <p class="text-gray-600 text-sm">Creé estilos personalizados con un enfoque en la experiencia de usuario y el diseño responsivo.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                <div class="bg-yellow-100 text-yellow-600 rounded-lg w-12 h-12 flex items-center justify-center mr-4">
+                                    <i class="fab fa-js text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">JavaScript (ES6+)</h4>
+                                    <p class="text-gray-600 text-sm">Implementé interactividad y comunicación con el backend usando las últimas características de JavaScript.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Backend</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                <div class="bg-blue-100 text-blue-600 rounded-lg w-12 h-12 flex items-center justify-center mr-4">
+                                    <i class="fab fa-python text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">Python Flask</h4>
+                                    <p class="text-gray-600 text-sm">Desarrollé la lógica del servidor y la API RESTful aprovechando la simplicidad y potencia de Flask.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                <div class="bg-purple-100 text-purple-600 rounded-lg w-12 h-12 flex items-center justify-center mr-4">
+                                    <i class="fas fa-database text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">Neon (PostgreSQL)</h4>
+                                    <p class="text-gray-600 text-sm">Elegí Neon como sistema de gestión de bases de datos por su confiabilidad y escalabilidad serverless.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                <div class="bg-green-100 text-green-600 rounded-lg w-12 h-12 flex items-center justify-center mr-4">
+                                    <i class="fas fa-code text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">SQLAlchemy ORM</h4>
+                                    <p class="text-gray-600 text-sm">Utilicé SQLAlchemy para acceder a la base de datos de forma segura y prevenir inyecciones SQL.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-100">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-tools text-blue-600 mr-2"></i>
+                        Herramientas de Desarrollo que Usé
+                    </h3>
+                    <p class="text-gray-700 mb-3">Durante el desarrollo, utilicé estas herramientas para hacer mi trabajo más eficiente:</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="text-center">
+                            <div class="bg-white rounded-lg p-3 shadow-sm mb-2 inline-block">
+                                <i class="fas fa-terminal text-gray-700"></i>
+                            </div>
+                            <p class="text-gray-700 text-sm">Terminal</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-white rounded-lg p-3 shadow-sm mb-2 inline-block">
+                                <i class="fas fa-code text-gray-700"></i>
+                            </div>
+                            <p class="text-gray-700 text-sm">VS Code</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-white rounded-lg p-3 shadow-sm mb-2 inline-block">
+                                <i class="fas fa-database text-gray-700"></i>
+                            </div>
+                            <p class="text-gray-700 text-sm">Neon Dashboard</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-white rounded-lg p-3 shadow-sm mb-2 inline-block">
+                                <i class="fas fa-browser text-gray-700"></i>
+                            </div>
+                            <p class="text-gray-700 text-sm">Chrome DevTools</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- File Structure Section -->
+            <section id="file-structure" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Estructura de Archivos que Diseñé</h2>
+                <p class="text-gray-600 mb-6">Organicé el proyecto siguiendo buenas prácticas de desarrollo para que puedas entender fácilmente cómo está estructurado:</p>
+                
+                <div class="bg-gray-800 text-gray-100 rounded-lg p-5 font-mono text-sm overflow-x-auto">
+<pre class="text-green-400">
+gestor_tareas/
+├── app/                      # Directorio principal de la aplicación
+│   ├── __init__.py          # Inicialización de la app Flask y extensiones
+│   ├── modelos.py           # Modelos de datos con SQLAlchemy
+│   ├── vistas.py            # Vistas para servir páginas HTML
+│   ├── blueprint/           # Blueprints de la aplicación
+│   │   ├── auth/            # Blueprint de autenticación
+│   │   │   └── rutas.py     # Rutas de autenticación
+│   │   └── tareas/          # Blueprint de tareas
+│   │       └── rutas.py     # Rutas de tareas
+│   ├── static/              # Archivos estáticos
+│   │   ├── css/             # Hojas de estilo
+│   │   │   ├── base/        # Estilos base
+│   │   │   ├── components/  # Estilos de componentes
+│   │   │   ├── layout/      # Estilos de layout
+│   │   │   ├── utilities/   # Estilos de utilidades
+│   │   │   └── styles.css   # Archivo CSS principal
+│   │   └── js/              # Archivos JavaScript
+│   │       ├── modules/     # Módulos JS
+│   │       └── main.js      # Archivo JS principal
+│   └── templates/           # Plantillas HTML
+│       ├── base.html        # Plantilla base
+│       ├── inicio.html      # Página principal
+│       ├── components/      # Componentes reutilizables
+│       └── ui/              # Interfaces de usuario
+├── migrations/              # Migraciones de base de datos con Alembic
+├── config.py                # Configuración de la aplicación
+├── requirements.txt         # Dependencias del proyecto
+├── run.py                   # Punto de entrada de la aplicación
+├── .env                     # Variables de entorno
+└── documentation.html       # Esta documentación técnica
+</pre>
+                </div>
+                
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Directorios Principales</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <div class="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                                    <i class="fas fa-folder text-xs"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">app/</h4>
+                                    <p class="text-gray-600 text-sm">Aquí desarrollé toda la lógica de la aplicación Flask, incluyendo modelos, vistas y controladores.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-purple-100 text-purple-800 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                                    <i class="fas fa-folder text-xs"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">static/</h4>
+                                    <p class="text-gray-600 text-sm">Coloqué todos los archivos estáticos (CSS, JS, imágenes) en este directorio para servirlos correctamente.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Archivos Importantes</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <div class="bg-green-100 text-green-800 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                                    <i class="fas fa-file-code text-xs"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">requirements.txt</h4>
+                                    <p class="text-gray-600 text-sm">Listé todas las dependencias del proyecto para facilitar la instalación en otros entornos.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-yellow-100 text-yellow-800 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                                    <i class="fas fa-file-alt text-xs"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">config.py</h4>
+                                    <p class="text-gray-600 text-sm">Centralicé toda la configuración de la aplicación en este archivo para facilitar el mantenimiento.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                        <h3 class="font-bold text-gray-800">Mi Enfoque de Desarrollo</h3>
+                    </div>
+                    <p class="text-gray-700">Cuando desarrollé este proyecto, me aseguré de seguir buenas prácticas de programación, manteniendo un código limpio, bien documentado y fácil de entender. Mi objetivo fue crear una aplicación funcional pero también escalable para futuras mejoras.</p>
+                </div>
+            </section>
+
+            <!-- Database Section -->
+            <section id="database" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Base de Datos que Diseñé</h2>
+                <p class="text-gray-600 mb-6">Para la base de datos, creé una estructura eficiente que cumple con todos los requisitos del proyecto. Utilicé Neon como servicio de base de datos PostgreSQL serverless para mejor escalabilidad y rendimiento:</p>
+                
+                <div class="bg-gray-50 rounded-lg p-5 mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Modelos de Datos</h3>
+                    <p class="text-gray-700 mb-3">Definí dos modelos principales usando SQLAlchemy ORM:</p>
+                    
+                    <div class="bg-white rounded-lg p-4 border border-gray-200 mb-4">
+                        <h4 class="font-bold text-gray-800 mb-2">Modelo Usuario</h4>
+                        <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>
+class Usuario(db.Model):
+    __tablename__ = 'usuarios'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    identificacion = db.Column(db.String(20), unique=True, nullable=False)
+    nombre = db.Column(db.String(100), nullable=False)
+    apellido = db.Column(db.String(100), nullable=False)
+    contrasena = db.Column(db.String(255), nullable=False)
+    creado_en = db.Column(db.DateTime, default=datetime.utcnow)
+    actualizado_en = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relación con las tareas del usuario
+    tareas = db.relationship('Tarea', backref='usuario', lazy=True, cascade="all, delete-orphan")
+</pre>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 border border-gray-200">
+                        <h4 class="font-bold text-gray-800 mb-2">Modelo Tarea</h4>
+                        <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>
+class Tarea(db.Model):
+    __tablename__ = 'tareas'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    titulo = db.Column(db.String(100), nullable=False)
+    descripcion = db.Column(db.Text)
+    fecha_limite = db.Column(db.Date)
+    creado_en = db.Column(db.DateTime, default=datetime.utcnow)
+    actualizado_en = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Restricción única: un usuario no puede tener dos tareas con el mismo título
+    __table_args__ = (
+        db.UniqueConstraint('usuario_id', 'titulo', name='unique_titulo_usuario'),
+    )
+</pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="py-3 px-4 text-left text-gray-700 font-semibold">Tabla</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-semibold">Campos</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-semibold">Relaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-4 text-gray-700 font-medium">usuarios</td>
+                                <td class="py-3 px-4 text-gray-700">id, identificacion, nombre, apellido, contrasena, creado_en, actualizado_en</td>
+                                <td class="py-3 px-4 text-gray-700">Tiene muchas tareas (one-to-many)</td>
+                            </tr>
+                            <tr class="border-b border-gray-200 bg-gray-50">
+                                <td class="py-3 px-4 text-gray-700 font-medium">tareas</td>
+                                <td class="py-3 px-4 text-gray-700">id, usuario_id, titulo, descripcion, fecha_limite, creado_en, actualizado_en</td>
+                                <td class="py-3 px-4 text-gray-700">Pertenece a un usuario (many-to-one)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-6">
+                    <h3 class="font-bold text-gray-800 mb-4 text-xl flex items-center">
+                        <i class="fas fa-database text-blue-500 mr-2"></i>
+                        Esquema de la Base de Datos
+                    </h3>
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <div class="grid grid-cols-1 gap-8">
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-4 text-center text-lg">Relaciones entre Tablas</h4>
+                                <div class="bg-white rounded-lg p-4 border border-gray-200">
+                                    <div class="flex flex-col items-center">
+                                        <div class="flex items-center mb-6">
+                                            <div class="bg-blue-100 text-blue-800 rounded-lg p-4 mr-4">
+                                                <i class="fas fa-users text-2xl"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="font-bold text-gray-800">Usuarios</h5>
+                                                <p class="text-gray-600 text-sm">Almacena información de los usuarios registrados</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center mx-4 mb-6">
+                                            <i class="fas fa-long-arrow-alt-right text-gray-400 text-2xl"></i>
+                                        </div>
+                                        
+                                        <div class="flex items-center">
+                                            <div class="bg-green-100 text-green-800 rounded-lg p-4 mr-4">
+                                                <i class="fas fa-tasks text-2xl"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="font-bold text-gray-800">Tareas</h5>
+                                                <p class="text-gray-600 text-sm">Cada usuario puede tener múltiples tareas asociadas</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4">
+                    <h3 class="font-bold text-gray-800 mb-2 flex items-center">
+                        <i class="fas fa-key text-blue-500 mr-2"></i>
+                        Decisiones de Diseño
+                    </h3>
+                    <p class="text-gray-700 mb-2">Cuando diseñé esta estructura, tomé varias decisiones importantes:</p>
+                    <ul class="text-gray-700 space-y-1">
+                        <li><strong>FOREIGN KEY:</strong> Usé una clave foránea en la tabla tareas para vincular cada tarea a un usuario específico.</li>
+                        <li><strong>UNIQUE CONSTRAINT:</strong> Implementé una restricción única para que un usuario no pueda tener dos tareas con el mismo título.</li>
+                        <li><strong>TIMESTAMPS:</strong> Agregué campos de creación y actualización automáticos para llevar registro de cuándo se crearon y modificaron los registros.</li>
+                        <li><strong>CASCADE DELETE:</strong> Configuré eliminación en cascada para que cuando un usuario se elimine, también se eliminen sus tareas.</li>
+                    </ul>
+                </div>
+                
+                <div class="mt-6 bg-gray-50 rounded-lg p-5">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Script SQL de la Base de Datos</h3>
+                    <p class="text-gray-700 mb-3">A continuación se presenta el script SQL utilizado para crear la base de datos y las tablas:</p>
+                    
+                    <div class="bg-white rounded-lg p-4 border border-gray-200">
+                        <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                            <pre>
+-- Creación de la base de datos para el gestor de tareas
+CREATE DATABASE gestor_tareas_db;
+
+-- Creación de la tabla usuarios
+CREATE TABLE IF NOT EXISTS usuarios (
+    id SERIAL PRIMARY KEY,
+    identificacion VARCHAR(20) UNIQUE NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Creación de índice para identificacion
+CREATE INDEX IF NOT EXISTS idx_identificacion ON usuarios(identificacion);
+
+-- Creación de la tabla tareas con relación a usuarios
+CREATE TABLE IF NOT EXISTS tareas (
+    id SERIAL PRIMARY KEY,
+    usuario_id INTEGER NOT NULL,
+    titulo VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    fecha_limite DATE,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    UNIQUE (usuario_id, titulo)
+);
+
+-- Creación de índice para usuario_id
+CREATE INDEX IF NOT EXISTS idx_usuario_id ON tareas(usuario_id);
+
+-- Creación de función y trigger para actualizar automáticamente actualizado_en
+CREATE OR REPLACE FUNCTION actualizar_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.actualizado_en = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Triggers para actualizar automáticamente actualizado_en
+CREATE TRIGGER trigger_actualizar_usuarios
+    BEFORE UPDATE ON usuarios
+    FOR EACH ROW
+    EXECUTE FUNCTION actualizar_timestamp();
+
+CREATE TRIGGER trigger_actualizar_tareas
+    BEFORE UPDATE ON tareas
+    FOR EACH ROW
+    EXECUTE FUNCTION actualizar_timestamp();
+</pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h3 class="font-bold text-gray-800 mb-4 text-xl flex items-center">
+                        <i class="fas fa-images text-blue-500 mr-2"></i>
+                        Diagramas de la Base de Datos
+                    </h3>
+                    <div class="flex flex-col gap-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3 text-center">Estructura de la Base de Datos</h4>
+                            <div class="flex justify-center">
+                                <img src="base de datos/estructura.png" alt="Estructura de la Base de Datos" class="max-w-full h-auto rounded-lg shadow-md">
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3 text-center">Tablas de la Base de Datos</h4>
+                            <div class="flex justify-center">
+                                <img src="base de datos/tablas.png" alt="Tablas de la Base de Datos" class="max-w-full h-auto rounded-lg shadow-md">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Functional and Non-Functional Requirements Section -->
+            <section id="functional-requirements" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Requerimientos Funcionales y No Funcionales</h2>
+                <p class="text-gray-600 mb-6">A continuación se detallan los Requerimientos funcionales y no funcionales que guían el desarrollo y funcionamiento de esta aplicación:</p>
+                
+                <div class="grid grid-cols-1 gap-8">
+                    <!-- Functional Requirements -->
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-cogs text-blue-500 mr-3"></i>
+                            Requerimientos Funcionales
+                        </h3>
+                        <p class="text-gray-700 mb-4">Los requerimientos funcionales definen qué debe hacer el sistema en términos de sus funcionalidades y características:</p>
+                        
+                        <div class="overflow-x-auto shadow-lg rounded-lg">
+                            <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                                <thead>
+                                    <tr class="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+                                        <th class="py-3 px-4 text-left font-semibold">ID</th>
+                                        <th class="py-3 px-4 text-left font-semibold">Categoría</th>
+                                        <th class="py-3 px-4 text-left font-semibold">Descripción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-001</td>
+                                        <td class="py-3 px-4 text-gray-700">Gestión de Usuarios</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir el registro de nuevos usuarios con identificación única, nombre, apellido y contraseña.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-002</td>
+                                        <td class="py-3 px-4 text-gray-700">Gestión de Usuarios</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir el inicio de sesión de usuarios registrados mediante identificación y contraseña.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-003</td>
+                                        <td class="py-3 px-4 text-gray-700">Gestión de Usuarios</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los usuarios actualizar su información personal y contraseña.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-004</td>
+                                        <td class="py-3 px-4 text-gray-700">Gestión de Usuarios</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir el cierre de sesión seguro de los usuarios.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-005</td>
+                                        <td class="py-3 px-4 text-gray-700">Gestión de Tareas</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los usuarios crear nuevas tareas con título, descripción y fecha límite.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-006</td>
+                                        <td class="py-3 px-4 text-gray-700">Gestión de Tareas</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe mostrar a los usuarios una lista de todas sus tareas.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-007</td>
+                                        <td class="py-3 px-4 text-gray-700">Gestión de Tareas</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los usuarios editar sus tareas existentes.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-008</td>
+                                        <td class="py-3 px-4 text-gray-700">Gestión de Tareas</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los usuarios eliminar sus tareas.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-009</td>
+                                        <td class="py-3 px-4 text-gray-700">Gestión de Tareas</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema no debe permitir que un usuario tenga dos tareas con el mismo título.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-010</td>
+                                        <td class="py-3 px-4 text-gray-700">Validaciones</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe validar que la identificación del usuario tenga al menos 8 dígitos numéricos.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-011</td>
+                                        <td class="py-3 px-4 text-gray-700">Validaciones</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe validar que las contraseñas tengan al menos 6 caracteres.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-012</td>
+                                        <td class="py-3 px-4 text-gray-700">Validaciones</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe validar que los títulos de las tareas tengan entre 5 y 100 caracteres.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-013</td>
+                                        <td class="py-3 px-4 text-gray-700">Validaciones</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe validar que las descripciones de las tareas tengan al menos 10 caracteres.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-014</td>
+                                        <td class="py-3 px-4 text-gray-700">Validaciones</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe validar que las fechas límite de las tareas sean futuras.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Non-Functional Requirements -->
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-tachometer-alt text-orange-500 mr-3"></i>
+                            Requerimientos no funcionales
+                        </h3>
+                        <p class="text-gray-700 mb-4">Los Requerimientos no funcionales definen cómo debe comportarse el sistema en términos de calidad, rendimiento y restricciones:</p>
+                        
+                        <div class="overflow-x-auto shadow-lg rounded-lg">
+                            <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                                <thead>
+                                    <tr class="bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+                                        <th class="py-3 px-4 text-left font-semibold">ID</th>
+                                        <th class="py-3 px-4 text-left font-semibold">Categoría</th>
+                                        <th class="py-3 px-4 text-left font-semibold">Descripción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-001</td>
+                                        <td class="py-3 px-4 text-gray-700">Rendimiento</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe responder a las solicitudes del usuario en menos de 2 segundos bajo carga normal.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-002</td>
+                                        <td class="py-3 px-4 text-gray-700">Rendimiento</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe ser capaz de manejar al menos 100 usuarios concurrentes.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-003</td>
+                                        <td class="py-3 px-4 text-gray-700">Rendimiento</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe mantener tiempos de respuesta de base de datos menores a 500ms para operaciones comunes.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-004</td>
+                                        <td class="py-3 px-4 text-gray-700">Seguridad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe almacenar las contraseñas de los usuarios utilizando hashing seguro (Werkzeug).</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-005</td>
+                                        <td class="py-3 px-4 text-gray-700">Seguridad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe proteger las rutas mediante autenticación JWT.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-006</td>
+                                        <td class="py-3 px-4 text-gray-700">Seguridad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe expirar los tokens JWT después de 1 hora de inactividad.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-007</td>
+                                        <td class="py-3 px-4 text-gray-700">Seguridad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe utilizar conexiones SSL/TLS para comunicarse con la base de datos.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-008</td>
+                                        <td class="py-3 px-4 text-gray-700">Disponibilidad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe tener una disponibilidad del 99.5% durante el horario comercial.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-009</td>
+                                        <td class="py-3 px-4 text-gray-700">Confiabilidad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe manejar errores de manera elegante y proporcionar mensajes de error útiles.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-010</td>
+                                        <td class="py-3 px-4 text-gray-700">Confiabilidad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe realizar rollback automático en caso de errores de base de datos.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-011</td>
+                                        <td class="py-3 px-4 text-gray-700">Usabilidad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe ser completamente responsivo y funcionar en dispositivos móviles y de escritorio.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-012</td>
+                                        <td class="py-3 px-4 text-gray-700">Usabilidad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe proporcionar retroalimentación visual inmediata para todas las acciones del usuario.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-013</td>
+                                        <td class="py-3 px-4 text-gray-700">Usabilidad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe presentar mensajes de error comprensibles en español.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-014</td>
+                                        <td class="py-3 px-4 text-gray-700">Mantenibilidad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe seguir una arquitectura modular basada en blueprints de Flask.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-015</td>
+                                        <td class="py-3 px-4 text-gray-700">Mantenibilidad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe utilizar migraciones de base de datos para gestionar cambios en el esquema.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-016</td>
+                                        <td class="py-3 px-4 text-gray-700">Mantenibilidad</td>
+                                        <td class="py-3 px-4 text-gray-700">El código debe estar completamente documentado con docstrings en español.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-100">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-balance-scale text-blue-600 mr-3"></i>
+                        Priorización de Requerimientos
+                    </h3>
+                    <p class="text-gray-700 mb-4">Los Requerimientos se han priorizado según su importancia para el funcionamiento básico del sistema:</p>
+                    
+                    <div class="overflow-x-auto shadow-lg rounded-lg">
+                            <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="py-3 px-4 text-left text-gray-700 font-semibold border-b">Prioridad</th>
+                                    <th class="py-3 px-4 text-left text-gray-700 font-semibold border-b">Requerimientos Incluidos</th>
+                                    <th class="py-3 px-4 text-left text-gray-700 font-semibold border-b">Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-200 hover:bg-red-50">
+                                    <td class="py-3 px-4 font-medium text-red-800">Alta Prioridad</td>
+                                    <td class="py-3 px-4 text-gray-700">RF-001 al RF-004, RNF-004, RNF-005</td>
+                                    <td class="py-3 px-4 text-gray-700">Requerimientos esenciales para el funcionamiento básico del sistema</td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-yellow-50 bg-gray-50">
+                                    <td class="py-3 px-4 font-medium text-yellow-800">Media Prioridad</td>
+                                    <td class="py-3 px-4 text-gray-700">RF-005 al RF-014, RNF-001, RNF-006 al RNF-013</td>
+                                    <td class="py-3 px-4 text-gray-700">Requerimientos importantes para una experiencia completa</td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-green-50">
+                                    <td class="py-3 px-4 font-medium text-green-800">Baja Prioridad</td>
+                                    <td class="py-3 px-4 text-gray-700">RNF-002, RNF-003, RNF-014 al RNF-016</td>
+                                    <td class="py-3 px-4 text-gray-700">Requerimientos deseables pero no críticos</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- API Endpoints Section -->
+            <section id="api-endpoints" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">API Endpoints que Desarrollé</h2>
+                <p class="text-gray-600 mb-6">Creé una API RESTful con endpoints específicos para cada operación CRUD, protegidos con autenticación JWT:</p>
+                
+                <div class="space-y-6">
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded mr-3">POST</span>
+                                /auth/registro
+                            </h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este endpoint registra un nuevo usuario en el sistema.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Parámetros</h4>
+                                    <ul class="text-gray-700 space-y-1">
+                                        <li><strong>identificacion</strong> (requerido): Identificación única del usuario (8+ dígitos)</li>
+                                        <li><strong>nombre</strong> (requerido): Nombre del usuario</li>
+                                        <li><strong>apellido</strong> (requerido): Apellido del usuario</li>
+                                        <li><strong>contrasena</strong> (requerido): Contraseña (6+ caracteres)</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Respuesta</h4>
+                                    <div class="bg-gray-800 text-gray-100 rounded-lg p-3 font-mono text-sm overflow-x-auto">
+<pre>{
+  "mensaje": "Usuario registrado exitosamente"
+}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-3">POST</span>
+                                /auth/login
+                            </h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este endpoint autentica a un usuario y devuelve un token JWT.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Parámetros</h4>
+                                    <ul class="text-gray-700 space-y-1">
+                                        <li><strong>identificacion</strong> (requerido): Identificación del usuario</li>
+                                        <li><strong>contrasena</strong> (requerido): Contraseña del usuario</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Respuesta</h4>
+                                    <div class="bg-gray-800 text-gray-100 rounded-lg p-3 font-mono text-sm overflow-x-auto">
+<pre>{
+  "mensaje": "Inicio de sesión exitoso",
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+  "usuario": {
+    "id": 1,
+    "identificacion": "12345678",
+    "nombre": "Juan",
+    "apellido": "Pérez"
+  }
+}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded mr-3">GET</span>
+                                /auth/perfil
+                            </h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este endpoint obtiene la información del perfil del usuario autenticado.</p>
+                            <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                                <div class="text-green-400 mb-2"># Requiere encabezado Authorization: Bearer &lt;token&gt;</div>
+<pre>{
+  "usuario": {
+    "id": 1,
+    "identificacion": "12345678",
+    "nombre": "Juan",
+    "apellido": "Pérez",
+    "creado_en": "2023-06-15T10:30:00",
+    "actualizado_en": "2023-06-15T10:30:00"
+  }
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded mr-3">PUT</span>
+                                /auth/perfil
+                            </h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este endpoint actualiza la información del perfil del usuario autenticado.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Parámetros</h4>
+                                    <ul class="text-gray-700 space-y-1">
+                                        <li><strong>nombre</strong> (opcional): Nuevo nombre del usuario</li>
+                                        <li><strong>apellido</strong> (opcional): Nuevo apellido del usuario</li>
+                                        <li><strong>identificacion</strong> (opcional): Nueva identificación del usuario</li>
+                                        <li><strong>contrasena_actual</strong> (opcional): Contraseña actual para cambio de contraseña</li>
+                                        <li><strong>nueva_contrasena</strong> (opcional): Nueva contraseña</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Respuesta</h4>
+                                    <div class="bg-gray-800 text-gray-100 rounded-lg p-3 font-mono text-sm overflow-x-auto">
+<pre>{
+  "mensaje": "Perfil actualizado exitosamente",
+  "usuario": {
+    "id": 1,
+    "identificacion": "87654321",
+    "nombre": "Carlos",
+    "apellido": "González"
+  }
+}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded mr-3">GET</span>
+                                /tareas/
+                            </h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este endpoint obtiene todas las tareas del usuario autenticado, ordenadas por fecha de creación descendente.</p>
+                            <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                                <div class="text-green-400 mb-2"># Requiere encabezado Authorization: Bearer &lt;token&gt;</div>
+<pre>[
+  {
+    "id": 1,
+    "usuario_id": 1,
+    "titulo": "Preparar presentación",
+    "descripcion": "Crear diapositivas para la reunión de mañana",
+    "fecha_limite": "2023-06-20",
+    "creado_en": "2023-06-15T10:30:00",
+    "actualizado_en": "2023-06-15T10:30:00"
+  },
+  {
+    "id": 2,
+    "usuario_id": 1,
+    "titulo": "Revisar código",
+    "descripcion": "Revisar el código del nuevo módulo",
+    "fecha_limite": "2023-06-25",
+    "creado_en": "2023-06-16T14:45:00",
+    "actualizado_en": "2023-06-16T14:45:00"
+  }
+]</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-3">POST</span>
+                                /tareas/
+                            </h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este endpoint crea una nueva tarea para el usuario autenticado.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Parámetros</h4>
+                                    <ul class="text-gray-700 space-y-1">
+                                        <li><strong>titulo</strong> (requerido): Título de la tarea (5-100 caracteres)</li>
+                                        <li><strong>descripcion</strong> (opcional): Descripción detallada (10+ caracteres)</li>
+                                        <li><strong>fecha_limite</strong> (opcional): Fecha límite en formato YYYY-MM-DD</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Respuesta</h4>
+                                    <div class="bg-gray-800 text-gray-100 rounded-lg p-3 font-mono text-sm overflow-x-auto">
+<pre>{
+  "id": 3,
+  "usuario_id": 1,
+  "titulo": "Nueva tarea",
+  "descripcion": "Descripción de la nueva tarea",
+  "fecha_limite": "2023-06-30",
+  "creado_en": "2023-06-17T09:15:00",
+  "actualizado_en": "2023-06-17T09:15:00"
+}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded mr-3">PUT</span>
+                                /tareas/&lt;id&gt;
+                            </h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este endpoint actualiza una tarea específica del usuario autenticado.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Parámetros</h4>
+                                    <ul class="text-gray-700 space-y-1">
+                                        <li><strong>titulo</strong> (opcional): Nuevo título de la tarea</li>
+                                        <li><strong>descripcion</strong> (opcional): Nueva descripción</li>
+                                        <li><strong>fecha_limite</strong> (opcional): Nueva fecha límite</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Respuesta</h4>
+                                    <div class="bg-gray-800 text-gray-100 rounded-lg p-3 font-mono text-sm overflow-x-auto">
+<pre>{
+  "id": 1,
+  "usuario_id": 1,
+  "titulo": "Tarea actualizada",
+  "descripcion": "Descripción actualizada",
+  "fecha_limite": "2023-07-01",
+  "creado_en": "2023-06-15T10:30:00",
+  "actualizado_en": "2023-06-17T11:20:00"
+}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded mr-3">DELETE</span>
+                                /tareas/&lt;id&gt;
+                            </h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este endpoint elimina una tarea específica del usuario autenticado.</p>
+                            <div class="bg-gray-800 text-gray-100 rounded-lg p-3 font-mono text-sm overflow-x-auto">
+<pre>{
+  "mensaje": "Tarea eliminada exitosamente"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Modules Section -->
+            <section id="modules" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Módulos JavaScript que Desarrollé</h2>
+                <p class="text-gray-600 mb-6">
+                Creé una arquitectura modular en JavaScript ES6 para organizar mejor el código frontend y facilitar su mantenimiento. Cada módulo tiene una responsabilidad específica y se comunica con otros a través de funciones exportadas e importadas.
+            </p>
+            
+            <div class="space-y-6">
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                        <h3 class="font-bold text-gray-800">auth.js</h3>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este módulo maneja toda la lógica de autenticación, incluyendo registro, inicio de sesión, cierre de sesión y gestión del perfil de usuario.</p>
+                        <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>
+// Funciones exportadas principales
+export async function registrarUsuario(datos) { ... }
+export async function iniciarSesion(credenciales) { ... }
+export async function cerrarSesion() { ... }
+export async function obtenerPerfil() { ... }
+export async function actualizarPerfil(datos) { ... }
+
+// Manejo del token JWT
+function guardarToken(token) { ... }
+function obtenerToken() { ... }
+function eliminarToken() { ... }
+</pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                        <h3 class="font-bold text-gray-800">tasks.js</h3>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este módulo se encarga de todas las operaciones relacionadas con las tareas: crear, leer, actualizar y eliminar.</p>
+                        <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>
+// Funciones exportadas principales
+export async function obtenerTareas() { ... }
+export async function crearTarea(datos) { ... }
+export async function actualizarTarea(id, datos) { ... }
+export async function eliminarTarea(id) { ... }
+
+// Formateo y validación
+export function formatearFecha(fecha) { ... }
+export function validarTarea(datos) { ... }
+</pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                        <h3 class="font-bold text-gray-800">ui.js</h3>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este módulo maneja toda la manipulación del DOM y la interacción con el usuario, incluyendo mostrar/ocultar modales, actualizar la interfaz y manejar eventos.</p>
+                        <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>
+// Funciones exportadas principales
+export function mostrarTareas(tareas) { ... }
+export function mostrarModal(id) { ... }
+export function ocultarModal(id) { ... }
+export function mostrarMensaje(mensaje, tipo) { ... }
+export function actualizarInterfazUsuario(usuario) { ... }
+
+// Event listeners
+export function inicializarEventos() { ... }
+</pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                        <h3 class="font-bold text-gray-800">utils.js</h3>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este módulo contiene funciones utilitarias reutilizables en toda la aplicación, como formateo de fechas, validaciones y manejo de errores.</p>
+                        <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>
+// Funciones exportadas principales
+export function formatearFechaISO(fecha) { ... }
+export function validarIdentificacion(identificacion) { ... }
+export function validarContrasena(contrasena) { ... }
+export function manejarError(error) { ... }
+export function obtenerElemento(id) { ... }
+
+// Constantes y configuraciones
+export const API_BASE_URL = '...';
+export const ESTADOS_HTTP = { ... };
+</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+            <!-- Installation Section -->
+            <section id="installation" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Cómo Instalar y Ejecutar el Proyecto</h2>
+                <p class="text-gray-600 mb-6">Te explicaré paso a paso cómo configurar este Gestor de Tareas en tu entorno local:</p>
+                
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                        <h3 class="font-bold text-gray-800">Requisitos Previos</h3>
+                    </div>
+                    <p class="text-gray-700">Antes de comenzar, asegúrate de tener instalados Python 3.8+ y pip en tu sistema.</p>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="border border-gray-200 rounded-lg p-5">
+                        <h3 class="font-bold text-gray-800 text-lg mb-3 flex items-center">
+                            <span class="bg-blue-100 text-blue-800 w-8 h-8 rounded-full flex items-center justify-center mr-3">1</span>
+                            Clonar el Repositorio
+                        </h3>
+                        <p class="text-gray-700 mb-3">Primero, clona el repositorio en tu máquina local:</p>
+                        <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>git clone &lt;url-del-repositorio&gt;
+cd gestor_tareas</pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-5">
+                        <h3 class="font-bold text-gray-800 text-lg mb-3 flex items-center">
+                            <span class="bg-blue-100 text-blue-800 w-8 h-8 rounded-full flex items-center justify-center mr-3">2</span>
+                            Crear un Entorno Virtual
+                        </h3>
+                        <p class="text-gray-700 mb-3">Crea y activa un entorno virtual para aislar las dependencias:</p>
+                        <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre># En Windows
+python -m venv venv
+venv\Scripts\activate
+
+# En macOS/Linux
+python3 -m venv venv
+source venv/bin/activate</pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-5">
+                        <h3 class="font-bold text-gray-800 text-lg mb-3 flex items-center">
+                            <span class="bg-blue-100 text-blue-800 w-8 h-8 rounded-full flex items-center justify-center mr-3">3</span>
+                            Instalar Dependencias
+                        </h3>
+                        <p class="text-gray-700 mb-3">Instala las dependencias del proyecto usando pip:</p>
+                        <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>pip install -r requirements.txt</pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-5">
+                        <h3 class="font-bold text-gray-800 text-lg mb-3 flex items-center">
+                            <span class="bg-blue-100 text-blue-800 w-8 h-8 rounded-full flex items-center justify-center mr-3">4</span>
+                            Configurar Variables de Entorno
+                        </h3>
+                        <p class="text-gray-700 mb-3">Crea un archivo .env basado en el .env.example con tu configuración de Neon:</p>
+                        <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>DATABASE_URL=postgresql://usuario:contraseña@host/neondb?sslmode=require
+JWT_SECRET_KEY=tu_clave_secreta_segura
+FLASK_ENV=development</pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-5">
+                        <h3 class="font-bold text-gray-800 text-lg mb-3 flex items-center">
+                            <span class="bg-blue-100 text-blue-800 w-8 h-8 rounded-full flex items-center justify-center mr-3">5</span>
+                            Ejecutar Migraciones
+                        </h3>
+                        <p class="text-gray-700 mb-3">Ejecuta las migraciones para crear las tablas en la base de datos:</p>
+                        <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>flask db upgrade</pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-5">
+                        <h3 class="font-bold text-gray-800 text-lg mb-3 flex items-center">
+                            <span class="bg-blue-100 text-blue-800 w-8 h-8 rounded-full flex items-center justify-center mr-3">6</span>
+                            Iniciar la Aplicación
+                        </h3>
+                        <p class="text-gray-700 mb-3">Finalmente, inicia el servidor de desarrollo:</p>
+                        <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>python run.py</pre>
+                        </div>
+                        <p class="text-gray-700 mt-3">La aplicación estará disponible en <code class="bg-gray-100 px-2 py-1 rounded">http://localhost:5000</code></p>
+                    </div>
+                </div>
+            </section>
+
+
+
+            <!-- Diagrams Section -->
+            <section id="diagrams" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Diagramas del Sistema</h2>
+                <p class="text-gray-600 mb-6">Aquí te presento diagramas que ilustran la arquitectura y funcionamiento del sistema:</p>
+                
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-xl mb-4 flex items-center">
+                            <i class="fas fa-sitemap text-blue-500 mr-3"></i>
+                            Arquitectura General
+                        </h3>
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <div class="flex flex-col items-center">
+                                <div class="flex items-center mb-6">
+                                    <div class="bg-blue-100 text-blue-800 rounded-lg p-4 mr-4">
+                                        <i class="fas fa-desktop text-2xl"></i>
+                                    </div>
+                                    <div class="text-center">
+                                        <h4 class="font-bold text-gray-800">Cliente (Navegador)</h4>
+                                        <p class="text-gray-600 text-sm">HTML, CSS, JavaScript</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center mx-4 mb-6">
+                                    <i class="fas fa-exchange-alt text-gray-400 text-2xl"></i>
+                                </div>
+                                
+                                <div class="flex items-center mb-6">
+                                    <div class="bg-green-100 text-green-800 rounded-lg p-4 mr-4">
+                                        <i class="fas fa-server text-2xl"></i>
+                                    </div>
+                                    <div class="text-center">
+                                        <h4 class="font-bold text-gray-800">Servidor (Flask)</h4>
+                                        <p class="text-gray-600 text-sm">API REST, Autenticación JWT</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center mx-4">
+                                    <i class="fas fa-exchange-alt text-gray-400 text-2xl"></i>
+                                </div>
+                                
+                                <div class="flex items-center mt-6">
+                                    <div class="bg-purple-100 text-purple-800 rounded-lg p-4 mr-4">
+                                        <i class="fas fa-database text-2xl"></i>
+                                    </div>
+                                    <div class="text-center">
+                                        <h4 class="font-bold text-gray-800">Base de Datos (Neon)</h4>
+                                        <p class="text-gray-600 text-sm">PostgreSQL Serverless</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-xl mb-4 flex items-center">
+                            <i class="fas fa-project-diagram text-green-500 mr-3"></i>
+                            Flujo de Autenticación
+                        </h3>
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <div class="flex flex-wrap justify-center items-center">
+                                <div class="m-4 text-center">
+                                    <div class="bg-blue-100 text-blue-800 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2">
+                                        <i class="fas fa-user-plus text-xl"></i>
+                                    </div>
+                                    <p class="font-medium">1. Registro</p>
+                                </div>
+                                
+                                <div class="mx-4">
+                                    <i class="fas fa-arrow-right text-gray-400"></i>
+                                </div>
+                                
+                                <div class="m-4 text-center">
+                                    <div class="bg-green-100 text-green-800 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2">
+                                        <i class="fas fa-key text-xl"></i>
+                                    </div>
+                                    <p class="font-medium">2. Login</p>
+                                </div>
+                                
+                                <div class="mx-4">
+                                    <i class="fas fa-arrow-right text-gray-400"></i>
+                                </div>
+                                
+                                <div class="m-4 text-center">
+                                    <div class="bg-yellow-100 text-yellow-800 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2">
+                                        <i class="fas fa-ticket-alt text-xl"></i>
+                                    </div>
+                                    <p class="font-medium">3. JWT Token</p>
+                                </div>
+                                 
+                                <div class="mx-4">
+                                    <i class="fas fa-arrow-right text-gray-400"></i>
+                                </div>
+                                 
+                                <div class="m-4 text-center">
+                                    <div class="bg-purple-100 text-purple-800 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2">
+                                        <i class="fas fa-shield-alt text-xl"></i>
+                                    </div>
+                                    <p class="font-medium">4. Acceso Protegido</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Diagrama de Clases -->
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-xl mb-4 flex items-center">
+                            <i class="fas fa-object-group text-indigo-500 mr-3"></i>
+                            Diagrama de Clases
+                        </h3>
+                        <div class="bg-gray-50 rounded-lg p-6 flex justify-center">
+                            <img src="diagramas/diagrama_clases.png" alt="Diagrama de Clases" class="max-w-full h-auto rounded-lg shadow-md">
+                        </div>
+                    </div>
+                    
+                    <!-- Diagrama de Componentes -->
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-xl mb-4 flex items-center">
+                            <i class="fas fa-puzzle-piece text-teal-500 mr-3"></i>
+                            Diagrama de Componentes
+                        </h3>
+                        <div class="bg-gray-50 rounded-lg p-6 flex justify-center">
+                            <img src="diagramas/diagrama_componentes.png" alt="Diagrama de Componentes" class="max-w-full h-auto rounded-lg shadow-md">
+                        </div>
+                    </div>
+                    
+                    <!-- Diagrama de Flujo -->
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-xl mb-4 flex items-center">
+                            <i class="fas fa-project-diagram text-orange-500 mr-3"></i>
+                            Diagrama de Flujo
+                        </h3>
+                        <div class="bg-gray-50 rounded-lg p-6 flex justify-center">
+                            <img src="diagramas/diagrama_flujo.png" alt="Diagrama de Flujo" class="max-w-full h-auto rounded-lg shadow-md">
+                        </div>
+                    </div>
+                    
+                    <!-- Diagrama de Objetos -->
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-xl mb-4 flex items-center">
+                            <i class="fas fa-cube text-pink-500 mr-3"></i>
+                            Diagrama de Objetos
+                        </h3>
+                        <div class="bg-gray-50 rounded-lg p-6 flex justify-center">
+                            <img src="diagramas/diagrama_objetos.png" alt="Diagrama de Objetos" class="max-w-full h-auto rounded-lg shadow-md">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Functional and Non-Functional Requirements Section -->
+            <section id="functional-requirements" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Requerimientos Funcionales y No Funcionales</h2>
+                <p class="text-gray-600 mb-6">A continuación se detallan los Requerimientos funcionales y no funcionales que guían el desarrollo y funcionamiento de esta aplicación:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Functional Requirements -->
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-cogs text-blue-500 mr-3"></i>
+                            Requerimientos Funcionales
+                        </h3>
+                        <p class="text-gray-700 mb-4">Los Requerimientos funcionales definen qué debe hacer el sistema en términos de sus funcionalidades y características:</p>
+                        
+                        <div class="space-y-4">
+                            <div class="border-l-4 border-blue-500 pl-4 py-2 bg-blue-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Gestión de Usuarios</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-user-plus text-blue-500 mt-1 mr-2"></i>
+                                        <span>RF-001: El sistema debe permitir el registro de nuevos usuarios con identificación única, nombre, apellido y contraseña.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-sign-in-alt text-blue-500 mt-1 mr-2"></i>
+                                        <span>RF-002: El sistema debe permitir el inicio de sesión de usuarios registrados mediante identificación y contraseña.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-user-edit text-blue-500 mt-1 mr-2"></i>
+                                        <span>RF-003: El sistema debe permitir a los usuarios actualizar su información personal y contraseña.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-sign-out-alt text-blue-500 mt-1 mr-2"></i>
+                                        <span>RF-004: El sistema debe permitir el cierre de sesión seguro de los usuarios.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="border-l-4 border-green-500 pl-4 py-2 bg-green-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Gestión de Tareas</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-plus-circle text-green-500 mt-1 mr-2"></i>
+                                        <span>RF-005: El sistema debe permitir a los usuarios crear nuevas tareas con título, descripción y fecha límite.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-list text-green-500 mt-1 mr-2"></i>
+                                        <span>RF-006: El sistema debe mostrar a los usuarios una lista de todas sus tareas.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-edit text-green-500 mt-1 mr-2"></i>
+                                        <span>RF-007: El sistema debe permitir a los usuarios editar sus tareas existentes.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-trash-alt text-green-500 mt-1 mr-2"></i>
+                                        <span>RF-008: El sistema debe permitir a los usuarios eliminar sus tareas.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-exclamation-triangle text-green-500 mt-1 mr-2"></i>
+                                        <span>RF-009: El sistema no debe permitir que un usuario tenga dos tareas con el mismo título.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="border-l-4 border-purple-500 pl-4 py-2 bg-purple-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Validaciones y Reglas de Negocio</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span>RF-010: El sistema debe validar que la identificación del usuario tenga al menos 8 dígitos numéricos.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span>RF-011: El sistema debe validar que las contraseñas tengan al menos 6 caracteres.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span>RF-012: El sistema debe validar que los títulos de las tareas tengan entre 5 y 100 caracteres.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span>RF-013: El sistema debe validar que las descripciones de las tareas tengan al menos 10 caracteres.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span>RF-014: El sistema debe validar que las fechas límite de las tareas sean futuras.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Non-Functional Requirements -->
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-tachometer-alt text-orange-500 mr-3"></i>
+                            Requerimientos No Funcionales
+                        </h3>
+                        <p class="text-gray-700 mb-4">Los Requerimientos no funcionales definen cómo debe comportarse el sistema en términos de calidad, rendimiento y restricciones:</p>
+                        
+                        <div class="space-y-4">
+                            <div class="border-l-4 border-yellow-500 pl-4 py-2 bg-yellow-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Rendimiento</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-bolt text-yellow-500 mt-1 mr-2"></i>
+                                        <span>RNF-001: El sistema debe responder a las solicitudes del usuario en menos de 2 segundos bajo carga normal.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-server text-yellow-500 mt-1 mr-2"></i>
+                                        <span>RNF-002: El sistema debe ser capaz de manejar al menos 100 usuarios concurrentes.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-database text-yellow-500 mt-1 mr-2"></i>
+                                        <span>RNF-003: El sistema debe mantener tiempos de respuesta de base de datos menores a 500ms para operaciones comunes.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="border-l-4 border-red-500 pl-4 py-2 bg-red-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Seguridad</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-lock text-red-500 mt-1 mr-2"></i>
+                                        <span>RNF-004: El sistema debe almacenar las contraseñas de los usuarios utilizando hashing seguro (Werkzeug).</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-shield-alt text-red-500 mt-1 mr-2"></i>
+                                        <span>RNF-005: El sistema debe proteger las rutas mediante autenticación JWT.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-user-secret text-red-500 mt-1 mr-2"></i>
+                                        <span>RNF-006: El sistema debe expirar los tokens JWT después de 1 hora de inactividad.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-network-wired text-red-500 mt-1 mr-2"></i>
+                                        <span>RNF-007: El sistema debe utilizar conexiones SSL/TLS para comunicarse con la base de datos.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="border-l-4 border-indigo-500 pl-4 py-2 bg-indigo-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Disponibilidad y Confiabilidad</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-umbrella text-indigo-500 mt-1 mr-2"></i>
+                                        <span>RNF-008: El sistema debe tener una disponibilidad del 99.5% durante el horario comercial.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-sync-alt text-indigo-500 mt-1 mr-2"></i>
+                                        <span>RNF-009: El sistema debe manejar errores de manera elegante y proporcionar mensajes de error útiles.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-undo text-indigo-500 mt-1 mr-2"></i>
+                                        <span>RNF-010: El sistema debe realizar rollback automático en caso de errores de base de datos.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="border-l-4 border-teal-500 pl-4 py-2 bg-teal-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Usabilidad</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-mobile-alt text-teal-500 mt-1 mr-2"></i>
+                                        <span>RNF-011: El sistema debe ser completamente responsivo y funcionar en dispositivos móviles y de escritorio.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-eye text-teal-500 mt-1 mr-2"></i>
+                                        <span>RNF-012: El sistema debe proporcionar retroalimentación visual inmediata para todas las acciones del usuario.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-language text-teal-500 mt-1 mr-2"></i>
+                                        <span>RNF-013: El sistema debe presentar mensajes de error comprensibles en español.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="border-l-4 border-pink-500 pl-4 py-2 bg-pink-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Mantenibilidad</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-code text-pink-500 mt-1 mr-2"></i>
+                                        <span>RNF-014: El sistema debe seguir una arquitectura modular basada en blueprints de Flask.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-database text-pink-500 mt-1 mr-2"></i>
+                                        <span>RNF-015: El sistema debe utilizar migraciones de base de datos para gestionar cambios en el esquema.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-comments text-pink-500 mt-1 mr-2"></i>
+                                        <span>RNF-016: El código debe estar completamente documentado con docstrings en español.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-100">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-balance-scale text-blue-600 mr-3"></i>
+                        Priorización de Requisitos
+                    </h3>
+                    <p class="text-gray-700 mb-4">Los Requerimientos se han priorizado según su importancia para el funcionamiento básico del sistema:</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-red-100 border-l-4 border-red-500 p-4 rounded-r">
+                            <h4 class="font-bold text-red-800 mb-2">Alta Prioridad</h4>
+                            <p class="text-red-700 text-sm">Requerimientos esenciales para el funcionamiento básico del sistema (RF-001 al RF-004, RNF-004, RNF-005)</p>
+                        </div>
+                        
+                        <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-r">
+                            <h4 class="font-bold text-yellow-800 mb-2">Media Prioridad</h4>
+                            <p class="text-yellow-700 text-sm">Requerimientos importantes para una experiencia completa (RF-005 al RF-014, RNF-001, RNF-006 al RNF-013)</p>
+                        </div>
+                        
+                        <div class="bg-green-100 border-l-4 border-green-500 p-4 rounded-r">
+                            <h4 class="font-bold text-green-800 mb-2">Baja Prioridad</h4>
+                            <p class="text-green-700 text-sm">Requerimientos deseables pero no críticos (RNF-002, RNF-003, RNF-014 al RNF-016)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Scroll to Top Button -->
+            <button id="scrollToTop" class="scroll-to-top hidden fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 z-50">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+
+            <script>
+                // Show section function
+                function showSection(sectionId) {
+                    // Hide all sections
+                    document.querySelectorAll('.section-content').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Show selected section
+                    const targetSection = document.getElementById(sectionId);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                    }
+                    
+                    // Update desktop navigation
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('data-section') === sectionId) {
+                            link.classList.add('active');
+                        }
+                    });
+                    
+                    // Update mobile navigation
+                    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('data-section') === sectionId) {
+                            link.classList.add('active');
+                        }
+                    });
+                    
+                    // Update header navigation
+                    document.querySelectorAll('.header-nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('data-section') === sectionId) {
+                            link.classList.add('active');
+                        }
+                    });
+                    
+                    // Scroll to top smoothly
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
+                
+                // Add click event listeners to all navigation links
+                document.querySelectorAll('.nav-link, .header-nav-link, .mobile-nav-link').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const sectionId = this.getAttribute('data-section');
+                        if (sectionId) {
+                            showSection(sectionId);
+                            closeMobileSidebar();
+                        }
+                    });
+                });
+                
+                // Mobile sidebar functionality
+                const mobileSidebar = document.getElementById('mobile-sidebar');
+                const sidebarOverlay = document.getElementById('sidebar-overlay');
+                const menuToggle = document.getElementById('menu-toggle');
+                const closeSidebar = document.getElementById('close-sidebar');
+                
+                function openMobileSidebar() {
+                    mobileSidebar.classList.add('active');
+                    sidebarOverlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+                
+                function closeMobileSidebar() {
+                    mobileSidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+                
+                menuToggle.addEventListener('click', openMobileSidebar);
+                closeSidebar.addEventListener('click', closeMobileSidebar);
+                sidebarOverlay.addEventListener('click', closeMobileSidebar);
+                
+                // Scroll to top button
+                const scrollToTopButton = document.getElementById('scrollToTop');
+                
+                window.addEventListener('scroll', function() {
+                    if (window.pageYOffset > 300) {
+                        scrollToTopButton.classList.remove('hidden');
+                    } else {
+                        scrollToTopButton.classList.add('hidden');
+                    }
+                });
+                
+                scrollToTopButton.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            </script>
+</body>
+</html>

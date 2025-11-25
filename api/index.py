@@ -1,20 +1,12 @@
 """
-Vercel entry point for the Flask application.
-
-This module serves as the entry point for Vercel deployments,
-initializing the Flask app and making it compatible with Vercel's serverless environment.
+Entry point for Vercel deployment.
+This file initializes the Flask application for use with Vercel.
 """
 
-import os
-import sys
+from app import crear_app
 
-# Add the parent directory to the path so we can import our app
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+# Create the Flask app instance
+app = crear_app()
 
-from app import app
-
-# Vercel expects the application to be available as `application` or `app`
-application = app
-
-if __name__ == "__main__":
-    app.run()
+# Vercel requires the handler to be named "handler"
+handler = app

@@ -1,0 +1,198 @@
+/* ==========================================================================
+   Formularios
+   ========================================================================== */
+
+/* Formularios */
+.form-group {
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.form-group .input-wrapper input,
+.form-group .input-wrapper textarea {
+    padding-left: 2.5rem;
+}
+
+/* Form Section Headers */
+.form-section {
+    margin: 1.5rem 0;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.form-section h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+/* Profile Modal Specific Styles */
+#modal-perfil .form-section h3 {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+#modal-perfil .modal-content {
+    max-width: 550px;
+}
+
+/* Password Toggle Button */
+.toggle-password {
+    position: absolute;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s;
+}
+
+.toggle-password:hover {
+    background-color: #f1f5f9;
+}
+
+.eye-icon {
+    font-size: 1.1rem;
+    color: #94a3b8;
+}
+
+/* Inputs Modernos con Iconos */
+.auth-modal .form-group {
+    margin-bottom: 0.75rem;
+}
+
+.auth-modal .form-group label {
+    margin-bottom: 0.35rem;
+    font-size: 0.85rem;
+}
+
+.auth-modal .form-group input {
+    padding-left: 2.25rem;
+    height: 2.25rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+}
+
+.auth-modal .form-group input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    transform: translateY(-1px);
+}
+
+.auth-modal .form-section {
+    margin: 1.5rem 0 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.auth-modal .form-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+
+/* Layout de Grid para Registro */
+.row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.col {
+    flex: 1;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+@media (max-width: 480px) {
+    .row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .auth-modal .form-group {
+        margin-bottom: 0.65rem;
+    }
+    
+    .auth-modal .form-section {
+        margin: 1.25rem 0 0.65rem;
+    }
+    
+    .auth-modal .form-section h3 {
+        font-size: 0.95rem;
+        margin-bottom: 0.65rem;
+    }
+    
+    .auth-modal .form-group.error .error-msg {
+        font-size: 0.75rem;
+        padding: 0.35rem;
+        margin-top: 0.3rem;
+    }
+    
+    .form-actions,
+    .confirm-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

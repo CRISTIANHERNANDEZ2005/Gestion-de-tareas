@@ -1,0 +1,16 @@
+<!-- Modal Confirmar Eliminación -->
+<div id="modal-eliminar" class="modal">
+    <div class="modal-content confirm-modal">
+        <div class="modal-header">
+            <h2>Confirmar Eliminación</h2>
+            <button type="button" onclick="window.tasksModule.cerrarModalEliminar()" class="modal-close">×</button>
+        </div>
+        <div class="modal-body">
+            <p>¿Estás seguro de que deseas eliminar esta tarea? Esta acción no se puede deshacer.</p>
+            <div class="confirm-actions">
+                <button type="button" onclick="window.tasksModule.cerrarModalEliminar()" class="btn btn-outline">Cancelar</button>
+                <button type="button" id="btn-confirmar-eliminar" class="btn btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>

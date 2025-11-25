@@ -1,72 +1,44 @@
 """
-config.py
-Configuration settings for the Flask application.
-
-This module loads environment variables and provides configuration
-settings for different environments (development, production, testing).
-
-@package GestorTareas
+Módulo de configuración de la aplicación.
+Contiene las configuraciones necesarias para la base de datos, JWT y otras opciones.
 """
 
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
 
-# Load environment variables from .env file
-load_dotenv()
+# Determinar el directorio base del proyecto
+basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, '.env'))
 
+# Mostrar la URL de la base de datos cargada (para propósitos de depuración)
+print(f"DB URL Loaded: {os.environ.get('DATABASE_URL')}")
 
 class Config:
-    """Base configuration class."""
+    """
+    Clase de configuración principal que contiene todas las configuraciones
+    necesarias para la aplicación Flask.
+    """
     
-    # Secret key for session management and CSRF protection
-    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
+    # Clave secreta para sesiones y protección CSRF
+    SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'dev-key-secreta'
     
-    # Database configuration
-    DATABASE_URL = os.getenv('DATABASE_URL')
+    # Clave secreta para JWT
+    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'dev-jwt-key'
     
-    # Flask configuration
-    FLASK_ENV = os.getenv('FLASK_ENV', 'development')
-    DEBUG = FLASK_ENV == 'development'
+    # URL de conexión a la base de datos
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     
-    # JSON configuration
-    JSON_AS_ASCII = False
-    JSONIFY_PRETEND_ASCII = False
+    # Desactivar el seguimiento de modificaciones de SQLAlchemy para mejorar el rendimiento
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     
-    @staticmethod
-    def validate():
-        """Validate required configuration settings."""
-        if not Config.DATABASE_URL:
-            raise ValueError("DATABASE_URL environment variable is required")
+    # Configuración de Pool de Conexiones para evitar desconexiones SSL
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_pre_ping": True,           # Verificar conexiones antes de usarlas
+        "pool_recycle": 300,             # Reciclar conexiones cada 5 minutos
+        "pool_size": 10,                 # Tamaño del pool de conexiones
+        "max_overflow": 20,              # Conexiones adicionales máximas
+    }
 
-
-class DevelopmentConfig(Config):
-    """Development configuration."""
-    DEBUG = True
-    TESTING = False
-
-
-class ProductionConfig(Config):
-    """Production configuration."""
-    DEBUG = False
-    TESTING = False
-
-
-class TestingConfig(Config):
-    """Testing configuration."""
-    DEBUG = True
-    TESTING = True
-
-
-# Configuration dictionary
-config = {
-    'development': DevelopmentConfig,
-    'production': ProductionConfig,
-    'testing': TestingConfig,
-    'default': DevelopmentConfig
-}
-
-
-def get_config():
-    """Get the appropriate configuration based on FLASK_ENV."""
-    env = os.getenv('FLASK_ENV', 'development')
-    return config.get(env, config['default'])
+    # Configuración JWT - Tiempo de expiración del token de acceso (1 hora)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
