@@ -93,13 +93,12 @@ def documentacion():
     return send_from_directory('../documentacion', 'documentation.html')
 
 
-@vistas_bp.route('/base de datos/<path:filename>')
+@vistas_bp.route('/database/<path:filename>')
 def base_datos_static(filename):
     """
     Ruta que sirve archivos estáticos del directorio 'base de datos'.
     """
-    return send_from_directory('../documentacion/base_de_datos', filename)
-
+    return send_from_directory('../documentacion/database', filename)
 
 @vistas_bp.route('/diagramas/<path:filename>')
 def diagramas_static(filename):
