@@ -16,52 +16,39 @@ basándose en la variable de entorno `FLASK_ENV`.
 """
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
 
 # Carga las variables de entorno desde un archivo .env para el desarrollo local.
 load_dotenv()
 
 class Config:
     """
-    Clase de configuración base.
-
-    Contiene los valores por defecto y la configuración común que se aplica a todos
-    los entornos. Las configuraciones específicas de cada entorno heredarán de esta clase.
+    Clase de configuración principal que contiene todas las configuraciones
+    necesarias para la aplicación Flask.
     """
-    # Clave secreta para firmar sesiones, cookies y tokens. Es crucial para la seguridad.
-    SECRET_KEY = os.getenv('SECRET_KEY', 'una-clave-secreta-muy-dificil-de-adivinar')
-
-    # URL de conexión a la base de datos, leída desde las variables de entorno.
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///dev.db')
-
-    # Desactiva el sistema de seguimiento de modificaciones de SQLAlchemy para mejorar el rendimiento.
+    
+    # Clave secreta para sesiones y protección CSRF
+    SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'dev-key-secreta'
+    
+    # Clave secreta para JWT
+    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'dev-jwt-key'
+    
+    # URL de conexión a la base de datos
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    
+    # Desactivar el seguimiento de modificaciones de SQLAlchemy para mejorar el rendimiento
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    
+    # Configuración de Pool de Conexiones para evitar desconexiones SSL
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_pre_ping": True,           # Verificar conexiones antes de usarlas
+        "pool_recycle": 300,             # Reciclar conexiones cada 5 minutos
+        "pool_size": 10,                 # Tamaño del pool de conexiones
+        "max_overflow": 20,              # Conexiones adicionales máximas
+    }
 
-    # --- Configuración del Pool de Conexiones de SQLAlchemy ---
-    # Recicla las conexiones después de 299 segundos para evitar timeouts en la base de datos.
-    SQLALCHEMY_POOL_RECYCLE = 299
-    # Tiempo máximo de espera (en segundos) para obtener una conexión del pool.
-    SQLALCHEMY_POOL_TIMEOUT = 20
-    # Habilita el "pre-ping" que verifica si una conexión del pool está viva antes de usarla.
-    SQLALCHEMY_POOL_PRE_PING = True
-
-    # Modo de depuración de Flask. Se desactiva por defecto por seguridad.
-    DEBUG = False
-
-    # --- Configuración de Flask-JWT-Extended ---
-    # Especifica que los tokens JWT se buscarán en las cookies.
-    JWT_TOKEN_LOCATION = ["cookies"]
-    # Nombre de la cookie que almacenará el token JWT para los administradores.
-    JWT_ACCESS_COOKIE_NAME = "admin_jwt"
-    # Desactiva la protección CSRF integrada en las cookies de JWT, ya que se puede manejar
-    # de forma global con Flask-WTF si es necesario.
-    JWT_COOKIE_CSRF_PROTECT = False
-    # Nombres de cabecera y campo para CSRF (vacíos porque la protección está desactivada).
-    JWT_ACCESS_CSRF_HEADER_NAME = ""
-    JWT_ACCESS_CSRF_FIELD_NAME = ""
-    # Define qué claim del payload del token se usará como identidad del usuario.
-    JWT_IDENTITY_CLAIM = 'user_id'
-    # Tiempo de expiración para el token JWT del administrador (en minutos). 10080 min = 7 días.
-    ADMIN_JWT_EXPIRATION_MINUTES = 10080
+    # Configuración JWT - Tiempo de expiración del token de acceso (1 hora)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
 
 class DevelopmentConfig(Config):
     """Configuración para el entorno de desarrollo."""
