@@ -27,7 +27,9 @@ class Config:
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'dev-jwt-key'
     
     # URL de conexión a la base de datos
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    # En Vercel, usar la variable de entorno DATABASE_URL
+    # En local, usar sqlite por defecto si no hay DATABASE_URL
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'gestor_tareas.sqlite')
     
     # Desactivar el seguimiento de modificaciones de SQLAlchemy para mejorar el rendimiento
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -42,3 +44,7 @@ class Config:
 
     # Configuración JWT - Tiempo de expiración del token de acceso (1 hora)
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
+    
+    # Configuración específica para Vercel
+    # En Vercel, deshabilitar el modo de depuración
+    DEBUG = os.environ.get('VERCEL_ENV') != 'production'
