@@ -1,11 +1,22 @@
 /**
  * Módulo de Tareas
  * Gestiona la creación, edición, eliminación y visualización de tareas
+ * 
+ * @author Gestor de Tareas
+ * @version 1.0
  */
 
 import { mostrarToast, setButtonLoading, setButtonNormal, mostrarError, limpiarError, validarFechaFutura, logout } from './utils.js';
 
+/**
+ * Clase que representa el módulo de tareas
+ * Gestiona todas las operaciones CRUD de tareas, incluyendo filtrado y ordenamiento
+ */
 class TasksModule {
+    /**
+     * Constructor del módulo de tareas
+     * Inicializa las propiedades y configura los event listeners
+     */
     constructor() {
         this.apiURL = '';
         // Inicializar handlers para evitar duplicados
@@ -25,6 +36,7 @@ class TasksModule {
 
     /**
      * Inicializa los event listeners para las tareas
+     * Configura todos los componentes necesarios para el funcionamiento del módulo
      */
     init() {
         // Verificar si estamos en la página del dashboard
@@ -68,6 +80,7 @@ class TasksModule {
 
     /**
      * Carga las tareas del usuario desde la API
+     * Obtiene las tareas paginadas y filtradas del servidor
      */
     async cargarTareas() {
         const token = localStorage.getItem('token');
@@ -131,7 +144,7 @@ class TasksModule {
             this.renderizarTareas(tareas);
             this.renderizarFiltrosActivos(); // Renderizar los filtros activos
         } catch (error) {
-            console.error('Error cargando tareas:', error);
+            console.error('Error al cargar tareas:', error);
             mostrarToast('Error al cargar tareas', 'error');
             
             // Mostrar mensaje de error en el contenedor
@@ -326,7 +339,8 @@ class TasksModule {
 
     /**
      * Guarda una tarea (crea o actualiza)
-     * @param {Event} e - Evento de submit
+     * Valida el formulario, envía los datos al servidor y procesa la respuesta
+     * @param {Event} e - Evento de submit del formulario
      */
     async guardarTarea(e) {
         e.preventDefault();
@@ -373,7 +387,7 @@ class TasksModule {
                 mostrarToast(result.mensaje, 'error');
             }
         } catch (error) {
-            console.error('Error guardando tarea:', error);
+            console.error('Error al guardar tarea:', error);
             mostrarToast('Error al guardar la tarea', 'error');
         } finally {
             // Restaurar el botón a su estado original
@@ -447,7 +461,7 @@ class TasksModule {
                 mostrarToast('Error al eliminar tarea', 'error');
             }
         } catch (error) {
-            console.error('Error eliminando tarea:', error);
+            console.error('Error al eliminar tarea:', error);
             this.cerrarModalEliminar();
             mostrarToast('Error de conexión', 'error');
         } finally {
@@ -467,6 +481,7 @@ class TasksModule {
 
     /**
      * Valida un formulario verificando que todos los campos requeridos estén completos
+     * y cumplan con los criterios de validación
      * @param {HTMLFormElement} form - Formulario a validar
      * @returns {boolean} - True si es válido, false si no
      */

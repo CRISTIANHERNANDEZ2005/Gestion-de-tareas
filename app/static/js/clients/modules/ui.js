@@ -1,11 +1,22 @@
 /**
  * Módulo de Utilidades de Interfaz de Usuario
  * Gestiona elementos comunes de la interfaz como navegación, validaciones y componentes
+ * 
+ * @author Gestor de Tareas
+ * @version 1.0
  */
 
 import { mostrarToast, setButtonLoading, setButtonNormal, mostrarError, limpiarError, validarIdentificacion, validarNombre, validarContrasena, logout } from './utils.js';
 
+/**
+ * Clase que representa el módulo de utilidades de interfaz de usuario
+ * Gestiona todos los componentes comunes de la interfaz de usuario
+ */
 class UIModule {
+    /**
+     * Constructor del módulo de interfaz de usuario
+     * Inicializa las propiedades y configura los event listeners
+     */
     constructor() {
         // Inicializar handlers para evitar duplicados
         this.inputValidationHandler = null;
@@ -17,6 +28,7 @@ class UIModule {
 
     /**
      * Inicializa los componentes de la interfaz de usuario
+     * Configura todos los componentes necesarios para el funcionamiento del módulo
      */
     init() {
         this.actualizarNav();
@@ -28,6 +40,7 @@ class UIModule {
 
     /**
      * Configura la navegación por teclado para modales
+     * Permite cerrar modales presionando la tecla Escape
      */
     setupKeyboardNavigation() {
         // Cerrar modales con la tecla Escape
@@ -64,6 +77,7 @@ class UIModule {
 
     /**
      * Actualiza la navegación según el estado de autenticación del usuario
+     * Muestra elementos diferentes dependiendo de si el usuario está autenticado o no
      */
     actualizarNav() {
         const navLinks = document.getElementById('nav-links');
@@ -321,6 +335,7 @@ class UIModule {
 
     /**
      * Actualiza el perfil del usuario
+     * Valida el formulario, envía los datos al servidor y procesa la respuesta
      */
     async actualizarPerfil() {
         const form = document.getElementById('perfil-form');
@@ -463,6 +478,7 @@ class UIModule {
 
     /**
      * Configura la validación de formularios
+     * Limpia los errores cuando el usuario comienza a escribir
      */
     setupValidation() {
         const inputs = document.querySelectorAll('input, textarea');
@@ -481,6 +497,7 @@ class UIModule {
 
     /**
      * Configura el toggle de visibilidad de contraseñas
+     * Permite al usuario mostrar/ocultar la contraseña ingresada
      */
     setupPasswordToggle() {
         // Agregar event listeners a todos los botones de toggle de contraseña

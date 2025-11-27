@@ -11,15 +11,11 @@ import os
 
 vistas_bp = Blueprint('vistas', __name__)
 
-
-"""
-Módulo de vistas de la aplicación.
-Contiene las rutas para servir las páginas HTML del frontend.
-"""
 @vistas_bp.route('/')
 def inicio():
     """
     Ruta principal que sirve la página de inicio.
+    Verifica si el usuario tiene un token válido y redirige según corresponda.
     """
     # Verificar si el usuario tiene un token válido
     token = request.cookies.get('token')
@@ -45,8 +41,9 @@ def inicio():
 def login():
     """
     Ruta que sirve la página de inicio de sesión.
+    Verifica si el usuario ya está autenticado para redirigirlo adecuadamente.
     """
-    # Check if user has a valid token in localStorage (via cookie for SSR)
+    # Verificar si el usuario tiene un token válido en las cookies
     return render_template('clients/inicio.html')
 
 @vistas_bp.route('/registro')
@@ -89,11 +86,6 @@ def dashboard():
         flash('Acceso denegado. Debes iniciar sesión para acceder a esta página.', 'error')
         return redirect(url_for('vistas.inicio'))
 
-
-# Rutas para la documentacion
-"""
-Ruta que sirve la documentación técnica del proyecto.
-"""
 @vistas_bp.route('/documentacion')
 def documentacion():
     """
@@ -101,22 +93,28 @@ def documentacion():
     """
     return send_from_directory('../documentacion', 'documentation.html')
 
-"""
-Ruta que sirve los archivos estáticos de la documentación.
-"""
 @vistas_bp.route('/database/<path:filename>')
 def base_datos_static(filename):
     """
     Ruta que sirve archivos estáticos del directorio 'base de datos'.
+    
+    Args:
+        filename (str): Nombre del archivo a servir
+        
+    Returns:
+        Response: Archivo solicitado
     """
     return send_from_directory('../documentacion/database', filename)
 
-"""
-Ruta que sirve los archivos estáticos de los diagramas.
-"""
 @vistas_bp.route('/diagramas/<path:filename>')
 def diagramas_static(filename):
     """
     Ruta que sirve archivos estáticos del directorio 'diagramas'.
+    
+    Args:
+        filename (str): Nombre del archivo a servir
+        
+    Returns:
+        Response: Archivo solicitado
     """
     return send_from_directory('../documentacion/diagramas', filename)

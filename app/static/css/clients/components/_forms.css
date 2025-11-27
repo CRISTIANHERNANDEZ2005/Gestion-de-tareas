@@ -101,6 +101,62 @@
     color: #94a3b8;
 }
 
+/* Password Requirements */
+.password-requirements {
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    background-color: #f8fafc;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+.requirement {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.requirement:last-child {
+    margin-bottom: 0;
+}
+
+.requirement-icon {
+    margin-right: 0.5rem;
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+.requirement.valid .requirement-icon {
+    color: #10b981;
+}
+
+.requirement.valid .requirement-text {
+    color: #0f172a;
+}
+
+.requirement-text {
+    font-weight: 500;
+}
+
+/* Responsive adjustments for password requirements */
+@media (max-width: 480px) {
+    .password-requirements {
+        padding: 0.5rem;
+        margin-top: 0.35rem;
+    }
+    
+    .requirement {
+        font-size: 0.75rem;
+        margin-bottom: 0.2rem;
+    }
+    
+    .requirement-icon {
+        font-size: 0.7rem;
+    }
+}
+
 /* Inputs Modernos con Iconos */
 .auth-modal .form-group {
     margin-bottom: 0.75rem;

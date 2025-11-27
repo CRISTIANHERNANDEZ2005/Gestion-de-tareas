@@ -35,11 +35,29 @@
                 <label for="reg-contrasena">Contraseña</label>
                 <div class="input-wrapper">
                     <span class="input-icon">🔒</span>
-                    <input type="password" id="reg-contrasena" name="contrasena" placeholder="Mínimo 6 caracteres"
-                        required minlength="6">
+                    <input type="password" id="reg-contrasena" name="contrasena" placeholder="Crea una contraseña segura"
+                        required minlength="8">
                     <button type="button" class="toggle-password" data-target="reg-contrasena">
                         <span class="eye-icon">👁️</span>
                     </button>
+                </div>
+                <div class="password-requirements">
+                    <div class="requirement">
+                        <span class="requirement-icon">✓</span>
+                        <span class="requirement-text">Mínimo 8 caracteres</span>
+                    </div>
+                    <div class="requirement">
+                        <span class="requirement-icon">✓</span>
+                        <span class="requirement-text">Al menos una mayúscula</span>
+                    </div>
+                    <div class="requirement">
+                        <span class="requirement-icon">✓</span>
+                        <span class="requirement-text">Al menos una minúscula</span>
+                    </div>
+                    <div class="requirement">
+                        <span class="requirement-icon">✓</span>
+                        <span class="requirement-text">Al menos un número</span>
+                    </div>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Registrarse</button>

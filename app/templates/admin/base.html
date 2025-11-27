@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Panel de Administración{% endblock %}</title>
+
+    <!-- Font Awesome para iconos -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/styles.css') }}" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="header-content">
+        <div class="header-text">
+          <h1 class="dashboard-title">
+            <i class="fas fa-users"></i>
+            Gestión de Usuarios
+          </h1>
+          <p class="dashboard-subtitle">
+            Administra los usuarios registrados en el sistema
+          </p>
+        </div>
+      </div>
+      <div class="user-info">
+        <div class="user-avatar">
+          {% if administrador %} {{ administrador.nombre[0] }}{{
+          administrador.apellido[0] }} {% else %} A {% endif %}
+        </div>
+        <div class="user-details">
+          <div class="user-name">
+            {% if administrador %} {{ administrador.nombre }} {{
+            administrador.apellido }} {% else %} Administrador {% endif %}
+          </div>
+          <div class="user-role">Administrador</div>
+        </div>
+        <button class="logout-btn" id="logoutBtn">
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </button>
+      </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Notificación -->
+    <div class="notification" id="notification"></div>
+
+    <!-- importaciones -->
+    {% include 'admin/ui/filtros.html' %}
+    {% include 'admin/ui/agregar_editar_usuario.html' %}
+    {% include 'admin/ui/eliminar_usuario.html' %}
+    {% include 'admin/ui/confirmar_cerrar_sesion.html' %}
+    {% include 'admin/ui/editar_perfil.html' %}
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="{{ url_for('static', filename='js/admin/main.js') }}"></script>
+  </body>
+</html>

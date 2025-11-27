@@ -1,0 +1,22 @@
+/* Variables de colores */
+:root {
+  --primary-color: #4361ee;
+  --secondary-color: #3f37c9;
+  --success-color: #06ffa5;
+  --danger-color: #ff006e;
+  --warning-color: #ffbe0b;
+  --info-color: #00b4d8;
+  --light-color: #f8f9fa;
+  --dark-color: #212529;
+  --gray-color: #6c757d;
+  --border-color: #dee2e6;
+  --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  --shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --gradient-success: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  --gradient-info: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --gradient-warning: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  --transition-speed: 0.3s;
+}

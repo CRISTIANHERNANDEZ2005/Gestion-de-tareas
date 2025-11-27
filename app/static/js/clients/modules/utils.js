@@ -1,6 +1,9 @@
 /**
  * Módulo de utilidades comunes para la aplicación
  * Contiene funciones reutilizables para validaciones, manejo de errores y operaciones comunes
+ * 
+ * @author Gestor de Tareas
+ * @version 1.0
  */
 
 /**
@@ -162,7 +165,7 @@ export function validarNombre(nombre) {
 }
 
 /**
- * Valida que una contraseña tenga al menos 6 caracteres
+ * Valida que una contraseña tenga al menos 8 caracteres con mayúsculas, minúsculas y números
  * @param {string} contrasena - Contraseña a validar
  * @returns {boolean} - True si es válida, false si no lo es
  */
@@ -171,8 +174,11 @@ export function validarContrasena(contrasena) {
     if (!contrasena) return false;
     // Verificar que sea un string
     if (typeof contrasena !== 'string') return false;
-    // Verificar que tenga al menos 6 caracteres
-    return contrasena.trim().length >= 6;
+    // Verificar que tenga al menos 8 caracteres, mayúsculas, minúsculas y números
+    return contrasena.trim().length >= 8 &&
+           /[A-Z]/.test(contrasena) &&
+           /[a-z]/.test(contrasena) &&
+           /\d/.test(contrasena);
 }
 
 /**

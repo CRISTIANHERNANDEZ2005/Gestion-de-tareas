@@ -1,0 +1,17 @@
+/* Variables CSS */
+:root {
+    --primary-color: #4361ee;
+    --primary-dark: #3651de;
+    --secondary-color: #3f37c9;
+    --accent-color: #f72585;
+    --success-color: #06ffa5;
+    --warning-color: #ffbe0b;
+    --error-color: #ff006e;
+    --dark-color: #2b2d42;
+    --light-color: #f8f9fa;
+    --text-color: #212529;
+    --text-muted: #6c757d;
+    --border-radius: 8px;
+    --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}

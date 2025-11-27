@@ -1,0 +1,145 @@
+/* ==========================================================================
+   Sección de Acceso para Administradores
+   ========================================================================== */
+
+.admin-access-section {
+    background: linear-gradient(135deg, #f0f4ff 0%, #e6e9ff 100%);
+    padding: 4rem 1rem;
+    border-top: 1px solid rgba(99, 102, 241, 0.1);
+    border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+    margin: 3rem 0;
+}
+
+.admin-access-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.admin-access-content {
+    background: white;
+    border-radius: 1rem;
+    padding: 2.5rem;
+    box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.1), 0 10px 10px -5px rgba(99, 102, 241, 0.04);
+    border: 1px solid rgba(99, 102, 241, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-access-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+}
+
+.admin-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.admin-icon i {
+    background: rgba(99, 102, 241, 0.1);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.admin-description {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-admin {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 0.875rem 2rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-admin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3), 0 4px 6px -2px rgba(99, 102, 241, 0.15);
+}
+
+.btn-admin:active {
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .admin-access-section {
+        padding: 2rem 1rem;
+    }
+    
+    .admin-access-content {
+        padding: 2rem 1.5rem;
+    }
+    
+    .admin-title {
+        font-size: 1.5rem;
+    }
+    
+    .admin-description {
+        font-size: 1rem;
+    }
+    
+    .admin-icon {
+        font-size: 2.5rem;
+    }
+    
+    .admin-icon i {
+        width: 70px;
+        height: 70px;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-access-content {
+        padding: 1.5rem 1rem;
+    }
+    
+    .admin-title {
+        font-size: 1.35rem;
+    }
+    
+    .btn-admin {
+        width: 100%;
+        justify-content: center;
+    }
+}

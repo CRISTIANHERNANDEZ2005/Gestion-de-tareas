@@ -1,7 +1,10 @@
-// /**
-//  * Punto de entrada principal de la aplicación
-//  * Importa e inicializa todos los módulos de la aplicación
-//  */
+/**
+ * Punto de entrada principal de la aplicación
+ * Importa e inicializa todos los módulos de la aplicación
+ * 
+ * @author Gestor de Tareas
+ * @version 1.0
+ */
 
 // Importar todos los módulos
 import AuthModule from './modules/auth.js';

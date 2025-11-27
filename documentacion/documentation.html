@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentación - Gestor de Tareas</title>
+    <title>Documentación -</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -385,11 +385,31 @@
             </span>
             <span class="mobile-nav-link" data-section="api-endpoints">
                 <i class="fas fa-plug"></i>
-                <span>API Endpoints</span>
+                <span>API Cliente</span>
+            </span>
+            <span class="mobile-nav-link" data-section="admin-api-endpoints">
+                <i class="fas fa-user-shield"></i>
+                <span>API Admin</span>
             </span>
             <span class="mobile-nav-link" data-section="modules">
                 <i class="fas fa-cube"></i>
-                <span>Módulos JS</span>
+                <span>Módulos Cliente</span>
+            </span>
+            <span class="mobile-nav-link" data-section="admin-modules">
+                <i class="fas fa-user-cog"></i>
+                <span>Módulos Admin</span>
+            </span>
+            <span class="mobile-nav-link" data-section="general-functional-requirements">
+                <i class="fas fa-tasks"></i>
+                <span>Requerimientos Generales</span>
+            </span>
+            <span class="mobile-nav-link" data-section="client-functional-requirements">
+                <i class="fas fa-user"></i>
+                <span>Requerimientos Cliente</span>
+            </span>
+            <span class="mobile-nav-link" data-section="admin-functional-requirements">
+                <i class="fas fa-user-shield"></i>
+                <span>Requerimientos Admin</span>
             </span>
             <span class="mobile-nav-link" data-section="installation">
                 <i class="fas fa-download"></i>
@@ -400,9 +420,10 @@
                 <i class="fas fa-chart-line"></i>
                 <span>Diagramas</span>
             </span>
-            <span class="mobile-nav-link" data-section="functional-requirements">
-                <i class="fas fa-tasks"></i>
-                <span>Requerimientos</span>
+
+            <span class="mobile-nav-link" data-section="conclusion">
+                <i class="fas fa-star"></i>
+                <span>Conclusión</span>
             </span>
         </nav>
     </div>
@@ -451,11 +472,30 @@
                     </span>
                     <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="api-endpoints">
                         <i class="fas fa-plug"></i>
-                        <span>API Endpoints</span>
+                        <span>API Cliente</span>
+                    </span>
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="admin-api-endpoints">
+                        <i class="fas fa-user-shield"></i>
+                        <span>API Admin</span>
                     </span>
                     <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="modules">
                         <i class="fas fa-cube"></i>
-                        <span>Módulos JS</span>
+                        <span>Módulos Cliente</span>
+                    </span>
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="admin-modules">
+                        <i class="fas fa-user-cog"></i>
+                        <span>Módulos Admin</span>
+                    </span>
+                    
+                    <div class="section-divider"></div>
+                    
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="client-functional-requirements">
+                        <i class="fas fa-user"></i>
+                        <span>Requerimientos Cliente</span>
+                    </span>
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="admin-functional-requirements">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Requerimientos Admin</span>
                     </span>
                     
                     <div class="section-divider"></div>
@@ -469,9 +509,10 @@
                         <i class="fas fa-chart-line"></i>
                         <span>Diagramas</span>
                     </span>
-                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="functional-requirements">
-                        <i class="fas fa-tasks"></i>
-                        <span>Requerimientos</span>
+
+                    <span class="nav-link flex items-center py-3 px-4 text-gray-700" data-section="conclusion">
+                        <i class="fas fa-star"></i>
+                        <span>Conclusión</span>
                     </span>
                 </div>
             </div>
@@ -623,9 +664,9 @@
             <!-- Features Section -->
             <section id="features" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">Funcionalidades que Implementé</h2>
-                <p class="text-gray-600 mb-6">Cuando desarrollé este Gestor de Tareas, me aseguré de incluir todas las funcionalidades esenciales que un usuario necesita:</p>
+                <p class="text-gray-600 mb-6">Cuando desarrollé este Gestor de Tareas, me aseguré de incluir todas las funcionalidades esenciales que un usuario necesita, tanto para usuarios regulares como para administradores:</p>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
                         <div class="flex items-start">
                             <div class="bg-blue-100 text-blue-600 rounded-lg p-3 mr-4">
@@ -674,6 +715,99 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Admin Panel Features -->
+                <div class="border-t border-gray-200 pt-6 mt-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-user-shield text-blue-600 mr-2"></i>
+                        Panel de Administración
+                    </h3>
+                    <p class="text-gray-600 mb-6">El panel de administración proporciona herramientas avanzadas para la gestión completa del sistema:</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                            <div class="flex items-start">
+                                <div class="bg-indigo-100 text-indigo-600 rounded-lg p-3 mr-4">
+                                    <i class="fas fa-users-cog text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800 mb-1">Gestión de Usuarios</h4>
+                                    <p class="text-gray-600 text-sm">Crear, leer, actualizar y eliminar usuarios del sistema con validaciones avanzadas.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                            <div class="flex items-start">
+                                <div class="bg-teal-100 text-teal-600 rounded-lg p-3 mr-4">
+                                    <i class="fas fa-filter text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800 mb-1">Filtrado y Búsqueda</h4>
+                                    <p class="text-gray-600 text-sm">Filtrar usuarios por fechas de registro, nombres, identificaciones y otros criterios.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                            <div class="flex items-start">
+                                <div class="bg-amber-100 text-amber-600 rounded-lg p-3 mr-4">
+                                    <i class="fas fa-sort-amount-down text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800 mb-1">Ordenamiento y Paginación</h4>
+                                    <p class="text-gray-600 text-sm">Ordenar usuarios por diferentes campos y navegar entre páginas de resultados.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                            <div class="flex items-start">
+                                <div class="bg-rose-100 text-rose-600 rounded-lg p-3 mr-4">
+                                    <i class="fas fa-user-shield text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800 mb-1">Autenticación Segura</h4>
+                                    <p class="text-gray-600 text-sm">Sistema de autenticación dedicado para administradores con JWT y validaciones robustas.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-5 border border-blue-100">
+                        <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-tools text-blue-600 mr-2"></i>
+                            Características Técnicas del Panel de Administración
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span class="text-gray-700">API RESTful dedicada para administradores</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span class="text-gray-700">Interfaz modular basada en clases ES6</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span class="text-gray-700">Validaciones en tiempo real con retroalimentación</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span class="text-gray-700">Notificaciones visuales para todas las operaciones</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span class="text-gray-700">Gestión de estado de carga para operaciones asíncronas</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span class="text-gray-700">Protección contra ataques XSS y CSRF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Admin Panel Features -->
                 
                 <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="bg-gray-50 rounded-lg p-4">
@@ -843,33 +977,69 @@ gestor_tareas/
 ├── app/                      # Directorio principal de la aplicación
 │   ├── __init__.py          # Inicialización de la app Flask y extensiones
 │   ├── modelos.py           # Modelos de datos con SQLAlchemy
-│   ├── vistas.py            # Vistas para servir páginas HTML
 │   ├── blueprint/           # Blueprints de la aplicación
-│   │   ├── auth/            # Blueprint de autenticación
-│   │   │   └── rutas.py     # Rutas de autenticación
-│   │   └── tareas/          # Blueprint de tareas
-│   │       └── rutas.py     # Rutas de tareas
+│   │   ├── admin/           # Panel de administración
+│   │   │   ├── auth/        # Autenticación de administradores
+│   │   │   │   └── rutas.py # Rutas de autenticación administrativa
+│   │   │   ├── usuarios/    # Gestión de usuarios
+│   │   │   │   └── rutas.py # Rutas CRUD de usuarios
+│   │   │   └── vistas.py    # Vistas del panel administrativo
+│   │   ├── clients/         # Aplicación cliente
+│   │   │   ├── auth/        # Autenticación de usuarios
+│   │   │   │   └── rutas.py # Rutas de autenticación de clientes
+│   │   │   ├── tareas/      # Gestión de tareas
+│   │   │   │   └── rutas.py # Rutas CRUD de tareas
+│   │   │   └── vistas.py    # Vistas de la aplicación cliente
+│   │   └── utils.py         # Funciones utilitarias compartidas
 │   ├── static/              # Archivos estáticos
 │   │   ├── css/             # Hojas de estilo
-│   │   │   ├── base/        # Estilos base
-│   │   │   ├── components/  # Estilos de componentes
-│   │   │   ├── layout/      # Estilos de layout
-│   │   │   ├── utilities/   # Estilos de utilidades
-│   │   │   └── styles.css   # Archivo CSS principal
+│   │   │   ├── admin/       # Estilos del panel administrativo
+│   │   │   │   ├── base/    # Estilos base administrativos
+│   │   │   │   ├── components/ # Componentes administrativos
+│   │   │   │   ├── layout/  # Layout administrativo
+│   │   │   │   ├── login/   # Estilos de login administrativo
+│   │   │   │   └── utilities/ # Utilidades administrativas
+│   │   │   └── clients/     # Estilos de la aplicación cliente
+│   │   │       ├── base/    # Estilos base cliente
+│   │   │       ├── components/ # Componentes cliente
+│   │   │       ├── layout/  # Layout cliente
+│   │   │       └── utilities/ # Utilidades cliente
 │   │   └── js/              # Archivos JavaScript
-│   │       ├── modules/     # Módulos JS
-│   │       └── main.js      # Archivo JS principal
+│   │       ├── admin/       # Scripts del panel administrativo
+│   │       │   ├── modules/ # Módulos JS administrativos
+│   │       │   │   ├── auth.js    # Autenticación administrativa
+│   │       │   │   ├── profile.js # Gestión de perfil administrativo
+│   │       │   │   ├── users.js   # Gestión de usuarios
+│   │       │   │   └── utils.js   # Utilidades administrativas
+│   │       │   └── main.js  # Archivo JS principal administrativo
+│   │       └── clients/     # Scripts de la aplicación cliente
+│   │           ├── modules/ # Módulos JS cliente
+│   │           │   ├── auth.js  # Autenticación cliente
+│   │           │   ├── tasks.js # Gestión de tareas
+│   │           │   ├── ui.js    # Interfaz de usuario
+│   │           │   └── utils.js # Utilidades cliente
+│   │           └── main.js  # Archivo JS principal cliente
 │   └── templates/           # Plantillas HTML
-│       ├── base.html        # Plantilla base
-│       ├── inicio.html      # Página principal
-│       ├── components/      # Componentes reutilizables
-│       └── ui/              # Interfaces de usuario
+│       ├── admin/           # Plantillas del panel administrativo
+│       │   ├── base.html    # Plantilla base administrativa
+│       │   ├── login.html   # Página de login administrativo
+│       │   ├── components/  # Componentes administrativos
+│       │   └── ui/          # Interfaces de usuario administrativas
+│       └── clients/         # Plantillas de la aplicación cliente
+│           ├── base.html    # Plantilla base cliente
+│           ├── inicio.html  # Página principal
+│           ├── components/  # Componentes cliente
+│           └── ui/          # Interfaces de usuario cliente
 ├── migrations/              # Migraciones de base de datos con Alembic
+│   └── versions/            # Versiones de migraciones
+├── documentacion/           # Documentación del proyecto
+│   └── documentation.html   # Documentación técnica HTML
+├── sql/                     # Scripts SQL
+│   └── database.sql         # Script de base de datos
 ├── config.py                # Configuración de la aplicación
+├── crear_admin.py           # Script para crear administradores
 ├── requirements.txt         # Dependencias del proyecto
-├── run.py                   # Punto de entrada de la aplicación
-├── .env                     # Variables de entorno
-└── documentation.html       # Esta documentación técnica
+└── run.py                   # Punto de entrada de la aplicación
 </pre>
                 </div>
                 
@@ -941,6 +1111,23 @@ gestor_tareas/
                     <h3 class="text-lg font-semibold text-gray-800 mb-3">Modelos de Datos</h3>
                     <p class="text-gray-700 mb-3">Definí dos modelos principales usando SQLAlchemy ORM:</p>
                     
+                    <div class="bg-white rounded-lg p-4 border border-gray-200 mb-4">
+                        <h4 class="font-bold text-gray-800 mb-2">Modelo Administrador</h4>
+                        <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>
+class Administrador(db.Model):
+    __tablename__ = 'administradores'
+
+    id = db.Column(db.Integer, primary_key=True)
+    identificacion = db.Column(db.String(20), unique=True, nullable=False)
+    nombre = db.Column(db.String(100), nullable=False)
+    apellido = db.Column(db.String(100), nullable=False)
+    contrasena = db.Column(db.String(255), nullable=False)
+    creado_en = db.Column(db.DateTime, default=datetime.utcnow)
+    actualizado_en = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+</pre>
+                        </div>
+                    </div>
                     <div class="bg-white rounded-lg p-4 border border-gray-200 mb-4">
                         <h4 class="font-bold text-gray-800 mb-2">Modelo Usuario</h4>
                         <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
@@ -1076,7 +1263,7 @@ class Tarea(db.Model):
 CREATE DATABASE gestor_tareas_db;
 
 -- Creación de la tabla usuarios
-CREATE TABLE IF NOT EXISTS usuarios (
+CREATE TABLE IF NOT EXISTS Administrador (
     id SERIAL PRIMARY KEY,
     identificacion VARCHAR(20) UNIQUE NOT NULL,
     nombre VARCHAR(100) NOT NULL,
@@ -1086,11 +1273,19 @@ CREATE TABLE IF NOT EXISTS usuarios (
     actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Creación de índice para identificacion
-CREATE INDEX IF NOT EXISTS idx_identificacion ON usuarios(identificacion);
+-- Creación de la tabla usuarios
+CREATE TABLE IF NOT EXISTS Usuarios (
+    id SERIAL PRIMARY KEY,
+    identificacion VARCHAR(20) UNIQUE NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 -- Creación de la tabla tareas con relación a usuarios
-CREATE TABLE IF NOT EXISTS tareas (
+CREATE TABLE IF NOT EXISTS Tareas (
     id SERIAL PRIMARY KEY,
     usuario_id INTEGER NOT NULL,
     titulo VARCHAR(100) NOT NULL,
@@ -1098,32 +1293,9 @@ CREATE TABLE IF NOT EXISTS tareas (
     fecha_limite DATE,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(id) ON DELETE CASCADE,
     UNIQUE (usuario_id, titulo)
 );
-
--- Creación de índice para usuario_id
-CREATE INDEX IF NOT EXISTS idx_usuario_id ON tareas(usuario_id);
-
--- Creación de función y trigger para actualizar automáticamente actualizado_en
-CREATE OR REPLACE FUNCTION actualizar_timestamp()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.actualizado_en = CURRENT_TIMESTAMP;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- Triggers para actualizar automáticamente actualizado_en
-CREATE TRIGGER trigger_actualizar_usuarios
-    BEFORE UPDATE ON usuarios
-    FOR EACH ROW
-    EXECUTE FUNCTION actualizar_timestamp();
-
-CREATE TRIGGER trigger_actualizar_tareas
-    BEFORE UPDATE ON tareas
-    FOR EACH ROW
-    EXECUTE FUNCTION actualizar_timestamp();
 </pre>
                         </div>
                     </div>
@@ -1153,9 +1325,232 @@ CREATE TRIGGER trigger_actualizar_tareas
             </section>
 
             <!-- Functional and Non-Functional Requirements Section -->
-            <section id="functional-requirements" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Requerimientos Funcionales y No Funcionales</h2>
-                <p class="text-gray-600 mb-6">A continuación se detallan los Requerimientos funcionales y no funcionales que guían el desarrollo y funcionamiento de esta aplicación:</p>
+            <section id="client-functional-requirements" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Requerimientos Funcionales y No Funcionales del Cliente</h2>
+                <p class="text-gray-600 mb-6">A continuación se detallan los Requerimientos funcionales y no funcionales que guían el desarrollo y funcionamiento de la aplicación cliente:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Functional Requirements -->
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-cogs text-blue-500 mr-3"></i>
+                            Requerimientos Funcionales
+                        </h3>
+                        <p class="text-gray-700 mb-4">Los Requerimientos funcionales definen qué debe hacer el sistema en términos de sus funcionalidades y características:</p>
+                        
+                        <div class="space-y-4">
+                            <div class="border-l-4 border-blue-500 pl-4 py-2 bg-blue-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Gestión de Usuarios</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-user-plus text-blue-500 mt-1 mr-2"></i>
+                                        <span>RF-001: El sistema debe permitir el registro de nuevos usuarios con identificación única, nombre, apellido y contraseña.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-sign-in-alt text-blue-500 mt-1 mr-2"></i>
+                                        <span>RF-002: El sistema debe permitir el inicio de sesión de usuarios registrados mediante identificación y contraseña.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-user-edit text-blue-500 mt-1 mr-2"></i>
+                                        <span>RF-003: El sistema debe permitir a los usuarios actualizar su información personal y contraseña.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-sign-out-alt text-blue-500 mt-1 mr-2"></i>
+                                        <span>RF-004: El sistema debe permitir el cierre de sesión seguro de los usuarios.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="border-l-4 border-green-500 pl-4 py-2 bg-green-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Gestión de Tareas</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-plus-circle text-green-500 mt-1 mr-2"></i>
+                                        <span>RF-005: El sistema debe permitir a los usuarios crear nuevas tareas con título, descripción y fecha límite.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-list text-green-500 mt-1 mr-2"></i>
+                                        <span>RF-006: El sistema debe mostrar a los usuarios una lista de todas sus tareas.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-edit text-green-500 mt-1 mr-2"></i>
+                                        <span>RF-007: El sistema debe permitir a los usuarios editar sus tareas existentes.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-trash-alt text-green-500 mt-1 mr-2"></i>
+                                        <span>RF-008: El sistema debe permitir a los usuarios eliminar sus tareas.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-exclamation-triangle text-green-500 mt-1 mr-2"></i>
+                                        <span>RF-009: El sistema no debe permitir que un usuario tenga dos tareas con el mismo título.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="border-l-4 border-purple-500 pl-4 py-2 bg-purple-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Validaciones y Reglas de Negocio</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span>RF-010: El sistema debe validar que la identificación del usuario tenga al menos 8 dígitos numéricos.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span>RF-011: El sistema debe validar que las contraseñas tengan al menos 6 caracteres.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span>RF-012: El sistema debe validar que los títulos de las tareas tengan entre 5 y 100 caracteres.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span>RF-013: El sistema debe validar que las descripciones de las tareas tengan al menos 10 caracteres.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span>RF-014: El sistema debe validar que las fechas límite de las tareas sean futuras.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Non-Functional Requirements -->
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-tachometer-alt text-orange-500 mr-3"></i>
+                            Requerimientos No Funcionales
+                        </h3>
+                        <p class="text-gray-700 mb-4">Los Requerimientos no funcionales definen cómo debe comportarse el sistema en términos de calidad, rendimiento y restricciones:</p>
+                        
+                        <div class="space-y-4">
+                            <div class="border-l-4 border-yellow-500 pl-4 py-2 bg-yellow-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Rendimiento</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-bolt text-yellow-500 mt-1 mr-2"></i>
+                                        <span>RNF-001: El sistema debe responder a las solicitudes del usuario en menos de 2 segundos bajo carga normal.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-server text-yellow-500 mt-1 mr-2"></i>
+                                        <span>RNF-002: El sistema debe ser capaz de manejar al menos 100 usuarios concurrentes.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-database text-yellow-500 mt-1 mr-2"></i>
+                                        <span>RNF-003: El sistema debe mantener tiempos de respuesta de base de datos menores a 500ms para operaciones comunes.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="border-l-4 border-red-500 pl-4 py-2 bg-red-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Seguridad</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-lock text-red-500 mt-1 mr-2"></i>
+                                        <span>RNF-004: El sistema debe almacenar las contraseñas de los usuarios utilizando hashing seguro (Werkzeug).</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-shield-alt text-red-500 mt-1 mr-2"></i>
+                                        <span>RNF-005: El sistema debe proteger las rutas mediante autenticación JWT.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-user-secret text-red-500 mt-1 mr-2"></i>
+                                        <span>RNF-006: El sistema debe expirar los tokens JWT después de 1 hora de inactividad.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-network-wired text-red-500 mt-1 mr-2"></i>
+                                        <span>RNF-007: El sistema debe utilizar conexiones SSL/TLS para comunicarse con la base de datos.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="border-l-4 border-indigo-500 pl-4 py-2 bg-indigo-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Disponibilidad y Confiabilidad</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-umbrella text-indigo-500 mt-1 mr-2"></i>
+                                        <span>RNF-008: El sistema debe tener una disponibilidad del 99.5% durante el horario comercial.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-sync-alt text-indigo-500 mt-1 mr-2"></i>
+                                        <span>RNF-009: El sistema debe manejar errores de manera elegante y proporcionar mensajes de error útiles.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-undo text-indigo-500 mt-1 mr-2"></i>
+                                        <span>RNF-010: El sistema debe realizar rollback automático en caso de errores de base de datos.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="border-l-4 border-teal-500 pl-4 py-2 bg-teal-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Usabilidad</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-mobile-alt text-teal-500 mt-1 mr-2"></i>
+                                        <span>RNF-011: El sistema debe ser completamente responsivo y funcionar en dispositivos móviles y de escritorio.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-eye text-teal-500 mt-1 mr-2"></i>
+                                        <span>RNF-012: El sistema debe proporcionar retroalimentación visual inmediata para todas las acciones del usuario.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-language text-teal-500 mt-1 mr-2"></i>
+                                        <span>RNF-013: El sistema debe presentar mensajes de error comprensibles en español.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="border-l-4 border-pink-500 pl-4 py-2 bg-pink-50 rounded-r">
+                                <h4 class="font-bold text-gray-800">Mantenibilidad</h4>
+                                <ul class="mt-2 space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-code text-pink-500 mt-1 mr-2"></i>
+                                        <span>RNF-014: El sistema debe seguir una arquitectura modular basada en blueprints de Flask.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-database text-pink-500 mt-1 mr-2"></i>
+                                        <span>RNF-015: El sistema debe utilizar migraciones de base de datos para gestionar cambios en el esquema.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-comments text-pink-500 mt-1 mr-2"></i>
+                                        <span>RNF-016: El código debe estar completamente documentado con docstrings en español.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-100">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-balance-scale text-blue-600 mr-3"></i>
+                        Priorización de Requisitos
+                    </h3>
+                    <p class="text-gray-700 mb-4">Los Requerimientos se han priorizado según su importancia para el funcionamiento básico del sistema:</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-red-100 border-l-4 border-red-500 p-4 rounded-r">
+                            <h4 class="font-bold text-red-800 mb-2">Alta Prioridad</h4>
+                            <p class="text-red-700 text-sm">Requerimientos esenciales para el funcionamiento básico del sistema (RF-001 al RF-004, RNF-004, RNF-005)</p>
+                        </div>
+                        
+                        <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-r">
+                            <h4 class="font-bold text-yellow-800 mb-2">Media Prioridad</h4>
+                            <p class="text-yellow-700 text-sm">Requerimientos importantes para una experiencia completa (RF-005 al RF-014, RNF-001, RNF-006 al RNF-013)</p>
+                        </div>
+                        
+                        <div class="bg-green-100 border-l-4 border-green-500 p-4 rounded-r">
+                            <h4 class="font-bold text-green-800 mb-2">Baja Prioridad</h4>
+                            <p class="text-green-700 text-sm">Requerimientos deseables pero no críticos (RNF-002, RNF-003, RNF-014 al RNF-016)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Functional and Non-Functional Requirements Section -->
+            <section id="admin-functional-requirements" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Requerimientos Funcionales y No Funcionales del Panel de Administración</h2>
+                <p class="text-gray-600 mb-6">A continuación se detallan los Requerimientos funcionales y no funcionales que guían el desarrollo y funcionamiento del panel de administración:</p>
                 
                 <div class="grid grid-cols-1 gap-8">
                     <!-- Functional Requirements -->
@@ -1756,6 +2151,489 @@ export const ESTADOS_HTTP = { ... };
             </div>
         </section>
 
+            <!-- Admin Panel API Endpoints Section -->
+            <section id="admin-api-endpoints" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">API Endpoints del Panel de Administración</h2>
+                <p class="text-gray-600 mb-6">El panel de administración cuenta con una API RESTful específica para la gestión de usuarios y autenticación de administradores, protegida con autenticación JWT. Esta API sigue los principios de diseño RESTful y proporciona operaciones CRUD completas con validación de datos, manejo de errores robusto y respuestas consistentes en formato JSON.</p>
+                
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-5 mb-6">
+                    <div class="flex items-start mb-3">
+                        <div class="bg-blue-100 text-blue-800 rounded-lg p-3 mr-4">
+                            <i class="fas fa-cogs text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-lg mb-2">Arquitectura Profesional</h3>
+                            <p class="text-gray-700">El panel de administración ha sido diseñado siguiendo las mejores prácticas de desarrollo web moderno. Implementa una arquitectura limpia y escalable que separa claramente las responsabilidades entre el backend (API RESTful) y el frontend (interfaz de usuario), facilitando el mantenimiento y la evolución futura del sistema.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-shield-alt text-blue-500 mr-2"></i>
+                        <h3 class="font-bold text-gray-800">Seguridad y Autenticación</h3>
+                    </div>
+                    <p class="text-gray-700">Todos los endpoints del panel de administración requieren autenticación mediante tokens JWT. Los tokens se generan durante el proceso de inicio de sesión y tienen una duración de 1 hora. La API implementa prácticas de seguridad modernas incluyendo validación de entrada, protección contra inyección SQL y manejo seguro de contraseñas mediante hashing.</p>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-3">POST</span>
+                                /admin/auth/api/login
+                            </h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este endpoint autentica a un administrador y devuelve un token JWT.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Parámetros</h4>
+                                    <ul class="text-gray-700 space-y-1">
+                                        <li><strong>identificacion</strong> (requerido): Identificación del administrador</li>
+                                        <li><strong>contrasena</strong> (requerido): Contraseña del administrador</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Respuesta</h4>
+                                    <div class="bg-gray-800 text-gray-100 rounded-lg p-3 font-mono text-sm overflow-x-auto">
+<pre>{
+  "mensaje": "Inicio de sesión exitoso. Bienvenido al panel de administración.",
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+  "administrador": {
+    "id": 1,
+    "identificacion": "12345678",
+    "nombre": "Admin",
+    "apellido": "Principal",
+    "creado_en": "2023-06-15T10:30:00",
+    "actualizado_en": "2023-06-15T10:30:00"
+  }
+}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded mr-3">GET</span>
+                                /admin/auth/api/perfil
+                            </h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este endpoint obtiene la información del perfil del administrador autenticado.</p>
+                            <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                                <div class="text-green-400 mb-2"># Requiere encabezado Authorization: Bearer &lt;token&gt;</div>
+<pre>{
+  "administrador": {
+    "id": 1,
+    "identificacion": "12345678",
+    "nombre": "Admin",
+    "apellido": "Principal",
+    "creado_en": "2023-06-15T10:30:00",
+    "actualizado_en": "2023-06-15T10:30:00"
+  }
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded mr-3">PUT</span>
+                                /admin/auth/api/perfil
+                            </h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este endpoint actualiza la información del perfil del administrador autenticado.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Parámetros</h4>
+                                    <ul class="text-gray-700 space-y-1">
+                                        <li><strong>nombre</strong> (opcional): Nuevo nombre del administrador</li>
+                                        <li><strong>apellido</strong> (opcional): Nuevo apellido del administrador</li>
+                                        <li><strong>identificacion</strong> (opcional): Nueva identificación del administrador</li>
+                                        <li><strong>contrasena</strong> (opcional): Nueva contraseña</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Respuesta</h4>
+                                    <div class="bg-gray-800 text-gray-100 rounded-lg p-3 font-mono text-sm overflow-x-auto">
+<pre>{
+  "mensaje": "Perfil actualizado exitosamente.",
+  "administrador": {
+    "id": 1,
+    "identificacion": "87654321",
+    "nombre": "Administrador",
+    "apellido": "Actualizado"
+  }
+}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded mr-3">GET</span>
+                                /admin/api/usuarios
+                            </h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este endpoint obtiene todos los usuarios con filtros, ordenamiento y paginación.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Parámetros de consulta</h4>
+                                    <ul class="text-gray-700 space-y-1">
+                                        <li><strong>page</strong> (opcional): Número de página (por defecto 1)</li>
+                                        <li><strong>per_page</strong> (opcional): Elementos por página (por defecto 10)</li>
+                                        <li><strong>search</strong> (opcional): Texto de búsqueda</li>
+                                        <li><strong>sort</strong> (opcional): Campo para ordenar (id, nombre, apellido, identificacion, creado_en)</li>
+                                        <li><strong>order</strong> (opcional): Dirección de ordenamiento (asc o desc)</li>
+                                        <li><strong>date_from</strong> (opcional): Fecha de inicio (formato YYYY-MM-DD)</li>
+                                        <li><strong>date_to</strong> (opcional): Fecha final (formato YYYY-MM-DD)</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Respuesta</h4>
+                                    <div class="bg-gray-800 text-gray-100 rounded-lg p-3 font-mono text-sm overflow-x-auto">
+<pre>{
+  "usuarios": [
+    {
+      "id": 1,
+      "identificacion": "12345678",
+      "nombre": "Juan",
+      "apellido": "Pérez",
+      "creado_en": "2023-06-15T10:30:00",
+      "actualizado_en": "2023-06-15T10:30:00"
+    }
+  ],
+  "total": 1,
+  "pages": 1,
+  "current_page": 1
+}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-3">POST</span>
+                                /admin/api/usuarios
+                            </h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este endpoint crea un nuevo usuario en el sistema.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Parámetros</h4>
+                                    <ul class="text-gray-700 space-y-1">
+                                        <li><strong>identificacion</strong> (requerido): Identificación única del usuario (8+ dígitos)</li>
+                                        <li><strong>nombre</strong> (requerido): Nombre del usuario</li>
+                                        <li><strong>apellido</strong> (requerido): Apellido del usuario</li>
+                                        <li><strong>contrasena</strong> (requerido): Contraseña (8+ caracteres, mayúsculas, minúsculas, números)</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Respuesta</h4>
+                                    <div class="bg-gray-800 text-gray-100 rounded-lg p-3 font-mono text-sm overflow-x-auto">
+<pre>{
+  "mensaje": "Usuario creado exitosamente",
+  "usuario": {
+    "id": 2,
+    "identificacion": "87654321",
+    "nombre": "María",
+    "apellido": "González",
+    "creado_en": "2023-06-17T09:15:00",
+    "actualizado_en": "2023-06-17T09:15:00"
+  }
+}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded mr-3">PUT</span>
+                                /admin/api/usuarios/&lt;id&gt;
+                            </h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este endpoint actualiza un usuario específico.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Parámetros</h4>
+                                    <ul class="text-gray-700 space-y-1">
+                                        <li><strong>identificacion</strong> (opcional): Nueva identificación del usuario</li>
+                                        <li><strong>nombre</strong> (opcional): Nuevo nombre del usuario</li>
+                                        <li><strong>apellido</strong> (opcional): Nuevo apellido del usuario</li>
+                                        <li><strong>contrasena</strong> (opcional): Nueva contraseña</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-2">Respuesta</h4>
+                                    <div class="bg-gray-800 text-gray-100 rounded-lg p-3 font-mono text-sm overflow-x-auto">
+<pre>{
+  "mensaje": "Usuario actualizado exitosamente",
+  "usuario": {
+    "id": 1,
+    "identificacion": "12345678",
+    "nombre": "Juan",
+    "apellido": "Pérez Actualizado",
+    "creado_en": "2023-06-15T10:30:00",
+    "actualizado_en": "2023-06-17T11:20:00"
+  }
+}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded mr-3">DELETE</span>
+                                /admin/api/usuarios/&lt;id&gt;
+                            </h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este endpoint elimina un usuario específico.</p>
+                            <div class="bg-gray-800 text-gray-100 rounded-lg p-3 font-mono text-sm overflow-x-auto">
+<pre>{
+  "mensaje": "Usuario eliminado exitosamente"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin Panel Modules Section -->
+            <section id="admin-modules" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Módulos JavaScript del Panel de Administración</h2>
+                <p class="text-gray-600 mb-6">
+                El panel de administración utiliza una arquitectura modular en JavaScript ES6 para organizar mejor el código frontend y facilitar su mantenimiento. Cada módulo tiene una responsabilidad específica y se comunica con otros a través de funciones exportadas e importadas. Esta arquitectura sigue los principios de programación orientada a objetos y promueve la reutilización de código, la separación de preocupaciones y la facilidad de prueba.
+                </p>
+                
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 border border-green-200 rounded-lg p-5 mb-6">
+                    <div class="flex items-start mb-3">
+                        <div class="bg-green-100 text-green-800 rounded-lg p-3 mr-4">
+                            <i class="fas fa-puzzle-piece text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-lg mb-2">Diseño Modular Profesional</h3>
+                            <p class="text-gray-700">La arquitectura modular del panel de administración representa un enfoque maduro de desarrollo frontend que prioriza la mantenibilidad, la escalabilidad y la colaboración en equipo. Cada módulo está cuidadosamente diseñado para cumplir con un único propósito (principio de responsabilidad única), facilitando las pruebas unitarias y la evolución independiente de cada componente.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-code text-green-500 mr-2"></i>
+                        <h3 class="font-bold text-gray-800">Arquitectura Modular</h3>
+                    </div>
+                    <p class="text-gray-700">La implementación utiliza clases ES6 para encapsular la lógica de negocio, promoviendo un código más limpio y mantenible. Cada módulo sigue el patrón de diseño Singleton y se inicializa automáticamente cuando se carga la página correspondiente, garantizando un rendimiento óptimo y una experiencia de usuario fluida.</p>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800">auth.js</h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este módulo maneja toda la lógica de autenticación del panel de administración, incluyendo inicio de sesión, verificación de autenticación y gestión de sesiones. Implementa prácticas de seguridad modernas como validación de entrada en tiempo real, prevención de ataques de fuerza bruta y manejo seguro de tokens JWT.</p>
+                            
+                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+                                <h4 class="font-semibold text-blue-800 mb-2">Características de Seguridad</h4>
+                                <ul class="text-gray-700 space-y-1 text-sm">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-blue-500 mt-1 mr-2"></i>
+                                        <span>Validación de entrada en tiempo real con retroalimentación inmediata</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-blue-500 mt-1 mr-2"></i>
+                                        <span>Protección contra ataques XSS y CSRF</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-blue-500 mt-1 mr-2"></i>
+                                        <span>Almacenamiento seguro de tokens en localStorage y cookies</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-blue-500 mt-1 mr-2"></i>
+                                        <span>Manejo automático de expiración de sesiones</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>
+// Funciones exportadas principales
+export default class AdminAuthModule {
+  constructor() { ... }
+  init() { ... }
+  async manejarInicioSesion(e) { ... }
+  validarFormulario(formulario) { ... }
+  // ... otras funciones
+}
+</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800">users.js</h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este módulo se encarga de todas las operaciones relacionadas con la gestión de usuarios: crear, leer, actualizar, eliminar, filtrar y paginar. Implementa una interfaz de usuario intuitiva con tablas dinámicas, formularios de edición en línea y funcionalidades avanzadas de búsqueda y ordenamiento.</p>
+                            
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
+                                <h4 class="font-semibold text-green-800 mb-2">Funcionalidades Avanzadas</h4>
+                                <ul class="text-gray-700 space-y-1 text-sm">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                        <span>Paginación eficiente con carga dinámica de datos</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                        <span>Filtrado avanzado por múltiples criterios</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                        <span>Ordenamiento por columnas con indicadores visuales</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                        <span>Validación de datos en tiempo real con mensajes de error específicos</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>
+// Funciones exportadas principales
+export default class AdminUsersModule {
+  constructor() { ... }
+  init() { ... }
+  async cargarUsuarios() { ... }
+  renderizarTablaUsuarios(usuarios) { ... }
+  async guardarUsuario() { ... }
+  async eliminarUsuario(idUsuario) { ... }
+  validarFormularioUsuario() { ... }
+  // ... otras funciones
+}
+</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800">profile.js</h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este módulo maneja la edición del perfil del administrador, permitiendo actualizar la información personal y la contraseña. Implementa validaciones de seguridad rigurosas y proporciona una experiencia de usuario fluida con actualización en tiempo real de la información del perfil.</p>
+                            
+                            <div class="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-4">
+                                <h4 class="font-semibold text-purple-800 mb-2">Características de Usabilidad</h4>
+                                <ul class="text-gray-700 space-y-1 text-sm">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span>Formulario intuitivo con validación en tiempo real</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span>Actualización automática de la información del usuario en la interfaz</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span>Manejo seguro de contraseñas con confirmación de cambios</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                        <span>Notificaciones visuales para confirmación de operaciones</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>
+// Funciones exportadas principales
+export default class AdminProfileModule {
+  constructor() { ... }
+  init() { ... }
+  async abrirModalPerfil() { ... }
+  async manejarActualizacionPerfil(e) { ... }
+  validarFormulario(formulario) { ... }
+  // ... otras funciones
+}
+</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                            <h3 class="font-bold text-gray-800">utils.js</h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-3"><strong>¿Qué hace?</strong> Este módulo contiene funciones utilitarias reutilizables en todo el panel de administración, como validaciones, manejo de errores, notificaciones y formateo. Sigue el principio DRY (Don't Repeat Yourself) para promover la reutilización de código y mantener una base de código limpia y mantenible.</p>
+                            
+                            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+                                <h4 class="font-semibold text-yellow-800 mb-2">Componentes Reutilizables</h4>
+                                <ul class="text-gray-700 space-y-1 text-sm">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-yellow-500 mt-1 mr-2"></i>
+                                        <span>Sistema de notificaciones toast con diferentes tipos de mensaje</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-yellow-500 mt-1 mr-2"></i>
+                                        <span>Validadores de datos robustos para identificaciones, nombres y contraseñas</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-yellow-500 mt-1 mr-2"></i>
+                                        <span>Manejo de estado de carga para botones con indicadores visuales</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-yellow-500 mt-1 mr-2"></i>
+                                        <span>Funciones de formateo de fechas y manejo de errores consistentes</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-gray-800 text-gray-100 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<pre>
+// Funciones exportadas principales
+export function mostrarNotificacion(mensaje, tipo) { ... }
+export function establecerBotonCargando(boton, texto) { ... }
+export function restaurarBoton(boton, textoOriginal) { ... }
+export function mostrarError(input, mensaje) { ... }
+export function limpiarError(input) { ... }
+export function validarIdentificacion(identificacion) { ... }
+export function validarNombre(nombre) { ... }
+export function validarContrasena(contrasena) { ... }
+export function cerrarSesion() { ... }
+export function formatearFecha(cadenaFecha) { ... }
+// ... otras funciones
+</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Installation Section -->
             <section id="installation" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">Cómo Instalar y Ejecutar el Proyecto</h2>
@@ -2001,9 +2879,9 @@ FLASK_ENV=development</pre>
             </section>
 
             <!-- Functional and Non-Functional Requirements Section -->
-            <section id="functional-requirements" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Requerimientos Funcionales y No Funcionales</h2>
-                <p class="text-gray-600 mb-6">A continuación se detallan los Requerimientos funcionales y no funcionales que guían el desarrollo y funcionamiento de esta aplicación:</p>
+            <section id="general-functional-requirements" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Requerimientos Funcionales y No Funcionales Generales</h2>
+                <p class="text-gray-600 mb-6">A continuación se detallan los Requerimientos funcionales y no funcionales generales que guían el desarrollo y funcionamiento de esta aplicación:</p>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Functional Requirements -->
@@ -2219,6 +3097,57 @@ FLASK_ENV=development</pre>
                             <h4 class="font-bold text-green-800 mb-2">Baja Prioridad</h4>
                             <p class="text-green-700 text-sm">Requerimientos deseables pero no críticos (RNF-002, RNF-003, RNF-014 al RNF-016)</p>
                         </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Professional Conclusion Section -->
+            <section id="conclusion" class="section-content bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Conclusión Profesional</h2>
+                <p class="text-gray-600 mb-6">El panel de administración del Gestor de Tareas representa una implementación madura y profesional de un sistema de gestión de usuarios, siguiendo las mejores prácticas de desarrollo web moderno tanto en el frontend como en el backend.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-5">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-blue-100 text-blue-800 rounded-lg p-2 mr-3">
+                                <i class="fas fa-rocket text-lg"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-800 text-lg">Excelencia Técnica</h3>
+                        </div>
+                        <p class="text-gray-700">La implementación demuestra un alto nivel de competencia técnica, con una arquitectura bien estructurada, código limpio y documentado, y una interfaz de usuario intuitiva y responsiva que proporciona una experiencia de administración eficiente y profesional.</p>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-green-50 to-teal-50 border border-green-200 rounded-lg p-5">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-green-100 text-green-800 rounded-lg p-2 mr-3">
+                                <i class="fas fa-shield-alt text-lg"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-800 text-lg">Seguridad Robusta</h3>
+                        </div>
+                        <p class="text-gray-700">La seguridad ha sido una prioridad fundamental, con implementación de autenticación JWT, validación de datos en múltiples capas, protección contra ataques comunes y manejo seguro de credenciales, garantizando un entorno administrativo confiable.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-6 mb-6">
+                    <div class="flex items-start">
+                        <div class="bg-purple-100 text-purple-800 rounded-lg p-3 mr-4">
+                            <i class="fas fa-star text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-lg mb-2">Compromiso con la Calidad</h3>
+                            <p class="text-gray-700">Este panel de administración no solo cumple con los requisitos funcionales establecidos, sino que supera las expectativas en términos de usabilidad, mantenibilidad y escalabilidad. Representa un ejemplo destacado de desarrollo web profesional que puede servir como base sólida para futuras expansiones y mejoras.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center py-6 border-t border-gray-200">
+                    <p class="text-gray-600 mb-2">Desarrollado con pasión y dedicación para proporcionar una solución de gestión eficiente y profesional</p>
+                    <div class="flex justify-center space-x-4 text-2xl text-gray-400">
+                        <i class="fab fa-python"></i>
+                        <i class="fab fa-js"></i>
+                        <i class="fab fa-html5"></i>
+                        <i class="fab fa-css3-alt"></i>
+                        <i class="fas fa-database"></i>
                     </div>
                 </div>
             </section>

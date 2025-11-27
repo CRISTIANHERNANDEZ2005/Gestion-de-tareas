@@ -8,7 +8,7 @@ from app import db
 from app.modelos import Usuario
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from app.blueprint.clients.utils import validar_identificacion, validar_nombre, validar_contrasena, manejar_error_db
+from app.blueprint.utils import validar_identificacion, validar_nombre, validar_contrasena, manejar_error_db
 import re
 from datetime import datetime
 
@@ -24,25 +24,31 @@ def validar_registro(datos):
     Returns:
         list: Lista de errores de validación (vacía si no hay errores)
     """
-    errores = []
+    errores = {}
     
     # Validar identificación (8 dígitos mínimo, solo números)
     if not datos.get('identificacion'):
-        errores.append("La identificación es obligatoria")
+        errores['identificacion'] = "La identificación es obligatoria"
     elif not validar_identificacion(datos['identificacion']):
-        errores.append("La identificación debe tener al menos 8 dígitos y contener solo números")
+        errores['identificacion'] = "La identificación debe tener al menos 8 dígitos y contener solo números"
     
     # Validar nombre
     if not datos.get('nombre'):
-        errores.append("El nombre es obligatorio")
+        errores['nombre'] = "El nombre es obligatorio"
+    elif not validar_nombre(datos['nombre']):
+        errores['nombre'] = "El nombre debe tener al menos 2 caracteres"
         
     # Validar apellido
     if not datos.get('apellido'):
-        errores.append("El apellido es obligatorio")
+        errores['apellido'] = "El apellido es obligatorio"
+    elif not validar_nombre(datos['apellido']):
+        errores['apellido'] = "El apellido debe tener al menos 2 caracteres"
         
     # Validar contraseña
-    if not validar_contrasena(datos.get('contrasena')):
-        errores.append("La contraseña debe tener al menos 6 caracteres")
+    if not datos.get('contrasena'):
+        errores['contrasena'] = "La contraseña es obligatoria"
+    elif not validar_contrasena(datos.get('contrasena')):
+        errores['contrasena'] = "La contraseña debe tener al menos 8 caracteres, incluyendo mayúsculas, minúsculas y números"
         
     return errores
 
@@ -62,7 +68,10 @@ def registro():
     # Validar datos de registro
     errores = validar_registro(datos)
     if errores:
-        return jsonify({'mensaje': errores[0], 'errores': errores}), 400
+        return jsonify({
+            'mensaje': 'Error en la validación de datos',
+            'errores': errores
+        }), 400
     
     # Verificar si el usuario ya existe
     if Usuario.query.filter_by(identificacion=datos['identificacion']).first():
@@ -97,14 +106,31 @@ def login():
     """
     # Obtener datos JSON de la solicitud
     datos = request.get_json()
-    if not datos or not datos.get('identificacion') or not datos.get('contrasena'):
-        return jsonify({'mensaje': 'Faltan credenciales'}), 400
+    
+    # Validar que se hayan enviado los datos
+    if not datos:
+        return jsonify({'mensaje': 'No se recibieron datos. Por favor asegúrese de enviar los datos en formato JSON.'}), 400
+    
+    # Validar campos requeridos
+    errores = {}
+    if not datos.get('identificacion'):
+        errores['identificacion'] = 'La identificación es obligatoria'
+    if not datos.get('contrasena'):
+        errores['contrasena'] = 'La contraseña es obligatoria'
+    
+    # Si hay errores de validación, retornarlos
+    if errores:
+        return jsonify({
+            'mensaje': 'Error en la validación de datos',
+            'errores': errores
+        }), 400
     
     # Buscar usuario por identificación
     usuario = Usuario.query.filter_by(identificacion=datos.get('identificacion')).first()
     
     # Verificar credenciales
     if not usuario or not check_password_hash(usuario.contrasena, datos.get('contrasena')):
+        # Mensaje unificado para mantener la seguridad y experiencia de usuario profesional
         return jsonify({'mensaje': 'Usuario o contraseña incorrectos'}), 401
     
     # Crear token de acceso JWT
@@ -180,7 +206,7 @@ def actualizar_perfil():
                 
             # Validar nueva contraseña
             if not validar_contrasena(datos['nueva_contrasena']):
-                return jsonify({'mensaje': 'La nueva contraseña debe tener al menos 6 caracteres'}), 400
+                return jsonify({'mensaje': 'La nueva contraseña debe tener al menos 8 caracteres, incluyendo mayúsculas, minúsculas y números'}), 400
                 
             # Actualizar contraseña
             usuario.contrasena = generate_password_hash(datos['nueva_contrasena'])

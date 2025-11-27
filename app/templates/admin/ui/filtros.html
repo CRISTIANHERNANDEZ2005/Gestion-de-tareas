@@ -1,0 +1,103 @@
+<!-- Menú de filtros flotante -->
+<div class="filter-menu">
+  <button class="filter-toggle-btn" id="filterToggleBtn">
+    <i class="fas fa-filter"></i>
+  </button>
+  <div class="filter-panel" id="filterPanel">
+    <div class="filter-panel-header">
+      <h3 class="filter-panel-title">
+        <i class="fas fa-sliders-h"></i>
+        Filtros Avanzados
+      </h3>
+      <button class="filter-panel-close" id="filterPanelClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="filter-section">
+      <h4 class="filter-section-title">
+        <i class="fas fa-search"></i>
+        Buscar
+      </h4>
+      <div class="filter-field">
+        <input
+          type="text"
+          class="filter-field-input"
+          id="searchInput"
+          placeholder="Buscar por nombre, apellido o identificación..."
+        />
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4 class="filter-section-title">
+        <i class="fas fa-sort"></i>
+        Ordenar
+      </h4>
+      <div class="filter-field">
+        <select class="filter-field-input" id="sortSelect">
+          <option value="">Seleccionar campo</option>
+          <option value="nombre">Nombre</option>
+          <option value="apellido">Apellido</option>
+          <option value="identificacion">Identificación</option>
+          <option value="creado_en">Fecha de creación</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <select class="filter-field-input" id="orderSelect">
+          <option value="asc">Ascendente</option>
+          <option value="desc">Descendente</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4 class="filter-section-title">
+        <i class="fas fa-list"></i>
+        Mostrar
+      </h4>
+      <div class="filter-field">
+        <select class="filter-field-input" id="perPageSelect">
+          <option value="10">10 por página</option>
+          <option value="25">25 por página</option>
+          <option value="50">50 por página</option>
+          <option value="100">100 por página</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4 class="filter-section-title">
+        <i class="fas fa-calendar"></i>
+        Fecha de Registro
+      </h4>
+      <div class="filter-field">
+        <label class="filter-field-label" for="dateFrom">Desde</label>
+        <input
+          type="date"
+          class="filter-field-input"
+          id="dateFrom"
+          placeholder="Fecha de inicio"
+        />
+      </div>
+      <div class="filter-field">
+        <label class="filter-field-label" for="dateTo">Hasta</label>
+        <input
+          type="date"
+          class="filter-field-input"
+          id="dateTo"
+          placeholder="Fecha final"
+        />
+      </div>
+    </div>
+
+    <div class="filter-actions-panel">
+      <button class="btn btn-secondary" id="resetFiltersBtn">
+        <i class="fas fa-times"></i> Resetear
+      </button>
+      <button class="btn btn-primary" id="applyFiltersBtn">
+        <i class="fas fa-check"></i> Aplicar
+      </button>
+    </div>
+  </div>
+</div>

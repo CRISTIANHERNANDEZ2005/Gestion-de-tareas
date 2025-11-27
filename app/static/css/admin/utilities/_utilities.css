@@ -1,0 +1,227 @@
+/* Notificaciones */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 10px;
+  color: white;
+  font-size: 15px;
+  z-index: 2000;
+  box-shadow: var(--shadow);
+  transform: translateX(120%);
+  transition: transform var(--transition-speed) ease;
+  max-width: 350px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.notification.success {
+  background: var(--gradient-success);
+  color: var(--dark-color);
+}
+
+.notification.error {
+  background: var(--gradient-secondary);
+}
+
+.notification.info {
+  background: var(--gradient-info);
+}
+
+.notification.warning {
+  background: var(--gradient-warning);
+  color: var(--dark-color);
+}
+
+/* Menú de filtros flotante */
+.filter-menu {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+.filter-toggle-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  transition: all var(--transition-speed) ease;
+}
+
+.filter-toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+.filter-toggle-btn.active {
+  background: var(--gradient-secondary);
+  transform: rotate(45deg);
+}
+
+.filter-panel {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  width: 320px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  padding: 25px;
+  transform: scale(0);
+  opacity: 0;
+  transform-origin: bottom right;
+  transition: all var(--transition-speed) ease;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.filter-panel.active {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.filter-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.filter-panel-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--dark-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-panel-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--gray-color);
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+}
+
+.filter-panel-close:hover {
+  color: var(--danger-color);
+}
+
+.filter-section {
+  margin-bottom: 25px;
+}
+
+.filter-section-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--dark-color);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-section-title i {
+  color: var(--primary-color);
+  font-size: 14px;
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.filter-field {
+  margin-bottom: 15px;
+}
+
+.filter-field-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray-color);
+}
+
+.filter-field-input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 15px;
+  transition: all var(--transition-speed) ease;
+}
+
+.filter-field-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+.filter-field-input[type="date"],
+.filter-field-input[type="text"] {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 15px;
+  transition: all var(--transition-speed) ease;
+}
+
+select.filter-field-input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 15px;
+  background-color: white;
+  transition: all var(--transition-speed) ease;
+}
+
+.filter-actions-panel {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.filter-actions-panel .btn {
+  flex: 1;
+  justify-content: center;
+}
+
+@media (max-width: 992px) {
+  .filter-panel {
+    width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-panel {
+    width: 280px;
+    right: -10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .filter-panel {
+    width: calc(100vw - 40px);
+    right: -10px;
+  }
+}

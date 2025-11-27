@@ -40,10 +40,18 @@ def crear_app(config_class=Config):
     # Blueprints clientes
     from app.blueprint.clients.auth.rutas import auth_bp
     from app.blueprint.clients.tareas.rutas import tareas_bp
+
+    # Blueprints administrativos
+    from app.blueprint.admin.auth.rutas import admin_auth_bp
+    from app.blueprint.admin.usuarios.rutas import usuarios_bp
     
-    # registro de blueprints de clientes
+    # Registro de blueprints de clientes
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(tareas_bp, url_prefix='/tareas')
+
+    # Registro de blueprints administrativos
+    app.register_blueprint(admin_auth_bp, url_prefix='/admin/auth')
+    app.register_blueprint(usuarios_bp, url_prefix='/admin')
 
     # Manejadores de errores JWT para respuestas consistentes
     @jwt.expired_token_loader
@@ -77,7 +85,13 @@ def crear_app(config_class=Config):
         }), 401
 
     # Ruta raíz para servir el frontend
+
+    # Blueprints de usuarios
     from app.blueprint.clients.vistas import vistas_bp
     app.register_blueprint(vistas_bp)
+
+    # Blueprints administradores
+    from app.blueprint.admin.vistas import vistas_admin_bp
+    app.register_blueprint(vistas_admin_bp, url_prefix='/admin')
 
     return app

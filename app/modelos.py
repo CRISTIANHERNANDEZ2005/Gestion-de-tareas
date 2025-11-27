@@ -49,6 +49,46 @@ class Usuario(db.Model):
             'actualizado_en': self.actualizado_en.isoformat()
         }
 
+class Administrador(db.Model):
+    """
+    Modelo que representa a un administrador del sistema.
+    
+    Attributes:
+        id (int): Identificador único del administrador
+        identificacion (str): Número de identificación único del administrador (solo números, mínimo 8 dígitos)
+        nombre (str): Nombre del administrador
+        apellido (str): Apellido del administrador
+        contrasena (str): Contraseña hasheada del administrador
+        creado_en (datetime): Fecha y hora de creación del administrador
+        actualizado_en (datetime): Fecha y hora de última actualización
+    """
+    
+    __tablename__ = 'administradores'
+
+    id = db.Column(db.Integer, primary_key=True)
+    identificacion = db.Column(db.String(20), unique=True, nullable=False)
+    nombre = db.Column(db.String(100), nullable=False)
+    apellido = db.Column(db.String(100), nullable=False)
+    contrasena = db.Column(db.String(255), nullable=False)
+    creado_en = db.Column(db.DateTime, default=datetime.utcnow)
+    actualizado_en = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def to_dict(self):
+        """
+        Convierte el objeto Administrador a un diccionario.
+        
+        Returns:
+            dict: Diccionario con los atributos del administrador
+        """
+        return {
+            'id': self.id,
+            'identificacion': self.identificacion,
+            'nombre': self.nombre,
+            'apellido': self.apellido,
+            'creado_en': self.creado_en.isoformat(),
+            'actualizado_en': self.actualizado_en.isoformat()
+        }
+
 class Tarea(db.Model):
     """
     Modelo que representa una tarea asignada a un usuario.

@@ -1,0 +1,129 @@
+{% extends "admin/base.html" %} {% block content %}
+
+<div class="dashboard-container">
+  <div class="table-controls-enhanced">
+    <div class="table-controls-wrapper">
+      <div class="controls-group main-controls">
+        <button
+          class="btn btn-primary btn-icon"
+          id="addUserBtn"
+          title="Agregar nuevo usuario"
+        >
+          <i class="fas fa-plus"></i>
+          <span class="btn-text">Nuevo Usuario</span>
+        </button>
+        <button
+          class="btn btn-secondary btn-icon"
+          id="editProfileBtn"
+          title="Editar mi perfil"
+        >
+          <i class="fas fa-user-edit"></i>
+          <span class="btn-text">Editar Perfil</span>
+        </button>
+      </div>
+
+      <div class="controls-group filter-management">
+        <div class="filter-indicators">
+          <span
+            class="filter-indicator"
+            id="dateFilterIndicator"
+            style="display: none"
+          >
+            <i class="fas fa-calendar-alt"></i>
+            <span class="indicator-text">Fechas aplicadas</span>
+            <button
+              class="filter-clear-btn"
+              data-filter="date"
+              title="Limpiar filtro de fechas"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </span>
+          <span
+            class="filter-indicator"
+            id="searchFilterIndicator"
+            style="display: none"
+          >
+            <i class="fas fa-search"></i>
+            <span class="indicator-text">Búsqueda activa</span>
+            <button
+              class="filter-clear-btn"
+              data-filter="search"
+              title="Limpiar filtro de búsqueda"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </span>
+        </div>
+        <button
+          class="btn btn-outline btn-sm"
+          id="clearAllFiltersBtn"
+          title="Limpiar todos los filtros"
+        >
+          <i class="fas fa-broom"></i>
+          <span class="btn-text">Limpiar Filtros</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de usuarios -->
+  <div class="users-table-container">
+    <div class="table-header">
+      <h2 class="table-title">
+        <i class="fas fa-table"></i>
+        Lista de Usuarios
+      </h2>
+      <div class="table-options">
+        <span class="user-count" id="userCount">0 usuarios</span>
+      </div>
+    </div>
+
+    <div class="users-table-wrapper">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th class="sortable" data-sort="identificacion">Identificación</th>
+            <th class="sortable" data-sort="nombre">Nombre</th>
+            <th class="sortable" data-sort="apellido">Apellido</th>
+            <th class="sortable hide-mobile" data-sort="creado_en">
+              Fecha de Registro
+            </th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody">
+          <!-- Los datos se cargarán dinámicamente -->
+        </tbody>
+      </table>
+    </div>
+
+    <div id="emptyState" class="empty-state" style="display: none">
+      <i class="fas fa-users empty-icon"></i>
+      <h3 class="empty-title">No se encontraron usuarios</h3>
+      <p class="empty-description">
+        No hay usuarios que coincidan con los criterios de búsqueda o no hay
+        usuarios registrados.
+      </p>
+      <button class="btn btn-primary" id="addUserEmptyBtn">
+        <i class="fas fa-plus"></i> Nuevo Usuario
+      </button>
+    </div>
+
+    <div class="pagination-container">
+      <div class="pagination-info" id="paginationInfo">
+        Mostrando 0 de 0 usuarios
+      </div>
+      <div class="pagination" id="pagination">
+        <!-- Los botones de paginación se cargarán dinámicamente -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay" style="display: none">
+  <div class="spinner"></div>
+</div>
+
+{% endblock %}

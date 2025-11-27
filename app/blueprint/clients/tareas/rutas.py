@@ -8,7 +8,7 @@ from app import db
 from app.modelos import Tarea
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime
-from app.blueprint.clients.utils import validar_fecha_futura, verificar_tarea_duplicada, manejar_error_db
+from app.blueprint.utils import validar_fecha_futura, verificar_tarea_duplicada, manejar_error_db
 
 tareas_bp = Blueprint('tareas', __name__)
 
@@ -117,20 +117,30 @@ def crear_tarea():
     # Obtener datos JSON de la solicitud
     datos = request.get_json()
     
-    # Validar que se haya proporcionado un título
-    if not datos or not datos.get('titulo'):
-        return jsonify({'mensaje': 'El título es obligatorio'}), 400
+    # Validar que se hayan enviado los datos
+    if not datos:
+        return jsonify({'mensaje': 'No se recibieron datos. Por favor asegúrese de enviar los datos en formato JSON.'}), 400
     
-    # Validar longitud del título
-    if len(datos['titulo']) < 5:
-        return jsonify({'mensaje': 'El título debe tener al menos 5 caracteres'}), 400
-    
-    if len(datos['titulo']) > 100:
-        return jsonify({'mensaje': 'El título no puede exceder 100 caracteres'}), 400
+    # Validar campos requeridos
+    errores = {}
+    if not datos.get('titulo'):
+        errores['titulo'] = 'El título es obligatorio'
+    elif len(datos['titulo']) < 5:
+        errores['titulo'] = 'El título debe tener al menos 5 caracteres'
+    elif len(datos['titulo']) > 100:
+        errores['titulo'] = 'El título no puede exceder 100 caracteres'
     
     # Validar descripción si se proporciona
-    if 'descripcion' in datos and datos['descripcion'] and len(datos['descripcion']) < 10:
-        return jsonify({'mensaje': 'La descripción debe tener al menos 10 caracteres'}), 400
+    if 'descripcion' in datos and datos['descripcion']:
+        if len(datos['descripcion']) < 10:
+            errores['descripcion'] = 'La descripción debe tener al menos 10 caracteres'
+    
+    # Si hay errores de validación, retornarlos
+    if errores:
+        return jsonify({
+            'mensaje': 'Error en la validación de datos',
+            'errores': errores
+        }), 400
     
     # Procesar fecha límite si se proporciona
     fecha_limite = None
@@ -186,23 +196,45 @@ def actualizar_tarea(id):
     # Obtener datos JSON de la solicitud
     datos = request.get_json()
     
+    # Validar que se hayan enviado los datos
+    if not datos:
+        return jsonify({'mensaje': 'No se recibieron datos. Por favor asegúrese de enviar los datos en formato JSON.'}), 400
+    
+    # Validar campos si se proporcionan
+    errores = {}
+    
     # Actualizar título si se proporciona
     if 'titulo' in datos:
         if not datos['titulo']:
-            return jsonify({'mensaje': 'El título no puede estar vacío'}), 400
-        if len(datos['titulo']) < 5:
-            return jsonify({'mensaje': 'El título debe tener al menos 5 caracteres'}), 400
-        # Verificar duplicados si cambia el título
-        if datos['titulo'] != tarea.titulo:
-            if verificar_tarea_duplicada(usuario_id, datos['titulo'], id):
-                return jsonify({'mensaje': 'Ya tienes una tarea con este título'}), 400
-        tarea.titulo = datos['titulo']
-        
+            errores['titulo'] = 'El título no puede estar vacío'
+        elif len(datos['titulo']) < 5:
+            errores['titulo'] = 'El título debe tener al menos 5 caracteres'
+        elif len(datos['titulo']) > 100:
+            errores['titulo'] = 'El título no puede exceder 100 caracteres'
+        else:
+            # Verificar duplicados si cambia el título
+            if datos['titulo'] != tarea.titulo:
+                if verificar_tarea_duplicada(usuario_id, datos['titulo'], id):
+                    errores['titulo'] = 'Ya tienes una tarea con este título'
+    
     # Actualizar descripción si se proporciona
     if 'descripcion' in datos:
         # Validar descripción si se proporciona
         if datos['descripcion'] and len(datos['descripcion']) < 10:
-            return jsonify({'mensaje': 'La descripción debe tener al menos 10 caracteres'}), 400
+            errores['descripcion'] = 'La descripción debe tener al menos 10 caracteres'
+    
+    # Si hay errores de validación, retornarlos
+    if errores:
+        return jsonify({
+            'mensaje': 'Error en la validación de datos',
+            'errores': errores
+        }), 400
+    
+    # Aplicar actualizaciones si no hay errores
+    if 'titulo' in datos and not errores.get('titulo'):
+        tarea.titulo = datos['titulo']
+        
+    if 'descripcion' in datos and not errores.get('descripcion'):
         tarea.descripcion = datos['descripcion']
         
     # Actualizar fecha límite si se proporciona
@@ -210,7 +242,7 @@ def actualizar_tarea(id):
         if datos['fecha_limite']:
             es_valida, fecha = validar_fecha_futura(datos['fecha_limite'])
             if not es_valida:
-                return jsonify({'mensaje': 'Formato de fecha inválido o la fecha debe ser futura'}), 400
+                return jsonify({'mensaje': 'Formato de fecha inválido. Use YYYY-MM-DD o la fecha debe ser futura'}), 400
             tarea.fecha_limite = fecha
         else:
             tarea.fecha_limite = None

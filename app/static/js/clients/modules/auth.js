@@ -1,11 +1,22 @@
 /**
  * Módulo de Autenticación
  * Gestiona el inicio de sesión y registro de usuarios
+ * 
+ * @author Gestor de Tareas
+ * @version 1.0
  */
 
 import { mostrarToast, setButtonLoading, setButtonNormal, mostrarError, limpiarError, validarIdentificacion, validarNombre, validarContrasena, verificarYLimpiarAutenticacion } from './utils.js';
 
+/**
+ * Clase que representa el módulo de autenticación
+ * Gestiona todas las operaciones relacionadas con el inicio de sesión y registro de usuarios
+ */
 class AuthModule {
+    /**
+     * Constructor del módulo de autenticación
+     * Inicializa las propiedades y configura los event listeners
+     */
     constructor() {
         this.apiURL = '';
         // Inicializar handlers para evitar duplicados
@@ -19,6 +30,7 @@ class AuthModule {
 
     /**
      * Inicializa los event listeners para los formularios de autenticación
+     * Configura todos los componentes necesarios para el funcionamiento del módulo
      */
     init() {
         // Manejo del formulario de inicio de sesión
@@ -39,11 +51,62 @@ class AuthModule {
             // Crear un nuevo handler con el contexto adecuado
             this.handleRegistroHandler = (e) => this.handleRegistro(e);
             registroForm.addEventListener('submit', this.handleRegistroHandler);
+            
+            // Agregar validación en tiempo real para la contraseña de registro
+            this.setupPasswordValidation();
         }
     }
 
     /**
+     * Configura la validación en tiempo real para la contraseña de registro
+     * Muestra visualmente los requisitos de contraseña mientras el usuario escribe
+     */
+    setupPasswordValidation() {
+        const passwordInput = document.getElementById('reg-contrasena');
+        if (!passwordInput) return;
+        
+        // Crear un nuevo handler con el contexto adecuado
+        const validatePasswordHandler = () => this.validatePasswordRequirements(passwordInput);
+        
+        // Agregar event listeners
+        passwordInput.addEventListener('input', validatePasswordHandler);
+        passwordInput.addEventListener('focus', validatePasswordHandler);
+        passwordInput.addEventListener('blur', validatePasswordHandler);
+    }
+
+    /**
+     * Valida y actualiza visualmente los requisitos de contraseña
+     * @param {HTMLElement} passwordInput - Campo de entrada de contraseña
+     */
+    validatePasswordRequirements(passwordInput) {
+        const password = passwordInput.value;
+        const requirements = document.querySelectorAll('.requirement');
+        
+        if (requirements.length === 0) return;
+        
+        // Validar cada requisito y actualizar la UI
+        const validations = [
+            { regex: /.{8,}/, index: 0 },           // Mínimo 8 caracteres
+            { regex: /[A-Z]/, index: 1 },           // Al menos una mayúscula
+            { regex: /[a-z]/, index: 2 },           // Al menos una minúscula
+            { regex: /\d/, index: 3 }               // Al menos un número
+        ];
+        
+        validations.forEach(validation => {
+            const requirement = requirements[validation.index];
+            if (requirement) {
+                if (validation.regex.test(password)) {
+                    requirement.classList.add('valid');
+                } else {
+                    requirement.classList.remove('valid');
+                }
+            }
+        });
+    }
+
+    /**
      * Verifica el estado de autenticación al cargar el módulo
+     * Asegura que el usuario tenga una sesión válida
      */
     async verificarEstadoAutenticacion() {
         // Verificar y limpiar la autenticación si es necesario
@@ -57,7 +120,8 @@ class AuthModule {
 
     /**
      * Maneja el proceso de inicio de sesión
-     * @param {Event} e - Evento de submit
+     * Valida el formulario, envía los datos al servidor y procesa la respuesta
+     * @param {Event} e - Evento de submit del formulario
      */
     async handleLogin(e) {
         e.preventDefault();
@@ -108,7 +172,7 @@ class AuthModule {
                 mostrarToast(result.mensaje || 'Usuario o contraseña incorrectos', 'error');
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error en el proceso de inicio de sesión:', error);
             mostrarToast('Error de conexión', 'error');
         } finally {
             // Restaurar el botón a su estado original
@@ -119,7 +183,8 @@ class AuthModule {
 
     /**
      * Maneja el proceso de registro
-     * @param {Event} e - Evento de submit
+     * Valida el formulario, envía los datos al servidor y procesa la respuesta
+     * @param {Event} e - Evento de submit del formulario
      */
     async handleRegistro(e) {
         e.preventDefault();
@@ -159,7 +224,7 @@ class AuthModule {
                 mostrarToast(result.mensaje, 'error');
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error en el proceso de registro:', error);
             mostrarToast('Error al registrarse', 'error');
         } finally {
             // Restaurar el botón a su estado original
@@ -169,10 +234,10 @@ class AuthModule {
     }
 
     /**
-     * Establece una cookie
+     * Establece una cookie en el navegador
      * @param {string} name - Nombre de la cookie
      * @param {string} value - Valor de la cookie
-     * @param {number} days - Días de expiración
+     * @param {number} days - Días de expiración de la cookie
      */
     setCookie(name, value, days) {
         const expires = new Date();
@@ -182,6 +247,7 @@ class AuthModule {
 
     /**
      * Valida un formulario verificando que todos los campos requeridos estén completos
+     * y cumplan con los criterios de validación
      * @param {HTMLFormElement} form - Formulario a validar
      * @returns {boolean} - True si es válido, false si no
      */
@@ -216,8 +282,8 @@ class AuthModule {
                 mostrarError(contrasena, 'La contraseña es obligatoria');
                 if (!firstErrorField) firstErrorField = contrasena;
                 isValid = false;
-            } else if (contrasena.value.trim().length < 6) {
-                mostrarError(contrasena, 'La contraseña debe tener al menos 6 caracteres');
+            } else if (contrasena.value.trim().length < 8) {
+                mostrarError(contrasena, 'La contraseña debe tener al menos 8 caracteres');
                 if (!firstErrorField) firstErrorField = contrasena;
                 isValid = false;
             }
@@ -288,9 +354,36 @@ class AuthModule {
         
         // Validar contraseña en registro
         if (regContrasena && regContrasena.value.trim() !== '') {
-            if (!validarContrasena(regContrasena.value.trim())) {
-                mostrarError(regContrasena, 'La contraseña debe tener al menos 6 caracteres');
+            const contrasena = regContrasena.value.trim();
+            let passwordError = false;
+            
+            if (contrasena.length < 8) {
+                mostrarError(regContrasena, 'La contraseña debe tener al menos 8 caracteres');
                 if (!firstErrorField) firstErrorField = regContrasena;
+                passwordError = true;
+                isValid = false;
+            } 
+            if (!/[A-Z]/.test(contrasena)) {
+                if (!passwordError) {
+                    mostrarError(regContrasena, 'La contraseña debe incluir al menos una letra mayúscula');
+                    if (!firstErrorField) firstErrorField = regContrasena;
+                    passwordError = true;
+                }
+                isValid = false;
+            }
+            if (!/[a-z]/.test(contrasena)) {
+                if (!passwordError) {
+                    mostrarError(regContrasena, 'La contraseña debe incluir al menos una letra minúscula');
+                    if (!firstErrorField) firstErrorField = regContrasena;
+                    passwordError = true;
+                }
+                isValid = false;
+            }
+            if (!/\d/.test(contrasena)) {
+                if (!passwordError) {
+                    mostrarError(regContrasena, 'La contraseña debe incluir al menos un número');
+                    if (!firstErrorField) firstErrorField = regContrasena;
+                }
                 isValid = false;
             }
         } else if (regContrasena && !regContrasena.value.trim()) {
@@ -326,6 +419,9 @@ class AuthModule {
                         errorMsg.remove();
                     }
                 });
+                
+                // Limpiar indicadores de validación de contraseña
+                this.clearPasswordValidation();
             }
         }
     }
@@ -351,6 +447,9 @@ class AuthModule {
                 
                 // Resetear campos del formulario
                 form.reset();
+                
+                // Limpiar indicadores de validación de contraseña
+                this.clearPasswordValidation();
             }
         });
         this.abrirModalAuth(targetId);
@@ -379,9 +478,23 @@ class AuthModule {
                 
                 // Resetear campos del formulario
                 form.reset();
+                
+                // Limpiar indicadores de validación de contraseña
+                this.clearPasswordValidation();
             }
         }
     }
+
+    /**
+     * Limpia los indicadores de validación de contraseña
+     */
+    clearPasswordValidation() {
+        const requirements = document.querySelectorAll('.requirement');
+        requirements.forEach(req => {
+            req.classList.remove('valid');
+        });
+    }
+
 }
 
 // Exportar la clase para usarla en otros archivos
