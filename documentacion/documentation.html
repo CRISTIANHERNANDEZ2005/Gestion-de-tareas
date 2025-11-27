@@ -1184,6 +1184,11 @@ class Tarea(db.Model):
                         </thead>
                         <tbody>
                             <tr class="border-b border-gray-200">
+                                <td class="py-3 px-4 text-gray-700 font-medium">administradores</td>
+                                <td class="py-3 px-4 text-gray-700">id, identificacion, nombre, apellido, contrasena, creado_en, actualizado_en</td>
+                                <td class="py-3 px-4 text-gray-700">No se relaciona con ninguna tabla</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
                                 <td class="py-3 px-4 text-gray-700 font-medium">usuarios</td>
                                 <td class="py-3 px-4 text-gray-700">id, identificacion, nombre, apellido, contrasena, creado_en, actualizado_en</td>
                                 <td class="py-3 px-4 text-gray-700">Tiene muchas tareas (one-to-many)</td>
