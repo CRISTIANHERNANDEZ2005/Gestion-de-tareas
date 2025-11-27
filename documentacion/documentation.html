@@ -1572,74 +1572,49 @@ CREATE TABLE IF NOT EXISTS Tareas (
                                 </thead>
                                 <tbody>
                                     <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RF-001</td>
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-ADMIN-001</td>
+                                        <td class="py-3 px-4 text-gray-700">Autenticación</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los administradores iniciar sesión con identificación y contraseña.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-ADMIN-002</td>
+                                        <td class="py-3 px-4 text-gray-700">Autenticación</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe generar un token JWT para los administradores autenticados.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-ADMIN-003</td>
+                                        <td class="py-3 px-4 text-gray-700">Perfil</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los administradores ver su información de perfil.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-ADMIN-004</td>
+                                        <td class="py-3 px-4 text-gray-700">Perfil</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los administradores actualizar su información de perfil incluyendo nombre, apellido, identificación y contraseña.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-ADMIN-005</td>
                                         <td class="py-3 px-4 text-gray-700">Gestión de Usuarios</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir el registro de nuevos usuarios con identificación única, nombre, apellido y contraseña.</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los administradores obtener todos los usuarios con capacidades de filtrado, ordenamiento y paginación.</td>
                                     </tr>
                                     <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RF-002</td>
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-ADMIN-006</td>
                                         <td class="py-3 px-4 text-gray-700">Gestión de Usuarios</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir el inicio de sesión de usuarios registrados mediante identificación y contraseña.</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los administradores crear nuevos usuarios con validación de datos.</td>
                                     </tr>
                                     <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RF-003</td>
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-ADMIN-007</td>
                                         <td class="py-3 px-4 text-gray-700">Gestión de Usuarios</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los usuarios actualizar su información personal y contraseña.</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los administradores ver información detallada de un usuario específico.</td>
                                     </tr>
                                     <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RF-004</td>
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-ADMIN-008</td>
                                         <td class="py-3 px-4 text-gray-700">Gestión de Usuarios</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir el cierre de sesión seguro de los usuarios.</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los administradores actualizar la información de usuarios existentes.</td>
                                     </tr>
                                     <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RF-005</td>
-                                        <td class="py-3 px-4 text-gray-700">Gestión de Tareas</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los usuarios crear nuevas tareas con título, descripción y fecha límite.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RF-006</td>
-                                        <td class="py-3 px-4 text-gray-700">Gestión de Tareas</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe mostrar a los usuarios una lista de todas sus tareas.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RF-007</td>
-                                        <td class="py-3 px-4 text-gray-700">Gestión de Tareas</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los usuarios editar sus tareas existentes.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RF-008</td>
-                                        <td class="py-3 px-4 text-gray-700">Gestión de Tareas</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los usuarios eliminar sus tareas.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RF-009</td>
-                                        <td class="py-3 px-4 text-gray-700">Gestión de Tareas</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema no debe permitir que un usuario tenga dos tareas con el mismo título.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RF-010</td>
-                                        <td class="py-3 px-4 text-gray-700">Validaciones</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe validar que la identificación del usuario tenga al menos 8 dígitos numéricos.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RF-011</td>
-                                        <td class="py-3 px-4 text-gray-700">Validaciones</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe validar que las contraseñas tengan al menos 6 caracteres.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RF-012</td>
-                                        <td class="py-3 px-4 text-gray-700">Validaciones</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe validar que los títulos de las tareas tengan entre 5 y 100 caracteres.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RF-013</td>
-                                        <td class="py-3 px-4 text-gray-700">Validaciones</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe validar que las descripciones de las tareas tengan al menos 10 caracteres.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RF-014</td>
-                                        <td class="py-3 px-4 text-gray-700">Validaciones</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe validar que las fechas límite de las tareas sean futuras.</td>
+                                        <td class="py-3 px-4 font-medium text-gray-800">RF-ADMIN-009</td>
+                                        <td class="py-3 px-4 text-gray-700">Gestión de Usuarios</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe permitir a los administradores eliminar usuarios del sistema.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1665,84 +1640,54 @@ CREATE TABLE IF NOT EXISTS Tareas (
                                 </thead>
                                 <tbody>
                                     <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-001</td>
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-ADMIN-001</td>
+                                        <td class="py-3 px-4 text-gray-700">Seguridad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe almacenar las contraseñas de los administradores utilizando hashing seguro (Werkzeug).</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-ADMIN-002</td>
+                                        <td class="py-3 px-4 text-gray-700">Seguridad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe proteger las rutas administrativas mediante autenticación JWT.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-ADMIN-003</td>
+                                        <td class="py-3 px-4 text-gray-700">Seguridad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe expirar los tokens JWT de administradores después de 1 hora de inactividad.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-ADMIN-004</td>
+                                        <td class="py-3 px-4 text-gray-700">Seguridad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe validar todas las entradas de datos administrativos para prevenir ataques de inyección.</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-ADMIN-005</td>
                                         <td class="py-3 px-4 text-gray-700">Rendimiento</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe responder a las solicitudes del usuario en menos de 2 segundos bajo carga normal.</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe responder a las solicitudes administrativas en menos de 2 segundos bajo carga normal.</td>
                                     </tr>
                                     <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-002</td>
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-ADMIN-006</td>
                                         <td class="py-3 px-4 text-gray-700">Rendimiento</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe ser capaz de manejar al menos 100 usuarios concurrentes.</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe soportar paginación para listas de usuarios para mejorar el rendimiento.</td>
                                     </tr>
                                     <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-003</td>
-                                        <td class="py-3 px-4 text-gray-700">Rendimiento</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe mantener tiempos de respuesta de base de datos menores a 500ms para operaciones comunes.</td>
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-ADMIN-007</td>
+                                        <td class="py-3 px-4 text-gray-700">Usabilidad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe proporcionar mensajes de error claros en español para todas las operaciones administrativas.</td>
                                     </tr>
                                     <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-004</td>
-                                        <td class="py-3 px-4 text-gray-700">Seguridad</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe almacenar las contraseñas de los usuarios utilizando hashing seguro (Werkzeug).</td>
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-ADMIN-008</td>
+                                        <td class="py-3 px-4 text-gray-700">Usabilidad</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe validar los datos de entrada administrativa con mensajes de error específicos.</td>
                                     </tr>
                                     <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-005</td>
-                                        <td class="py-3 px-4 text-gray-700">Seguridad</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe proteger las rutas mediante autenticación JWT.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-006</td>
-                                        <td class="py-3 px-4 text-gray-700">Seguridad</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe expirar los tokens JWT después de 1 hora de inactividad.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-007</td>
-                                        <td class="py-3 px-4 text-gray-700">Seguridad</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe utilizar conexiones SSL/TLS para comunicarse con la base de datos.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-008</td>
-                                        <td class="py-3 px-4 text-gray-700">Disponibilidad</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe tener una disponibilidad del 99.5% durante el horario comercial.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-009</td>
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-ADMIN-009</td>
                                         <td class="py-3 px-4 text-gray-700">Confiabilidad</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe manejar errores de manera elegante y proporcionar mensajes de error útiles.</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe manejar errores de base de datos de forma elegante con rollback automático.</td>
                                     </tr>
                                     <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-010</td>
+                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-ADMIN-010</td>
                                         <td class="py-3 px-4 text-gray-700">Confiabilidad</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe realizar rollback automático en caso de errores de base de datos.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-011</td>
-                                        <td class="py-3 px-4 text-gray-700">Usabilidad</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe ser completamente responsivo y funcionar en dispositivos móviles y de escritorio.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-012</td>
-                                        <td class="py-3 px-4 text-gray-700">Usabilidad</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe proporcionar retroalimentación visual inmediata para todas las acciones del usuario.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-013</td>
-                                        <td class="py-3 px-4 text-gray-700">Usabilidad</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe presentar mensajes de error comprensibles en español.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-014</td>
-                                        <td class="py-3 px-4 text-gray-700">Mantenibilidad</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe seguir una arquitectura modular basada en blueprints de Flask.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-015</td>
-                                        <td class="py-3 px-4 text-gray-700">Mantenibilidad</td>
-                                        <td class="py-3 px-4 text-gray-700">El sistema debe utilizar migraciones de base de datos para gestionar cambios en el esquema.</td>
-                                    </tr>
-                                    <tr class="border-b border-gray-200 hover:bg-blue-50 bg-gray-50 transition-colors duration-200">
-                                        <td class="py-3 px-4 font-medium text-gray-800">RNF-016</td>
-                                        <td class="py-3 px-4 text-gray-700">Mantenibilidad</td>
-                                        <td class="py-3 px-4 text-gray-700">El código debe estar completamente documentado con docstrings en español.</td>
+                                        <td class="py-3 px-4 text-gray-700">El sistema debe mantener la consistencia de datos durante operaciones CRUD administrativas.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1769,18 +1714,18 @@ CREATE TABLE IF NOT EXISTS Tareas (
                             <tbody>
                                 <tr class="border-b border-gray-200 hover:bg-red-50">
                                     <td class="py-3 px-4 font-medium text-red-800">Alta Prioridad</td>
-                                    <td class="py-3 px-4 text-gray-700">RF-001 al RF-004, RNF-004, RNF-005</td>
-                                    <td class="py-3 px-4 text-gray-700">Requerimientos esenciales para el funcionamiento básico del sistema</td>
+                                    <td class="py-3 px-4 text-gray-700">RF-ADMIN-001 al RF-ADMIN-004, RNF-ADMIN-001, RNF-ADMIN-002</td>
+                                    <td class="py-3 px-4 text-gray-700">Requerimientos esenciales para el funcionamiento básico del panel administrativo</td>
                                 </tr>
                                 <tr class="border-b border-gray-200 hover:bg-yellow-50 bg-gray-50">
                                     <td class="py-3 px-4 font-medium text-yellow-800">Media Prioridad</td>
-                                    <td class="py-3 px-4 text-gray-700">RF-005 al RF-014, RNF-001, RNF-006 al RNF-013</td>
-                                    <td class="py-3 px-4 text-gray-700">Requerimientos importantes para una experiencia completa</td>
+                                    <td class="py-3 px-4 text-gray-700">RF-ADMIN-005 al RF-ADMIN-009, RNF-ADMIN-003 al RNF-ADMIN-008</td>
+                                    <td class="py-3 px-4 text-gray-700">Requerimientos importantes para una gestión completa de usuarios</td>
                                 </tr>
                                 <tr class="border-b border-gray-200 hover:bg-green-50">
                                     <td class="py-3 px-4 font-medium text-green-800">Baja Prioridad</td>
-                                    <td class="py-3 px-4 text-gray-700">RNF-002, RNF-003, RNF-014 al RNF-016</td>
-                                    <td class="py-3 px-4 text-gray-700">Requerimientos deseables pero no críticos</td>
+                                    <td class="py-3 px-4 text-gray-700">RNF-ADMIN-009, RNF-ADMIN-010</td>
+                                    <td class="py-3 px-4 text-gray-700">Requerimientos deseables para mejorar la confiabilidad del sistema</td>
                                 </tr>
                             </tbody>
                         </table>
