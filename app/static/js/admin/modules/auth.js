@@ -159,6 +159,9 @@ class AdminAuthModule {
             const resultado = await res.json();
 
             if (res.ok && res.status === 200) {
+                // Clear any existing admin token cookie first
+                this.borrarCookie('admin_token');
+                
                 // Guardar token y administrador en localStorage
                 localStorage.setItem('admin_token', resultado.token);
                 localStorage.setItem('administrador', JSON.stringify(resultado.administrador));
@@ -192,6 +195,14 @@ class AdminAuthModule {
     }
 
     /**
+     * Borra una cookie del navegador
+     * @param {string} nombre - Nombre de la cookie a borrar
+     */
+    borrarCookie(nombre) {
+        document.cookie = `${nombre}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+    }
+
+    /**
      * Establece una cookie en el navegador
      * @param {string} nombre - Nombre de la cookie
      * @param {string} valor - Valor de la cookie
@@ -200,7 +211,8 @@ class AdminAuthModule {
     establecerCookie(nombre, valor, dias) {
         const expiracion = new Date();
         expiracion.setTime(expiracion.getTime() + (dias * 24 * 60 * 60 * 1000));
-        document.cookie = `${nombre}=${valor};expires=${expiracion.toUTCString()};path=/`;
+        // Set cookie with proper attributes for cross-site access
+        document.cookie = `${nombre}=${valor};expires=${expiracion.toUTCString()};path=/;SameSite=Lax`;
     }
 
     /**

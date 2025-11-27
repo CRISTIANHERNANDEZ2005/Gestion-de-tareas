@@ -5,6 +5,9 @@ Contiene las rutas para servir las páginas HTML del panel de administración.
 
 from flask import Blueprint, render_template, redirect, url_for
 from app.blueprint.utils import verificar_token_admin
+import logging
+
+logger = logging.getLogger(__name__)
 
 vistas_admin_bp = Blueprint('vistas_admin', __name__)
 
@@ -13,14 +16,17 @@ def dashboard():
     """
     Ruta que sirve el dashboard del panel de administración.
     """
+    logger.info("Accessing admin dashboard route")
     # Verificar si el administrador tiene un token válido usando la función utilitaria
     administrador, token = verificar_token_admin()
     
     if administrador:
+        logger.info(f"Administrator authenticated: {administrador.nombre}")
         # Pasar la información del administrador a la plantilla
         return render_template('admin/components/dashboard.html', administrador=administrador)
     
     # Si no hay token válido, redirigir al login
+    logger.warning("No valid admin token found, redirecting to login")
     return redirect(url_for('vistas_admin.login'))
 
 @vistas_admin_bp.route('/login')

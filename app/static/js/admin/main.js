@@ -11,15 +11,6 @@ import AdminAuthModule from './modules/auth.js';
 import AdminUsersModule from './modules/users.js';
 import AdminProfileModule from './modules/profile.js';
 
-// Importar pruebas en modo desarrollo
-if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    import('./test_runner.js').then(() => {
-        console.log('Sistema de pruebas cargado');
-    }).catch(err => {
-        console.warn('No se pudo cargar el sistema de pruebas:', err);
-    });
-}
-
 // Esperar a que el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', () => {
     // Determinar qué módulos inicializar basado en la página actual

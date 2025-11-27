@@ -835,8 +835,23 @@ class AdminUsersModule {
                 this.cargarUsuarios();
                 this.cargarEstadisticas();
             } else {
-                const mensajeError = datos.mensaje || "Error al guardar el usuario";
-                mostrarNotificacion(mensajeError, "error");
+                // Handle validation errors more professionally
+                if (datos.errores) {
+                    // Display specific field errors
+                    Object.keys(datos.errores).forEach(campo => {
+                        const input = document.getElementById(campo);
+                        if (input) {
+                            input.classList.add('error');
+                            mostrarError(input, datos.errores[campo]);
+                        }
+                    });
+                    
+                    // Show a more professional general message
+                    mostrarNotificacion("Por favor corrija los errores en el formulario", "error");
+                } else {
+                    const mensajeError = datos.mensaje || "Error al guardar el usuario";
+                    mostrarNotificacion(mensajeError, "error");
+                }
             }
         } catch (error) {
             console.error('Error al guardar usuario:', error);

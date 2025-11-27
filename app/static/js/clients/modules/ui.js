@@ -208,34 +208,32 @@ class UIModule {
     }
 
     /**
-     * Valida el formulario de perfil
+     * Valida el formulario de perfil antes de enviarlo
      * @param {FormData} formData - Datos del formulario
      * @param {HTMLFormElement} form - Elemento del formulario
-     * @returns {boolean} - True si es válido, false si no
+     * @returns {boolean} - True si es válido, false si no lo es
      */
     validarPerfil(formData, form) {
+        // Limpiar errores anteriores
+        this.limpiarTodosLosErrores(form);
+
         let isValid = true;
         let firstErrorField = null;
-        
-        // Limpiar todos los errores antes de validar
-        const allInputs = form.querySelectorAll('input, textarea');
-        allInputs.forEach(input => {
-            limpiarError(input);
-        });
-        
-        // Obtener valores
+
+        // Obtener valores de los campos
         const identificacion = formData.get('identificacion');
         const nombre = formData.get('nombre');
         const apellido = formData.get('apellido');
         const contrasenaActual = formData.get('contrasena_actual');
         const nuevaContrasena = formData.get('nueva_contrasena');
         const confirmarContrasena = formData.get('confirmar_contrasena');
-        
-        // Validar campos requeridos (solo si tienen valor)
+
+        // Obtener elementos del DOM
         const identificacionInput = form.querySelector('#perfil-identificacion');
         const nombreInput = form.querySelector('#perfil-nombre');
         const apellidoInput = form.querySelector('#perfil-apellido');
         
+        // Validar campos requeridos
         if (identificacionInput && !identificacionInput.value.trim()) {
             mostrarError(identificacionInput, 'La identificación es obligatoria');
             if (!firstErrorField) firstErrorField = identificacionInput;
@@ -302,7 +300,18 @@ class UIModule {
                 }
             } else if (!validarContrasena(nuevaContrasena)) {
                 if (nuevaContrasenaInput) {
-                    mostrarError(nuevaContrasenaInput, 'La nueva contraseña debe tener al menos 6 caracteres');
+                    // Mostrar mensaje específico según el error de validación
+                    if (nuevaContrasena.length < 8) {
+                        mostrarError(nuevaContrasenaInput, 'La nueva contraseña debe tener al menos 8 caracteres');
+                    } else if (!/[A-Z]/.test(nuevaContrasena)) {
+                        mostrarError(nuevaContrasenaInput, 'La nueva contraseña debe incluir al menos una letra mayúscula');
+                    } else if (!/[a-z]/.test(nuevaContrasena)) {
+                        mostrarError(nuevaContrasenaInput, 'La nueva contraseña debe incluir al menos una letra minúscula');
+                    } else if (!/\d/.test(nuevaContrasena)) {
+                        mostrarError(nuevaContrasenaInput, 'La nueva contraseña debe incluir al menos un número');
+                    } else {
+                        mostrarError(nuevaContrasenaInput, 'La nueva contraseña debe tener al menos 8 caracteres, incluyendo mayúsculas, minúsculas y números');
+                    }
                     if (!firstErrorField) firstErrorField = nuevaContrasenaInput;
                     isValid = false;
                 }
@@ -331,6 +340,20 @@ class UIModule {
         }
         
         return isValid;
+    }
+
+    /**
+     * Limpia todos los errores del formulario
+     * @param {HTMLFormElement} form - Elemento del formulario
+     */
+    limpiarTodosLosErrores(form) {
+        if (!form) return;
+        
+        // Limpiar errores usando la función existente
+        const inputs = form.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            limpiarError(input);
+        });
     }
 
     /**

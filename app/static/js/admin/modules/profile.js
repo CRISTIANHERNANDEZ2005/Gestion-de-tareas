@@ -162,14 +162,15 @@ class AdminProfileModule {
                 // Actualizar datos del administrador en localStorage
                 localStorage.setItem('administrador', JSON.stringify(resultado.administrador));
                 
+                // Actualizar la información del usuario en el header sin recargar la página
+                this.actualizarInfoUsuario(resultado.administrador);
+                
                 // Mostrar notificación de éxito
                 mostrarNotificacion(resultado.mensaje || '¡Perfil actualizado exitosamente!', 'success');
                 
                 // Cerrar modal después de un tiempo
                 setTimeout(() => {
                     this.cerrarModalPerfil();
-                    // Recargar la página para reflejar los cambios en el header
-                    location.reload();
                 }, 2000);
             } else {
                 // Mostrar errores específicos del backend
@@ -413,6 +414,24 @@ class AdminProfileModule {
 
         // Si no hay en cookies, intentar obtener del localStorage
         return localStorage.getItem("admin_token");
+    }
+
+    /**
+     * Actualiza la información del usuario en el header sin recargar la página
+     * @param {Object} administrador - Datos actualizados del administrador
+     */
+    actualizarInfoUsuario(administrador) {
+        // Actualizar nombre del usuario en el header
+        const nombreUsuarioElement = document.querySelector('.user-info .user-name');
+        if (nombreUsuarioElement) {
+            nombreUsuarioElement.textContent = `${administrador.nombre} ${administrador.apellido}`;
+        }
+        
+        // Actualizar identificación del usuario en el header
+        const identificacionUsuarioElement = document.querySelector('.user-info .user-id');
+        if (identificacionUsuarioElement) {
+            identificacionUsuarioElement.textContent = administrador.identificacion;
+        }
     }
 }
 

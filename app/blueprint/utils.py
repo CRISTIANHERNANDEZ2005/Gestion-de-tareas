@@ -6,8 +6,10 @@ Contiene funciones de validación y manejo de errores reutilizables.
 import re
 from datetime import datetime
 from app import db
-from app.modelos import Usuario, Tarea
-from flask import jsonify
+
+from app.modelos import Usuario, Tarea, Administrador
+from flask import jsonify, request
+from flask_jwt_extended import decode_token
 
 def validar_identificacion(identificacion):
     """
@@ -120,26 +122,38 @@ def verificar_token_admin():
     Returns:
         tuple: (administrador, token) si es válido, (None, None) si no lo es
     """
+    import logging
+    logger = logging.getLogger(__name__)
+    
     # Verificar si el administrador tiene un token válido
     token = request.cookies.get('admin_token')
+    logger.info(f"Token from cookie: {token}")
     
     if not token:
         auth_header = request.headers.get('Authorization')
         if auth_header and auth_header.startswith('Bearer '):
             token = auth_header.split(' ')[1]
+            logger.info(f"Token from Authorization header: {token}")
     
     if token:
         try:
             # Intentar decodificar el token
+            logger.info(f"Attempting to decode token: {token[:20]}...")  # Log first 20 chars for security
             decoded_token = decode_token(token)
-            admin_id = decoded_token['sub']
+            admin_id = int(decoded_token['sub'])  # Convert to int for database query
+            logger.info(f"Decoded token for admin ID: {admin_id}")
             
             # Verificar si el administrador existe
             administrador = Administrador.query.get(admin_id)
             if administrador:
+                logger.info(f"Administrator found: {administrador.nombre}")
                 return administrador, token
+            else:
+                logger.warning(f"No administrator found for ID: {admin_id}")
         except Exception as e:
             # Token inválido
+            logger.error(f"Error verifying admin token: {str(e)}", exc_info=True)
             pass
     
+    logger.info("No valid admin token found")
     return None, None

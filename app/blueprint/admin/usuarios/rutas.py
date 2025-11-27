@@ -131,6 +131,7 @@ def crear_usuario():
     
     try:
         datos = request.get_json()
+        print(f"Received data for user creation: {datos}")  # Debugging line
         
         # Validar datos requeridos
         if not datos:
@@ -150,7 +151,7 @@ def crear_usuario():
         elif not validar_identificacion(identificacion):
             errores['identificacion'] = 'La identificación debe tener al menos 8 dígitos numéricos'
         elif Usuario.query.filter_by(identificacion=identificacion).first():
-            errores['identificacion'] = 'Ya existe un usuario con esa identificación'
+            errores['identificacion'] = 'Ya existe un usuario con esa identificación.'
         
         # Validar nombre
         if not nombre:
@@ -172,8 +173,9 @@ def crear_usuario():
         
         # Si hay errores, devolverlos
         if errores:
+            print(f"Validation errors: {errores}")  # Debugging line
             return jsonify({
-                'mensaje': 'Error en la validación de datos',
+                'mensaje': 'Por favor corrija los errores en el formulario',
                 'errores': errores
             }), 400
         
@@ -195,6 +197,7 @@ def crear_usuario():
         
     except Exception as e:
         db.session.rollback()
+        print(f"Error creating user: {str(e)}")  # Debugging line
         return jsonify({'mensaje': 'Error al crear el usuario'}), 500
 
 @usuarios_bp.route('/api/usuarios/<int:usuario_id>', methods=['PUT'])
